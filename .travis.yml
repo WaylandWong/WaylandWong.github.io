@@ -22,7 +22,6 @@ after_success:
 - cd ./public
 - cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
 - cp ../google466901c3bc99d1db.html .
-- cp ../sitemap.xml .
 - git init
 - git add --all .
 - git commit -m "Travis CI Auto Builder"
