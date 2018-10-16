@@ -28,7 +28,6 @@ after_success:
 - cp ../baidu_verify_24gDjcAcvq.html .
 - cp ../google466901c3bc99d1db.html .
 - cp ../sitemap.xml .
-- ls
 - git ini
 - git add --all .
 - git checkout
