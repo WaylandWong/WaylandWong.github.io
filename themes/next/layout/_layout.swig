@@ -7,7 +7,6 @@
 
 <html class="{{ html_class | lower }}" lang="{{ config.language }}">
 <head>
-  <meta name="baidu-site-verification" content="24gDjcAcvq" />
   {% include '_partials/head.swig' %}
   <title>{% block title %}{% endblock %}</title>
   {% include '_third-party/analytics/index.swig' %}
