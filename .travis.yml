@@ -27,7 +27,8 @@ after_success:
 - cd ./public
 - cp ../google466901c3bc99d1db.html .
 - cp ../sitemap.xml .
-- git init
+- cp ../baidu_verify_24gDjcAcvq.html .
+- git ini
 - git add --all .
 - git commit -m "Travis CI Auto Builder"
 # 这里的 REPO_TOKEN 即之前在 travis 项目的环境变量里添加的
