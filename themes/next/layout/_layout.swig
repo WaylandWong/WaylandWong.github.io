@@ -28,12 +28,15 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div class="content-wrap">
+       <div class="content-wrap">
           <div id="content" class="content">
             {% block content %}{% endblock %}
           </div>
           {% include '_third-party/duoshuo-hot-articles.swig' %}
           {% include '_partials/comments.swig' %}
+   	  <!-- Google AdSense start -->
+          {% include '_custom_ad/google_adsense.ejs' %}
+          <!-- Google AdSense end -->
         </div>
         {% if theme.sidebar.display !== 'remove' %}
           {% block sidebar %}{% endblock %}
@@ -87,6 +90,7 @@
   {% include '_third-party/rating.swig' %}
   {% include '_third-party/mathjax.swig' %}
   {% include '_third-party/scroll-cookie.swig' %}
+
   {% include '_third-party/exturl.swig' %}
 </body>
 </html>

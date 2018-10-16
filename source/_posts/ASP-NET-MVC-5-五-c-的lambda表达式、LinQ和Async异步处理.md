@@ -1,20 +1,21 @@
 ---
-title: c-sharp的lambda表达式、LinQ和Async异步处理
-categories: c#
-tags: 
-- c# 
-- linq
+title: 'ASP.NET MVC 5 (五)c# 的lambda表达式、LinQ和Async异步处理'
+date: 2018-10-16 15:31:14
+categories: ASP.NET
+tags:
+- ASP
+- .NET
+- MVC
 ---
-
-简单介绍Lambda表达式和LINQ表达式，详细的C#语言语法查阅一下两个链接，详细实验和解释另外再开一个语法系列。
-Lambda 表达式（C# 编程指南）
+简单介绍Lambda表达式和LINQ表达式，详细的C# 语言语法查阅一下两个链接，详细实验和解释另外再开一个语法系列。
+Lambda 表达式（C#  编程指南）
 来自 <https://msdn.microsoft.com/zh-cn/library/bb397687.aspx> 
 
-LINQ 查询表达式（C# 编程指南）
+LINQ 查询表达式（C#  编程指南）
 来自 <https://msdn.microsoft.com/zh-cn/library/bb397676.aspx>
  
+@[toc]
 # Lambda表达式基本语法样式
-
 	参数列表=>表达式或语句块
 符号"=>"读作“goes to”，它和赋值运算“=”有相同优先级,符号"=>"右侧的lambda表达式成为“表达式lambda”。
 他有一下几种形式：
@@ -66,23 +67,19 @@ LINQ 查询表达式（C# 编程指南）
 		//求满足条件的单价之和
 	        }
 
-
 # 自动接口类型
-
 使用var关键字定义局部变量而不必指定该变量类型，称为 类型推断 或 隐式类型。
 
 	var myVariable = new Product { Name="Kayak",Price=50};//合法
 	int count = myVariable.Count;    //不合法，Product类没有该Count属性
 
 # 匿名类型
-
 可以不指定类型或结构，直接定义：
 
 	var myAnonType=new{Name="MVC",Category="Pattern"};
 myAnonType是一个匿名类型对象，但它不是动态的，依旧是强类型，即只可以对初始化器"{}"中已经定义的属性进行赋值或取值，而不允许修改其定义。编译器进行编译时会对这种匿名类型生成一个类，具有相同属性名的两个匿名类型对象会被分配给同样的类。
 
 # 执行语言集成查询（LINQ）
-
 LINQ类似于SQL语句，用于在对象集合上进行查询数据。比如：
 在上一章的LanguageFeatures项目的HomeController中添加如下代码：
 
@@ -137,7 +134,6 @@ LINQ还有另外的一种风格，叫做 点符号语法，它是基于扩展方
 	        }
 
 # 一些LINQ扩展方法列表
-
 摘自《精通ASP.NE MVC5》（[美]Adam Freeman 著，张成彬等译）
 
 扩展方法|描述|延迟
@@ -164,7 +160,6 @@ ToArray<br>ToDictionary<br>ToList  | 	把数据源转换成数组或其他集合
 Where	 | 过滤掉数据源数据中与谓词不匹配的条目	 | 是
 
 # 延迟的LINQ查询
-
 延迟的意思是，直到对结果进行枚举后，才会执行该查询，每次对记过进行枚举时都会从头求取查询结果。如：
 
 	Product[] products = {
@@ -210,4 +205,4 @@ Where	 | 过滤掉数据源数据中与谓词不匹配的条目	 | 是
 	    }
 	}
 
-代码中使用了await关键字，它告诉编译器希望程序等待GetAsync方法返回的Task结果并继续执行同一方法中的其他语句。当使用await关键字时必须对该方法的的签名添加async关键字。但若想使用MVC控制器使用异步方法需要一项特殊技术，因此这里没有给出。这里只是想简单介绍一下async和await关键字的作用而已。
+代码中使用了await关键字，它告诉编译器希望程序等待GetAsync方法返回的Task结果并继续执行同一方法中的其他语句。当使用await关键字时必须对该方法的的签名添加async关键字。但若想使用MVC控制器使用异步方法需要一项特殊技术，因此这里没有给出。这里只是想简单介绍一下async和await关键字的作用
