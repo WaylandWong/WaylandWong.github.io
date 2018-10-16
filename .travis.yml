@@ -6,11 +6,6 @@ node_js: stable
 branches:
   only:
   - hexo
-# 缓存，可以节省集成的时间，这里我用了yarn，如果不用可以删除
-cache:
-  apt: true
-  directories:
-    - node_modules
 # tarvis生命周期执行顺序详见官网文档
 before_install:
 - git config --global user.name "WaylandWong"
@@ -25,10 +20,10 @@ script:
 - hexo generate
 after_success:
 - cd ./public
-- cp ../baidu_verify_24gDjcAcvq.html .
+- cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
 - cp ../google466901c3bc99d1db.html .
 - cp ../sitemap.xml .
-- git ini
+- git init
 - git add --all .
 - git commit -m "Travis CI Auto Builder"
 # 这里的 REPO_TOKEN 即之前在 travis 项目的环境变量里添加的
