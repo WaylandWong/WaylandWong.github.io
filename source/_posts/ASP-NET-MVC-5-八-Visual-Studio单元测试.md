@@ -166,7 +166,7 @@ tags:
 	}
 # 运行单元测试并发现错误
 Visual Studio提供了"Test Explorer(测试资源管理器)"，用于管理和运行单元测试，从“Test（测试）”菜单中选择“Windows（窗口）”->“Test Explorer(测试资源管理器)”便可以显示出来。然后点击该窗口左上角的"Run All（全部运行）"可以看到测试结果如图：
-![第一此运行单元测试并发现错误](http://img.blog.csdn.net/20170217223931685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![第一此运行单元测试并发现错误](/uploads/8-1.jpeg)
 # 实现特性
 可以看到结果显示，有三个测试结果出现错误，超过100、100~10之间和小于10的折扣出现错误，这是因为我们的实现类MinimumDiscountHelper并没有实现当初预定的算法特性。
 然后我们根据要求修改MinimumDiscountHelper的ApplyDiscount方法如下：

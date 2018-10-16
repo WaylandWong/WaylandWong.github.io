@@ -19,7 +19,7 @@ tags:
 	PM> Install-Package -version 3.0.0 bootstrap
 该命令会下载bootstrap中的jQuery、js和css文件，CSS文件会被存储在Content文件夹中，会自动新建Scripts文件夹并存储javascript文件，同时会建立一个fonts文件夹存储一些特定文件。
 现在文件目录结构如下：
-![这里写图片描述](http://img.blog.csdn.net/20170204191341601?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![这里写图片描述](/uploads/3-1.jpeg)
 Content中有.min.前缀的配对文件，它是压缩即删除所有空格的javascript和css文件，
 以减少浏览器传递内容所需的带宽量，并且vs自动管理。
 现在需要将所需的.css文件引用到所需的视图中，方法与引用Style.css文件一致，然后可以对每一个元素进行class标签属性的赋值。
@@ -59,7 +59,7 @@ Index.cshtml添加bootstrap
 	</body>
 	</html>
 
-![这里写图片描述](http://img.blog.csdn.net/20170204191446308?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![这里写图片描述](/uploads/3-2.jpeg)
 
 其他视图修改方法类似，不过有一点需要指明，就是采用html辅助器生成的标记元素指定class的方法：
 	

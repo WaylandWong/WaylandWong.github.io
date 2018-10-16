@@ -95,7 +95,7 @@ tags:
     </tbody>
 	</table>
 &nbsp;&nbsp;&nbsp;&nbsp;这里创建了一个html表格，使用模型对象和视图包的一些属性填充了单元格的值。启动项目并导航到/Home/DemoExpression，可以看到结果如下：
-![使用viewbag和模型对象传递数据](http://img.blog.csdn.net/20170211175616814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![使用viewbag和模型对象传递数据](/uploads/6-1-1.jpeg)
 # 设置标签属性值
 &nbsp;&nbsp;&nbsp;&nbsp;Razor表达式不仅可以设置元素内容，还可以设置标签属性的值，在DemoExpression.cshtml最后添加一个div和一组checkbox，修改为如下内容：
 
@@ -136,7 +136,7 @@ tags:
 &nbsp;&nbsp;&nbsp;&nbsp;这里使用Razor表达式在div元素上设置了一些data标签属性的值。
 &nbsp;&nbsp;&nbsp;&nbsp;Razor会将值为null的视图包属性或模型属性渲染成空字符串，并且Razor处理checked这种属性标签时，当值false或null时会完全删除该标签属性。因为当checked属性为false、null或空字符串时，浏览器会显示复选框已勾选，而Razor直接删除该属性则使得复选框处于未选中状态了。
 &nbsp;&nbsp;&nbsp;&nbsp;运行结果如下：
-![Razor设置标签属性](http://img.blog.csdn.net/20170211181423401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![Razor设置标签属性](/uploads/6-2-1.jpeg)
 
 # 使用条件语句
 &nbsp;&nbsp;&nbsp;&nbsp;Razor能够处理条件语句，就可以根据视图数据的值，对视图输出进行剪辑而创造复杂而流畅的视图，并使其易于阅读和维护。
@@ -296,7 +296,7 @@ tags:
 
 &nbsp;&nbsp;&nbsp;&nbsp;`@model Razor.Models.Product[]`指定本视图的强制模型类型为Product[]，这里使用了一个`@if-else`语句，以便根据数据内容修改视图。另外，使用一个`@foreach`表达式来枚举数组的内容，并为每一条数据生成一个html表格行。可以看出来，在`foreach`循环中创建了一个`p`局部变量，然后永Razor表达式`@p.Name`和`@p.Prcie`引用了它的属性。
 导航到/Home/DemoArray，运行结果如下：
-![Razor使用条件语句](http://img.blog.csdn.net/20170211190227485?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM3NDEwNTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![Razor使用条件语句](/uploads/6-3-1.jpeg)
 # 处理命名空间
 &nbsp;&nbsp;&nbsp;&nbsp;上例中
 
