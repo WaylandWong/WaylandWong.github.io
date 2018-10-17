@@ -20,13 +20,6 @@ script:
 - hexo generate
 - hexo d
 after_success:
-- ls 
-- pip install BeautifulSoup4
-- pip install requests
-- xcode-select --install
-- pip install lxml
-- python push.py
-
 - cd ./public
 - cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
 - cp ../google466901c3bc99d1db.html .
