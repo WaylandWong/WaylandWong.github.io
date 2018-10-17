@@ -1,4 +1,4 @@
-# Hexo Configuration
+ # HexoConfiguration
 ## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
@@ -83,10 +83,6 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-- type: git
-  repo: git@github.com:WaylandWong/WaylandWong.github.io.git
-  branch: master
-
 - type : baidu_url_submitter
 
 # Comment
