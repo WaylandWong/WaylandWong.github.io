@@ -19,7 +19,8 @@ baidusitemap:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://waylandwong.github.io
 root: /
-permalink: :year/:month/:day/:title/
+#permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 
 # Directory
@@ -82,7 +83,17 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+- type: git
+  repo: https://github.com/WaylandWong/WaylandWong.github.io.git
+  branch: master
+
+- type : baidu_url_submitter
 
 # Comment
 disqus_shortname: wayland-diqqus
+
+baidu_url_submit:
+  count: 20 ## 比如3，代表提交最新的三个链接
+  host: https://waylandwong.github.io ## 在百度站长平台中注册的域名
+  token: 4aEtjl1h0dARtdRx ## 请注意这是您的秘钥， 请不要发布在公众仓库里!
+  path: baidu_urls.txt ## 文本文档的地址， 新链接会保存在此文本文档里

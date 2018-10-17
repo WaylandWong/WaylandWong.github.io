@@ -18,13 +18,20 @@ script:
 - hexo -v
 - hexo clean
 - hexo generate
+- hexo d
 after_success:
-- cd ./public
-- cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
-- cp ../google466901c3bc99d1db.html .
-- git init
-- git add --all .
-- git commit -m "Travis CI Auto Builder"
-# 这里的 REPO_TOKEN 即之前在 travis 项目的环境变量里添加的
-- git push --quiet --force https://$REPO_TOKEN@github.com/WaylandWong/WaylandWong.github.io.git
-  master
+- ls 
+- pip install beautifulsoup4
+- pip install requests
+- xcode-select --install
+- pip install lxml
+- python push.py
+#- cd ./public
+#- cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
+#- cp ../google466901c3bc99d1db.html .
+#- git init
+#- git add --all .
+#- git commit -m "Travis CI Auto Builder"
+## 这里的 REPO_TOKEN 即之前在 travis 项目的环境变量里添加的
+#- git push --quiet --force https://$REPO_TOKEN@github.com/WaylandWong/WaylandWong.github.io.git
+  #master
