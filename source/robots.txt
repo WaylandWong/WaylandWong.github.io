@@ -11,5 +11,5 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://waylandwong.github.io/sitemap.xml
-Sitemap: https://waylandwong.github.io/baidusitemap.xml
+Sitemap: https://waylandblog.xml/sitemap.xml
+Sitemap: https://waylandblog.xml/baidusitemap.xml
