@@ -21,7 +21,7 @@ script:
 - hexo d
 after_success:
 - cd ./public
-- cp ../baidu_verify_24gDjcAcvq.html ./baidu_verify_24gDjcAcvq.html
+- cp ../baidu_verify_bRtnmOUkF8.html ./baidu_verify_bRtnmOUkF8.html
 - cp ../google466901c3bc99d1db.html .
 - git init
 - git add --all .
