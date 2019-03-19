@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Drone,CI/CD">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用Drone搭建自己的CI/CD之：CI的安装与配置">
+<meta name="keywords" content="Drone,CI&#x2F;CD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Drone CI：搭建自己CI&#x2F;CD（一）">
+<meta property="og:url" content="https://waylandblog.xyz/Drone-CI：自己搭建CI-CD（一）/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="使用Drone搭建自己的CI/CD之：CI的安装与配置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/1.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/2.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/3.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/4.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/5.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/7.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/8.png">
+<meta property="og:image" content="https://waylandblog.xyz/images/drone/9.png">
+<meta property="og:updated_time" content="2019-03-19T09:45:36.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Drone CI：搭建自己CI&#x2F;CD（一）">
+<meta name="twitter:description" content="使用Drone搭建自己的CI/CD之：CI的安装与配置">
+<meta name="twitter:image" content="https://waylandblog.xyz/images/drone/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://waylandblog.xyz/Drone-CI：自己搭建CI-CD（一）/">
+
+
+
+
+
+  <title>Drone CI：搭建自己CI/CD（一） | Wayland's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wayland's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+       <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/Drone-CI：自己搭建CI-CD（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Drone CI：搭建自己CI/CD（一）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-17T13:13:56+00:00">
+                2019-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Drone/" itemprop="url" rel="index">
+                    <span itemprop="name">Drone</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Drone-CI：自己搭建CI-CD（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Drone-CI：自己搭建CI-CD（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/Drone-CI：自己搭建CI-CD（一）/" class="leancloud_visitors" data-flag-title="Drone CI：搭建自己CI/CD（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  使用Drone搭建自己的CI/CD之：CI的安装与配置
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="CI篇：安装与配置"><a href="#CI篇：安装与配置" class="headerlink" title="CI篇：安装与配置"></a>CI篇：安装与配置</h1><h2 id="CI-CD简介"><a href="#CI-CD简介" class="headerlink" title="CI/CD简介"></a>CI/CD简介</h2><p><code>CI</code>全称为<code>Continuous Integration</code>，意为<code>持续集成</code>，是在源代码变更后自动检测、拉取、构建和进行自动化测试的过程，属于开发人员的自动化流程。该解决方案可以解决在一次开发中有太多应用分支，从而导致相互冲突的问题。其基本思路是，自动化监测代码仓库的变化并拉取最新代码、编译构建和自动化测试。<code>CI</code>的触发方式可分为以下三种：</p>
+<ul>
+<li>轮训：按一定的时间间隔反复询问代码仓库是否发生了变更，若发生了变更则开启CI流程</li>
+<li>定时：定期从代码仓库拉去最新代码并进行构建与测试，不必关心是否有变更发生</li>
+<li>推送：当代码仓库发生变更时，通过推送的方式(如<code>webhook</code>)通知<code>CI</code>进行任务，这需要<code>CI</code>环境被代码仓库访问到，因此需要一个外网可达地址</li>
+</ul>
+<p><code>CD</code>指的是<code>持续交付(Continuous Delivery)</code>或<code>持续部署(Continuous Deployment)</code>。<code>持续交付</code>通常是指开发人员对应用的更改会自动进行错误测试并上传到存储库（如 <a href="https://redhatofficial.github.io/#!/main" target="_blank" rel="noopener">GitHub</a> 或容器注册表），然后由运维团队将其部署到实时生产环境中。<code>持续部署</code>指的是自动将开发人员的更改从存储库发布到生产环境，它以持续交付为基础，实现了管道后续阶段的自动化。</p>
+<p><code>CI/CD</code> 既可能仅指持续集成和持续交付构成的关联环节，也可以指持续集成、持续交付和持续部署这三项构成的关联环节。</p>
+<p>请参考：<a href="https://www.redhat.com/zh/topics/devops/what-is-ci-cd" target="_blank" rel="noopener">redhat：什么是CI/CD</a></p>
+<h2 id="Drone-CI简介"><a href="#Drone-CI简介" class="headerlink" title="Drone CI简介"></a>Drone CI简介</h2><p><a href="https://drone.io/" target="_blank" rel="noopener">Drone CI</a>官网说：</p>
+<blockquote>
+<p>Drone is a self-service Continuous Delivery platform for busy development teams.</p>
+</blockquote>
+<p>相对于常见的<code>Jenkins</code>，选中 <code>Drone</code>的原因在于它非常简洁，不像<code>Jenkins</code>那样复杂，同时它拥有可以满足基本需求的能力，并且提供了许多实用的<a href="http://plugins.drone.io/" target="_blank" rel="noopener">插件</a>，如<code>GitHub</code>，<code>Email</code>，<code>helm</code>，<code>微信</code>，<code>钉钉</code>等<br><img src="/images/drone/1.png" alt="Drone"><br><strong>需要注意的是，drone 0.8版本和0.1版本差别较大，本文使用1.0版本</strong></p>
+<h2 id="安装Drone-CI-GitHub"><a href="#安装Drone-CI-GitHub" class="headerlink" title="安装Drone CI - GitHub"></a>安装Drone CI - GitHub</h2><p><a href="https://docs.drone.io/" target="_blank" rel="noopener">drone文档</a>给出了相对于不同git仓库和部署方式的方案，支持的git仓库有：</p>
+<p><img src="/images/drone/2.png" alt="GitRepo"></p>
+<p>拿github来说，drone提供了以下部署方式：</p>
+<p><img src="/images/drone/3.png" alt="Deploy"></p>
+<p>本节给出对于<strong>GitHub</strong>的<strong>单机</strong>部署方案，对官方<a href="https://docs.drone.io/installation/github/single-machine/" target="_blank" rel="noopener">部署方案</a>做了<code>docker-compose</code>方案的补充</p>
+<h3 id="设置GitHub-OAuth-Application"><a href="#设置GitHub-OAuth-Application" class="headerlink" title="设置GitHub OAuth Application"></a>设置GitHub OAuth Application</h3><ul>
+<li>登陆你的github账户，在右上角点击个人头像，选择<code>Setting</code>，选择<code>Developer settings</code>，选择<code>OAuth Application</code>，选择新建一个application，如下图：<br><img src="/images/drone/4.png" alt="OAuth Application"><ul>
+<li>HomePage是DroneCI的访问地址，若是Drone由本地部署，那就可以设置为<code>http://127.0.0.1</code></li>
+<li>Authorization callback URL是DoneCI的登陆地址，格式必须是<code>/login</code>，如<code>http://127.0.0.1/login</code></li>
+</ul>
+</li>
+<li>创建成功以后，拿到<code>Client ID</code>和<code>Client Secret</code><br><img src="/images/drone/5.png" alt="ClienId"></li>
+</ul>
+<h3 id="下载安装docker和docker-compose"><a href="#下载安装docker和docker-compose" class="headerlink" title="下载安装docker和docker-compose"></a>下载安装docker和docker-compose</h3><p><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Docker安装文档</a></p>
+<h3 id="下载drone-docker"><a href="#下载drone-docker" class="headerlink" title="下载drone docker"></a>下载drone docker</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull drone/drone:1.0.0-rc.6</span><br></pre></td></tr></table></figure>
+<h3 id="启动drone-server"><a href="#启动drone-server" class="headerlink" title="启动drone server"></a>启动drone server</h3><ul>
+<li><p>docker 启动:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">  --volume=/var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  --volume=/var/lib/drone:/data \</span><br><span class="line">  --env=DRONE_GITHUB_SERVER=https://github.com \</span><br><span class="line">  --env=DRONE_GITHUB_CLIENT_ID=&#123;% your-github-client-id %&#125; \</span><br><span class="line">  --env=DRONE_GITHUB_CLIENT_SECRET=&#123;% your-github-client-secret %&#125; \</span><br><span class="line">  --env=DRONE_RUNNER_CAPACITY=2 \</span><br><span class="line">  --env=DRONE_SERVER_HOST=&#123;% your-drone-server-host %&#125; \</span><br><span class="line">  --env=DRONE_SERVER_PROTO=&#123;% your-drone-server-protocol %&#125; \</span><br><span class="line">  --env=DRONE_TLS_AUTOCERT=<span class="literal">true</span> \</span><br><span class="line">  --publish=80:80 \</span><br><span class="line">  --publish=443:443 \</span><br><span class="line">  --restart=always \</span><br><span class="line">  --detach=<span class="literal">true</span> \</span><br><span class="line">  --name=drone \</span><br><span class="line">  drone/drone:1.0.0-rc.6</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>docker-compse 启动<br>上面的启动命令是<code>drone</code>官方文档的方案，下面给出我使用的<code>docker compose</code>的方法</p>
+<ol>
+<li><p>创建<code>.env</code>文件，这是docker-compose启动时默认读取的文件，用来设置环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DRONE_SERVER_HOST=127.0.0.1</span><br><span class="line">DRONE_GITHUB_CLIENT_ID=XXXXXXXXXXXXXX</span><br><span class="line">DRONE_GITHUB_CLIENT_SECRET=XXXXXXXXXX</span><br><span class="line">DRONE_SERVER_PROTO=http</span><br><span class="line">DRONE_SECRET_SECRET=ci-drone</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建<code>docker-compose.yml</code>文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># drone server 部署</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  drone-server:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">drone/drone:1.0.0-rc.6</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">80</span><span class="string">:80</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">443</span><span class="string">:443</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/var/run/docker.sock:/var/run/docker.sock</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/var/lib/drone:/data</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_GITHUB_CLIENT_ID=$&#123;DRONE_GITHUB_CLIENT_ID&#125;</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_GITHUB_CLIENT_SECRET=$&#123;DRONE_GITHUB_CLIENT_SECRET&#125;</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_SERVER_PROTO=$&#123;DRONE_SERVER_PROTO&#125;</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_SERVER_HOST=$&#123;DRONE_SERVER_HOST&#125;</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_TLS_AUTOCERT=false</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_RUNNER_CAPACITY=8</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_DEBUG=false</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_LOGS_DEBUG=false</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_GIT_ALWAYS_AUTH=false</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">DRONE_SECRET_SECRET=$&#123;DRONE_SECRET_SECRET&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>drone配置项说明</p>
+</li>
+</ol>
+<ul>
+<li><code>DRONE_GITHUB_CLIENT_ID</code>: 在Github中创建<code>OAuth Application</code>时生成的<code>Client ID</code></li>
+<li><code>DRONE_GITHUB_CLIENT_SECRET</code>: 在Github中创建<code>OAuth Application</code>时生成的<code>Client Secret</code></li>
+<li><code>DRONE_SERVER_PROTO</code>: Drone提供服务的prototype，可选为<code>http</code>或<code>https</code></li>
+<li><code>DRONE_SERVER_HOST</code>: Drone的server地址，设置为<code>127.0.0.1</code>作为本地地址，也可以设置为外部可访问的域名或IP地址</li>
+<li><code>DRONE_TLS_AUTOCERT</code>: 设置是否自动开启安全传输层协议，若设置为<code>true</code>，那么drone server proto会设置为使用<code>https</code>，<code>DRONE_SERVER_PROTO</code>设置为<code>http</code>也是无效</li>
+<li><code>DRONE_RUNNER_CAPACITY</code>: drone提供服务的最大并行度</li>
+<li><code>DRONE_SECRET_SECRET</code>: 可自由设置</li>
+<li>Drone用到的端口号有：80和443</li>
+</ul>
+<ol>
+<li><p>启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+<p>或者通过后台的方式运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="配置CI仓库"><a href="#配置CI仓库" class="headerlink" title="配置CI仓库"></a>配置CI仓库</h2><ul>
+<li><p>通过浏览器访问：<a href="http://127.0.0.1" target="_blank" rel="noopener">http://127.0.0.1</a> ，浏览器会重定向到github登陆认证页面<img src="../images/drone/7.png" alt="auth"><br>使用github账户登陆之后，浏览器被重定向回drone，并被授权访问你的github仓库<img src="/images/drone/8.png" alt="drone"></p>
+</li>
+<li><p>选中你要配置的仓库，点击<code>ACTIVATE</code>按钮，进入<code>SETTINGS</code>卡片，点击<code>ACTIVATE</code>按钮开启这个仓库.开启之后可以设置<code>CI</code>任务的基本配置。用过<code>jenkins</code>的人会发现，这个页面显然简洁一点。<br>此时，github仓库中会添加一条<em>webhook</em>地址，当github仓库发生改变时会通过webhook通知drone server。<br>不过，问题是这个webhook地址是<code>DRONE_SERVER_HOST</code>，如果配置为<code>127.0.0.1</code>或外网不可达时，这个<code>webhook</code>地址github是访问不到的。不过这不影响<code>Cron Job</code>的触发。</p>
+</li>
+<li><p>配置里面有四个主要选项</p>
+<ul>
+<li><p>Main: 主要配置</p>
+<ul>
+<li><code>Project settings</code>：设置是否开启仓库保护，若开启，那么每次触发CI自动编译都需要仓库管理员手动确认</li>
+<li><code>Project visibilty</code>：设置仓库可见性，因为你设置的host地址所有人都可以访问到，并通过自己的github账户登陆，可见性可以保护你的仓库</li>
+<li><code>Configuration</code>：设置CI任务的yaml配置文件，这里面制定了CI的所有流程，一般放在仓库根目录下，名为<code>.drone.yaml</code>，稍后会详细说明<br><img src="/images/drone/9.png" alt="main"></li>
+</ul>
+</li>
+<li><p>Secrets：<br>如<a href="https://docs.drone.io/user-guide/secrets/" target="_blank" rel="noopener">Drone Secret文档</a>中所说，不方便明文存储到代码仓库里的密码值，可以通过<code>Repository Secrets</code>，<code>Encrypted Secrets</code>和<code>External Secrets</code>来存储<br>这里的Secrets设置可以指定<code>Repository Secrets</code>，在<code>Secret Name</code>中指定密码名称，<code>Secret Value</code>中设置该值。<code>Allow Pull Requests</code>是指，当是<code>pull_request</code>请求时这个密钥是否可被使用，因为其他人可能会通过<code>pull request</code>来触发CI，造成安全隐患。<br>在<code>.drone.yaml</code>中可以通过<code>from_secret</code>引用，如下面的<code>username</code>和<code>password</code></p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">pipeline</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">default</span></span><br><span class="line"></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">build</span></span><br><span class="line"><span class="attr">  image:</span> <span class="string">alpine</span></span><br><span class="line"><span class="attr">  environment:</span></span><br><span class="line"><span class="attr">    USERNAME:</span></span><br><span class="line"><span class="attr">      from_secret:</span> <span class="string">username</span></span><br><span class="line"><span class="attr">    PASSWORD:</span></span><br><span class="line"><span class="attr">      from_secret:</span> <span class="string">password</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Cron Jobs：定时任务<br>这里可以通过任务名称，分支名称和时间指定<strong>定期</strong>的CI任务。前文提到，CI触发有三种规则<code>轮训</code>，<code>定期</code>和<code>推送</code>。<br><em>注：但这里的<strong>定期任务</strong>稍微有点怪，<strong>cron job</strong>的执行逻辑是定期触发一次检查，事件是指定分支的最后一次事件，执行的pipline会<strong>验证</strong><code>trigger</code>规则，不像是通常说的<strong>定期任务</strong>，也不能说是轮训，因为轮训是监测是否有新事件。</em></p>
+</li>
+<li><p>Badges：编译状态图标<br>这里提供了CI运行的状态图标，可以放到Git仓库里作为编译状态。不过Drone server的地址就不能简单的设置为<code>127.0.0.1</code>了，因为Github访问不到，需要一个外网IP或域名</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="drone-yaml文件声明CI过程"><a href="#drone-yaml文件声明CI过程" class="headerlink" title=".drone.yaml文件声明CI过程"></a>.drone.yaml文件声明CI过程</h2><p>Drone通过Pipline的方式来声明CI的执行过程，如<a href="https://docs.drone.io/user-guide/pipeline/" target="_blank" rel="noopener">文档</a>所示。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">pipeline</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">api</span></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="comment"># api unit test</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">api-test</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">node:11</span></span><br><span class="line"><span class="attr">    depends_on:</span> <span class="string">[clone]</span></span><br><span class="line"><span class="attr">    commands:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cd</span> <span class="string">./api/</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">--registry</span> <span class="attr">https://registry.npm.taobao.org</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cd</span> <span class="string">./dgc_sdk</span> <span class="string">&amp;&amp;</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">--production</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cd</span> <span class="string">..</span> <span class="string">&amp;&amp;</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># web lint</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">web-lint</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">node:10.15.1</span></span><br><span class="line"><span class="attr">    depends_on:</span> <span class="string">[clone]</span></span><br><span class="line"><span class="attr">    commands:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cd</span> <span class="string">./web</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">--registry</span> <span class="attr">https://registry.npm.taobao.org</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">lint</span></span><br><span class="line"></span><br><span class="line"><span class="attr">trigger:</span></span><br><span class="line"><span class="attr">  branch:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">master</span></span><br><span class="line"><span class="attr">  event:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">pull_request</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">push</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="comment"># stream test</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">pipeline</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">stream</span></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">stream</span> <span class="string">test</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">ccr.ccs.tencentyun.com/star/stream-test-base</span></span><br><span class="line"><span class="attr">    commands:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">echo</span> <span class="string">'Hello!'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">trigger:</span></span><br><span class="line"><span class="attr">  branch:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">stream</span></span><br><span class="line"><span class="attr">  event:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">pull_request</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>steps指定CI执行的步骤，默认pipline或创建一个叫做<code>clone</code>的步骤，它是从git仓库克隆代码大步骤</li>
+<li>多个step之间可以通过<code>depends_on</code>来指定执行顺序，比如先<code>clone</code>，后<code>build</code>，然后<code>deploy</code></li>
+<li>同一个<code>pipline</code>下的多steps之间默认是<strong>串行</strong>的，实现方式应该是下面的step<code>depends_on</code>紧邻的上一个step</li>
+<li>多<code>pipline</code>之间是并行的，同一个<code>yaml</code>文件里使用<code>---</code>分割多个<code>pipline</code>的定义</li>
+<li>triggers是指在什么情况下才会执行ICI任务，比如只对<code>master</code>分支的<code>pull request</code>和<code>push</code>事件触发</li>
+<li><p>在每一个<code>step</code>中，可以通过<code>Conditions</code>来指定在CI过程中是否执行该step，通过<code>when</code>关键字指定。<code>trriger</code>是指定<code>pipline</code>何时被执行，<code>condition</code>指定<code>pipline</code>中的<code>step</code>是否被执行，如：</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">pipeline</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">default</span></span><br><span class="line"></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">build</span></span><br><span class="line"><span class="attr">  image:</span> <span class="string">golang</span></span><br><span class="line"><span class="attr">  commands:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">go</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">go</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  when:</span></span><br><span class="line"><span class="attr">    branch:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">master</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">feature/*</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="配置完成"><a href="#配置完成" class="headerlink" title="配置完成"></a>配置完成</h2><ul>
+<li>若是配置了<code>Cron Job</code>，那到到该时间点时，会触发CI的任务，此时<code>pipline</code>中的<code>trigger</code>规则会失效</li>
+<li>配置Drone CI之后，Github的check功能也会被启用，对每一次<code>event</code>都会监控CI的状态</li>
+</ul>
+<h2 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h2><ul>
+<li>使用Drone 1.0，与0.8版本差异较大</li>
+<li>当刚绑定仓库之后，Drone无法手动触发CI</li>
+<li>当<code>trigger</code>中指定<code>event</code>为<code>pull_request</code>时，使用的分支为<code>target branch</code>；当<code>trigger</code>中指定<code>event</code>为<code>tag</code>时，指定的<code>branch</code>规则是无效的</li>
+<li><code>Project settings</code>设置为<code>Protected</code>后，每次CI任务都要手动确定</li>
+<li>关于<strong>gitlab</strong>、<strong>私有 docker 镜像</strong>、<strong>dns</strong>设置，在下一篇继续说</li>
+</ul>
+<h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><ul>
+<li><a href="https://www.redhat.com/zh/topics/devops/what-is-ci-cd" target="_blank" rel="noopener">redhat：什么是CI/CD</a></li>
+<li><a href="https://docs.drone.io/" target="_blank" rel="noopener">Drone文档</a></li>
+<li><a href="https://docs.drone.io/user-guide/pipeline/" target="_blank" rel="noopener">Drone Pipline</a></li>
+<li><a href="http://plugins.drone.io" target="_blank" rel="noopener">Drone插件</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Drone/" rel="tag"># Drone</a>
+          
+            <a href="/tags/CI-CD/" rel="tag"># CI/CD</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-八-Visual-Studio单元测试/" rel="next" title="ASP.NET MVC 5 (八) Visual Studio单元测试">
+                <i class="fa fa-chevron-left"></i> ASP.NET MVC 5 (八) Visual Studio单元测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+   	  <!-- Google AdSense start -->
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3315352944634359",
+    enable_page_level_ads: true
+  });
+</script>
+
+          <!-- Google AdSense end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Wayland Wong">
+            
+              <p class="site-author-name" itemprop="name">Wayland Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/WaylandWong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CI篇：安装与配置"><span class="nav-number">1.</span> <span class="nav-text">CI篇：安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CI-CD简介"><span class="nav-number">1.1.</span> <span class="nav-text">CI/CD简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Drone-CI简介"><span class="nav-number">1.2.</span> <span class="nav-text">Drone CI简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Drone-CI-GitHub"><span class="nav-number">1.3.</span> <span class="nav-text">安装Drone CI - GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置GitHub-OAuth-Application"><span class="nav-number">1.3.1.</span> <span class="nav-text">设置GitHub OAuth Application</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装docker和docker-compose"><span class="nav-number">1.3.2.</span> <span class="nav-text">下载安装docker和docker-compose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载drone-docker"><span class="nav-number">1.3.3.</span> <span class="nav-text">下载drone docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动drone-server"><span class="nav-number">1.3.4.</span> <span class="nav-text">启动drone server</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置CI仓库"><span class="nav-number">1.4.</span> <span class="nav-text">配置CI仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drone-yaml文件声明CI过程"><span class="nav-number">1.5.</span> <span class="nav-text">.drone.yaml文件声明CI过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置完成"><span class="nav-number">1.6.</span> <span class="nav-text">配置完成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注："><span class="nav-number">1.7.</span> <span class="nav-text">注：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接："><span class="nav-number">1.8.</span> <span class="nav-text">参考链接：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz',
+        appKey: 'ggimp4jJ6VNfcdchnb64M0hH',
+        placeholder: 'Just say it!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz", "ggimp4jJ6VNfcdchnb64M0hH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

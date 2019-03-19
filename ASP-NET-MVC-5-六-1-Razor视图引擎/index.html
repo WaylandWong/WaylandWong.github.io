@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ASP,.NET,MVC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="视图引擎负责处理ASP.NET内容，并查找相关指令，将动态的内容插入到发送给浏览器的输出，而Razor是MVC框架视图引擎的名称。 @[toc] 准备示例项目&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用Visual Studio 2013建立ASP.NET Web应用程序并命名为“Razor“，选择Empty（空）选项并勾选MVC复选框。 定义模型&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;n">
+<meta name="keywords" content="ASP,.NET,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC 5 (六-1) Razor视图引擎">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-六-1-Razor视图引擎/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="视图引擎负责处理ASP.NET内容，并查找相关指令，将动态的内容插入到发送给浏览器的输出，而Razor是MVC框架视图引擎的名称。 @[toc] 准备示例项目&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用Visual Studio 2013建立ASP.NET Web应用程序并命名为“Razor“，选择Empty（空）选项并勾选MVC复选框。 定义模型&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;n">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/6-1.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/6-2.jpeg">
+<meta property="og:updated_time" content="2019-03-19T09:45:36.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET MVC 5 (六-1) Razor视图引擎">
+<meta name="twitter:description" content="视图引擎负责处理ASP.NET内容，并查找相关指令，将动态的内容插入到发送给浏览器的输出，而Razor是MVC框架视图引擎的名称。 @[toc] 准备示例项目&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用Visual Studio 2013建立ASP.NET Web应用程序并命名为“Razor“，选择Empty（空）选项并勾选MVC复选框。 定义模型&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;n">
+<meta name="twitter:image" content="https://waylandblog.xyz/uploads/6-1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-六-1-Razor视图引擎/">
+
+
+
+
+
+  <title>ASP.NET MVC 5 (六-1) Razor视图引擎 | Wayland's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wayland's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+       <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-六-1-Razor视图引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ASP.NET MVC 5 (六-1) Razor视图引擎</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:36+00:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index">
+                    <span itemprop="name">ASP.NET</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/ASP-NET-MVC-5-六-1-Razor视图引擎/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/ASP-NET-MVC-5-六-1-Razor视图引擎/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/ASP-NET-MVC-5-六-1-Razor视图引擎/" class="leancloud_visitors" data-flag-title="ASP.NET MVC 5 (六-1) Razor视图引擎">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>视图引擎</strong>负责处理ASP.NET内容，并查找相关指令，将动态的内容插入到发送给浏览器的输出，而Razor是MVC框架视图引擎的名称。</p>
+<p>@[toc]</p>
+<h1 id="准备示例项目"><a href="#准备示例项目" class="headerlink" title="准备示例项目"></a>准备示例项目</h1><p>&nbsp;&nbsp;&nbsp;&nbsp; 使用Visual Studio 2013建立ASP.NET Web应用程序并命名为“Razor“，选择Empty（空）选项并勾选MVC复选框。</p>
+<h2 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;右键Models文件夹选择添加Class，命名为Product并打开编辑为如下内容：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+namespace Razor.Models
+{
+    public class Product
+    {
+        public string Name { get; set; }
+        public int IntProductID { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
+        public decimal Price { get; set; }
+    }
+}
+</code></pre><p>这和之前的文章中建立的Product类是一样的。</p>
+<h2 id="定义控制器"><a href="#定义控制器" class="headerlink" title="定义控制器"></a>定义控制器</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在Controllers文件夹上右键选择添加空的控制器（MVC 5 Controller-Empty），命名为HomeController，打开并修改为如下内容：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Razor.Models;
+
+namespace Razor.Controllers
+{
+    public class HomeController : Controller
+    {
+        Product myproduct = new Product
+        {
+            Name = &quot;Kayak&quot;,
+            Price = 275M,
+            IntProductID = 1,
+            Category = &quot;Watersports&quot;,
+            Description = &quot;A boat for one person&quot;
+        };
+        // GET: Home
+        public ActionResult Index()
+        {
+            return View(myproduct);
+        }
+    }
+}
+</code></pre><p>在控制器中创建了一个Product对象并对其属性进行填充同时还定义了一个Index动作方法，将Product对象传递给View。</p>
+<h2 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在Home控制器的Index方法右键选择添加视图，视图名称为Index，模板为空，模型类型为Product。<br>其内容如下：</p>
+<pre><code>@model Razor.Models.Product
+@{
+    Layout=null;
+    ViewBag.Title = &quot;Index&quot;;
+}
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;@ViewBag.Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Index&lt;/h2&gt;
+    @Model.Name
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h1 id="使用模型对象"><a href="#使用模型对象" class="headerlink" title="使用模型对象"></a>使用模型对象</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;从视图文件第一行开始</p>
+<pre><code>@model Razor.Models.Product
+</code></pre><p>Razor语句以<strong>@</strong>字符开头。此例中  <code>@model</code> 语句声明该强类型视图模型的对象模型，这样就可以通过<code>@Model</code>来引用视图模型对象的方法。字段和属性。如<a href="mailto:`@Model.Name" target="_blank" rel="noopener">`@Model.Name</a><code>便可以引用Product对象的Name属性。
+有意思的是声明模型要使用</code>@model<code>小写字母开头，而使用模型对象却要使用</code>@Model` 大写字母开头。</p>
+<h1 id="使用布局"><a href="#使用布局" class="headerlink" title="使用布局"></a>使用布局</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;Index视图另一个表达式是</p>
+<pre><code>@{
+        Layout=null;
+        ViewBag.Title = &quot;Index&quot;;
+    }
+</code></pre><p>&nbsp;&nbsp;&nbsp;&nbsp;这是一个<strong>Razor代码块</strong> 的例子，这种代码块允许在视图中包含C# 代码，它以<code>@{</code>开始，以<code>}</code>结束。上述代码将Layout设置为null，它指明这个视图是自包含的、不采用布局模板，但当一个项目包含多个视图时，可能就需要一个布局模板来统一界面样式了。因此一下介绍如何建立并引用一个布局模板。</p>
+<h2 id="创建布局"><a href="#创建布局" class="headerlink" title="创建布局"></a>创建布局</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在解决方案资源管理器中右键Views文件夹选择添加新建项，打开对话框中选择 MVC 5 Layout Page（Razor）（MVC5布局页（Razor））模板，将文件命名为_BasicLayout.cshtml（第一个字符为下划线）。需要说明的Views文件夹中是下划线开头的文件为视图支持文件，不会返回给客户，而其他的视图文件可以返回给客户。_BasicLayout.cshtml打开并修改为如下内容：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;@ViewBag.Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Product Name&lt;/h1&gt;
+    &lt;div&gt;
+        @RenderBody()
+    &lt;/div&gt;
+    &lt;h2&gt;DoongBo@outlook.com&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>&nbsp;&nbsp;&nbsp;&nbsp;布局是特殊形式的视图，<code>@RenderBody()</code> 方法调用会将动作方法指定的视图内容插入到布局标记里。另一个Razor表达式<a href="mailto:`@ViewBag.Title" target="_blank" rel="noopener">`@ViewBag.Title</a>` 会在ViewBag中查找一个Title属性。</p>
+<h2 id="运用布局"><a href="#运用布局" class="headerlink" title="运用布局"></a>运用布局</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;运用布局于视图，只要在视图文件中设置Layout属性的值即可。布局中包含了html的结构，所以引用布局后视图文件就可以删除这些内容，因此Index引用_BasciLayout.cshtml布局后内容改为如下：</p>
+<pre><code>@model Razor.Models.Product
+@{
+    ViewBag.Title = &quot;Index&quot;;
+    Layout = &quot;~/Views/_BasciLayout.cshtml&quot;;
+}
+&lt;h2&gt;Index&lt;/h2&gt;
+@Model.Name
+</code></pre><p>运行结果如下：</p>
+<p><img src="/uploads/6-1.jpeg" alt="使用Layout属性指定视图的布局"></p>
+<h1 id="使用共享布局"><a href="#使用共享布局" class="headerlink" title="使用共享布局"></a>使用共享布局</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;如果想对每一个视图运用布局，则没有必要对每一个视图文件制定Layout属性，只要使用起始布局文件即可。<br>在渲染一个视图时MVC会寻找一个_ViewStart.cshtml的文件并把它作为视图文件的一部分。因此在Views文件夹下添加一个_ViewStart.cshtml文件并打开编辑为如下内容：</p>
+<pre><code>@{
+    Layout = &quot;~/Views/_BasciLayout.cshtml&quot;;
+}
+</code></pre><p>然后对需要采用_ViewStart.cshtml（第一个字符是下划线）指定的布局时，在视图文件中把Layout属性删掉即可。或者在创建视图时，选定Use a Layout page但不在下面的文本框中输入值，这样创建的视图就不会带有Layout属性而采用起始布局文件的指定内容。需要说明的是设置<code>Layout=null</code> 是指明本视图不采用布局，而不设置<code>Layout</code> 属性是指采用默认布局，两者是不同的。<br>&nbsp;&nbsp;&nbsp;&nbsp;添加_ViewStart.cshtml之后对Index视图修改，删除其Layout属性后运行结果未变。修改后的Index.cshtml：</p>
+<pre><code>@model Razor.Models.Product
+@{
+    ViewBag.Title = &quot;Index&quot;;
+}
+&lt;h2&gt;Index&lt;/h2&gt;
+@Model.Name
+</code></pre><p>运行结果<br><img src="/uploads/6-2.jpeg" alt="视图文件使用起始布局文件，删除Layout属性运行结果"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ASP/" rel="tag"># ASP</a>
+          
+            <a href="/tags/NET/" rel="tag"># .NET</a>
+          
+            <a href="/tags/MVC/" rel="tag"># MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-六-2-使用Razor表达式/" rel="next" title="ASP.NET MVC 5 (六-2) 使用Razor表达式">
+                <i class="fa fa-chevron-left"></i> ASP.NET MVC 5 (六-2) 使用Razor表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-七-1-依赖项注入（DI）容器-Ninject/" rel="prev" title="ASP.NET MVC 5 (七-1)依赖项注入（DI）容器-Ninject">
+                ASP.NET MVC 5 (七-1)依赖项注入（DI）容器-Ninject <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+   	  <!-- Google AdSense start -->
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3315352944634359",
+    enable_page_level_ads: true
+  });
+</script>
+
+          <!-- Google AdSense end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Wayland Wong">
+            
+              <p class="site-author-name" itemprop="name">Wayland Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/WaylandWong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备示例项目"><span class="nav-number">1.</span> <span class="nav-text">准备示例项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义模型"><span class="nav-number">1.1.</span> <span class="nav-text">定义模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义控制器"><span class="nav-number">1.2.</span> <span class="nav-text">定义控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建视图"><span class="nav-number">1.3.</span> <span class="nav-text">创建视图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用模型对象"><span class="nav-number">2.</span> <span class="nav-text">使用模型对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用布局"><span class="nav-number">3.</span> <span class="nav-text">使用布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建布局"><span class="nav-number">3.1.</span> <span class="nav-text">创建布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运用布局"><span class="nav-number">3.2.</span> <span class="nav-text">运用布局</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用共享布局"><span class="nav-number">4.</span> <span class="nav-text">使用共享布局</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz',
+        appKey: 'ggimp4jJ6VNfcdchnb64M0hH',
+        placeholder: 'Just say it!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz", "ggimp4jJ6VNfcdchnb64M0hH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ASP,.NET,MVC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="征途才刚刚开始：这一系列ASP.NET MVC笔记是我大三上学期寒假，借助《精通ASP.NET MVC5》(Adma Freeman著，张成斌译)这本书学习基于.NET 4.5框架开发MVC5模式的ASP.NET WEB应用程序时记录的。使用的编程工具是Visaul Studio 2013 Commiunity。两年多的经验告诉我，读书时要紧跟练习，并且如果不想出现学过却不记得的情况，就要自己坚持">
+<meta name="keywords" content="ASP,.NET,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="征途才刚刚开始：这一系列ASP.NET MVC笔记是我大三上学期寒假，借助《精通ASP.NET MVC5》(Adma Freeman著，张成斌译)这本书学习基于.NET 4.5框架开发MVC5模式的ASP.NET WEB应用程序时记录的。使用的编程工具是Visaul Studio 2013 Commiunity。两年多的经验告诉我，读书时要紧跟练习，并且如果不想出现学过却不记得的情况，就要自己坚持">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-1.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-2.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-3.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-4.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-5.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/1-6.jpg">
+<meta property="og:updated_time" content="2019-03-19T09:45:36.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序">
+<meta name="twitter:description" content="征途才刚刚开始：这一系列ASP.NET MVC笔记是我大三上学期寒假，借助《精通ASP.NET MVC5》(Adma Freeman著，张成斌译)这本书学习基于.NET 4.5框架开发MVC5模式的ASP.NET WEB应用程序时记录的。使用的编程工具是Visaul Studio 2013 Commiunity。两年多的经验告诉我，读书时要紧跟练习，并且如果不想出现学过却不记得的情况，就要自己坚持">
+<meta name="twitter:image" content="https://waylandblog.xyz/uploads/1-1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/">
+
+
+
+
+
+  <title>ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序 | Wayland's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wayland's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+       <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T15:30:00+00:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index">
+                    <span itemprop="name">ASP.NET</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/" class="leancloud_visitors" data-flag-title="ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong><em>征途才刚刚开始：</em></strong>这一系列ASP.NET MVC笔记是我大三上学期寒假，借助《精通ASP.NET MVC5》(Adma Freeman著，张成斌译)这本书学习基于.NET 4.5框架开发MVC5模式的ASP.NET WEB应用程序时记录的。使用的编程工具是Visaul Studio 2013 Commiunity。两年多的经验告诉我，读书时要紧跟练习，并且如果不想出现学过却不记得的情况，就要自己坚持每天做一个详细笔记，成为一个优秀程序员的道路是漫长的，而我才刚刚开始。<br>    在学习网站搭建的时候一直听前辈们推崇着MVC框架的优秀，在接触了C# 语言并开发过WPF桌面、WEB窗体程序，也接触过PHP语言介于MVC框架的网站开发之后，我觉得有一定的基础来比较深入的学习ASP.NET MVC的原理和概念，而不是只把它当做一个黑匣子会用就好。 所以建立的第一个ASP.NET MVC程序选择的模板是Empty而不是微软提供的任何模板，这也是学习这本书时作者采用的方式。这本书的代码示例可以从<a href="http://www.apress.com/cn/中获取，我的示例代码也会存储在github上：https://github.com/DoongBo" target="_blank" rel="noopener">http://www.apress.com/cn/中获取，我的示例代码也会存储在github上：https://github.com/DoongBo</a></p>
+<h1 id="开始创建"><a href="#开始创建" class="headerlink" title="开始创建"></a>开始创建</h1><p> 打开VS2013，文件-&gt;新建项目，选择ASP.NET WEB Application模板，按照书中的案例起名为PartyInvities。<br>新建项目选择ASP.NET Web应用程序<br><img src="/uploads/1-1.jpeg" alt="这里写图片描述"><br>点击确定后初始项目配置选择空模板：Empty，并且在下方Add folders and core referrences(添加文件夹和核心引用)部分选中MVC复选框，来创建一个空的ASP.NET MVC项目。<br><img src="/uploads/1-2.jpeg" alt="这里写图片描述"><br>创建完成后会在解决方案 资源管理器中看到初始的文件目录，先大概介绍一下MVC的特点有助于理解项目的组成结构。</p>
+<p>#MVC框架简介## M–MODEL:<br>模型，数据模型，用于数据类型设计，在ASP.NET中可以理解为一系列自定义的类，它是项目中存储数据的模版。比如表示书本信息的类：Book类等等。有面向对象程序设计基础比如学习过JAVA或者C# 后，可以比较好的理解。</p>
+<h2 id="V–VIEW"><a href="#V–VIEW" class="headerlink" title="V–VIEW:"></a>V–VIEW:</h2><p>视图，经过解析后HTTP传递展现的样式，在ASP.NET中视图文件类型为cshtml，php中可以是.php文件，他们大部分样式或者内容由html语言编写，其他内容因为采用技术不同而有所差异。<br>          这里需要说明的是，WEB页面由服务器生成到浏览器展示需要经过三步：第一步，渲染：视图引擎对视图文件进行解释将代码转化为html 标记，第二步，传递：将html标记传递到客户端，第三步，呈现：浏览器将html处理为web页面显示给客户。</p>
+<h2 id="C–Controller"><a href="#C–Controller" class="headerlink" title="C–Controller:"></a>C–Controller:</h2><p>控制器，处理请求的工具，在ASP.NET中为一些C# 类，它包含了许多函数方法，<br>      在MVC中不再是一个url对应一个真实的物理文件，而是对应一个控制器中的动作方法，每一个动作方法的默认视图与它同名，并且约定默认控制器为Home，默认动作方法为Index。在MVC中我们通常认为，约定优于配置，即最好按照事先的默认约定处理问题而不是个性化的配置，这不仅使得项目代码易读并且会避免许多麻烦。<br>目录文件：<br><img src="/uploads/1-3.jpeg" alt="这里写图片描述"><br>        -App_Start文件夹中的.cs文件用于设置初始约定；<br>        -Controllers文件夹存储了控制器，这些控制且以Controller为文件名后缀，比如Home控制器的名称约定为HomeContrller；<br>        -Views文件夹存储了需要的视图文件而且一般每一个控制器对应的视图会放到与控制器同名的子文件夹下，比如Home控制器对应的视图所在的位置为~/Home/，默认会有视图文件Index.cshtml对应HomeCtroller.cs控制器中的Index()动作方法（~/Home/Index.cshtml）；<br>          Models文件夹存储自定义数据类模板。当然不是必须按照这种结构但约定如此。<br>          当想要添加一个控制器时可以在Controller文件夹上右键添加选择控制器，选择MVC 5 控制器-空，添加视图时右键View文件夹添加视图，添加模板时右键Model添加类，并且在控制器中可以在某一个动作方法出选择右键添加视图生成该动作方法的视图。</p>
+<h1 id="添加第一个控制器"><a href="#添加第一个控制器" class="headerlink" title="添加第一个控制器"></a>添加第一个控制器</h1><p>在Controllers文件夹上右键添加选择控制器，选择MVC 5 控制器-空，点击添加后重命名为HomeController，点击添加后会在Controllers文件夹下看到文件HomeController.cs。<br><img src="/uploads/1-4.jpeg" alt="这里写图片描述"><br><img src="/uploads/1-5.jpeg" alt="这里写图片描述"><br>打开HomeController.cs会看到C# 代码</p>
+<pre><code>using PartyInvities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace PartyInvities.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public ViewResult Index()
+        {
+                     return View();
+        }
+        }
+    }
+}
+</code></pre><p>修改HomeController.cs</p>
+<pre><code>using PartyInvities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+namespace PartyInvities.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public string Index()
+        {
+                     return “Hello Word！”;
+        }
+        }
+    }
+}
+</code></pre><p>经过修改后点击Debug按钮（绿色三角按钮，可以选择进行调试的浏览器，运行时出现红色方块按钮为停止按钮，只有停止调试后才可以继续修改代码）可以得到一个web页面，只显示了一行文字“ Hello Word！”。而当不经过修改直接运行时会提示找不到页面，这是因为return View()时返回的页面为当前动作的默认视图~Views/Home/Index.cshtml而你的项目中并没有这一视图。所以当我们不修改HomeController.cs而想程序直接运行时需要在Views文件夹中添加视图Index.cshtml，具体添加方法如下。</p>
+<h1 id="添加第一个视图"><a href="#添加第一个视图" class="headerlink" title="添加第一个视图"></a>添加第一个视图</h1><h2 id="方法一：手动添加"><a href="#方法一：手动添加" class="headerlink" title="方法一：手动添加"></a>方法一：手动添加</h2><p>由于需要添加的视图对应的控制器为Home，所以需要在Views文件夹下新添文件夹Home，再Home文件夹右键，添加MVC 5 视图页并命名为Index.cshtml</p>
+<h2 id="方法二：快速添加"><a href="#方法二：快速添加" class="headerlink" title="方法二：快速添加"></a>方法二：快速添加</h2><p>在HomeController.cs的Index方法内右键选择添加视图，命名为Index，选择模板为Empty (不具有模型)，并将下面的三个复选框取消选中，点击添加后vs会自动创建Home控制器对应的视图文件夹Home并在里面添加Index方法对应的视图Index.cshtml。</p>
+<p>Index.cshtml代码如下，主题部分由html提供，其他部分之后再做详细介绍。这是一个空页，可以给他添加一行文字<br>    @{<br>        Layout = null;<br>    }</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>更改后的视图文件Index.cshtml：</p>
+<pre><code>@{
+    Layout = null;
+}
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+    Hello World！（from the view）
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;    
+</code></pre><p>点击运行效果如下：<br><img src="../uploads/1-6.jpg" alt="这里写图片描述"><br>    访问地址是<a href="http://localhost:61675，即访问本地服务器端口61675上的默认页面（Home）默认方法（Index），此端口号是随机产生的。" target="_blank" rel="noopener">http://localhost:61675，即访问本地服务器端口61675上的默认页面（Home）默认方法（Index），此端口号是随机产生的。</a></p>
+<h1 id="添加第一个模型"><a href="#添加第一个模型" class="headerlink" title="添加第一个模型"></a>添加第一个模型</h1><p>设置情景：朋友决定举办一个晚会，要做一个web程序来实现一下功能：</p>
+<pre><code>1. 一个显示晚会信息的首页
+2. 一个用来进行电子回复（RSVP）的表单
+3. 对表单验证，显示一个“感谢你”的页面
+4. 完成RSVP时，给晚会主人发送一份电子邮件
+</code></pre><p>因此设计一个数据模型以存储回复RSVP表单的信息，创建过程如下：<br>右键Models文件夹-&gt;添加-&gt;类，重命名为GuestRespones.cs，并修改其内容如下：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace PartyInvities.Models
+{
+    public class GuestRespones
+    {
+        public string Name { get; set; }//姓名
+        public string Email { get; set; }//邮箱地址
+        public string Phone { get; set; }//电话号码
+        public bool? WillAttend { get; set; }//是否会参加
+    }
+}
+</code></pre><p>其中特殊的WillAttend数据类型为可控的bool类型，即它的值可以是true，false或者null。它的值需要在控制器中验证是否为空，所以需要有null值，而bool只能为true或flase，这可能会导致变量未赋值的错误，除非页面加载时给它赋初值。</p>
+<p>本篇笔记就到这里，下一篇将继续介绍如何使用视图、控制器和模型完成此次情景所需功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ASP/" rel="tag"># ASP</a>
+          
+            <a href="/tags/NET/" rel="tag"># .NET</a>
+          
+            <a href="/tags/MVC/" rel="tag"># MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/" rel="prev" title="ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证">
+                ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+   	  <!-- Google AdSense start -->
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3315352944634359",
+    enable_page_level_ads: true
+  });
+</script>
+
+          <!-- Google AdSense end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Wayland Wong">
+            
+              <p class="site-author-name" itemprop="name">Wayland Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/WaylandWong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开始创建"><span class="nav-number">1.</span> <span class="nav-text">开始创建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#V–VIEW"><span class="nav-number">1.1.</span> <span class="nav-text">V–VIEW:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C–Controller"><span class="nav-number">1.2.</span> <span class="nav-text">C–Controller:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加第一个控制器"><span class="nav-number">2.</span> <span class="nav-text">添加第一个控制器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加第一个视图"><span class="nav-number">3.</span> <span class="nav-text">添加第一个视图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：手动添加"><span class="nav-number">3.1.</span> <span class="nav-text">方法一：手动添加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：快速添加"><span class="nav-number">3.2.</span> <span class="nav-text">方法二：快速添加</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加第一个模型"><span class="nav-number">4.</span> <span class="nav-text">添加第一个模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz',
+        appKey: 'ggimp4jJ6VNfcdchnb64M0hH',
+        placeholder: 'Just say it!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz", "ggimp4jJ6VNfcdchnb64M0hH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

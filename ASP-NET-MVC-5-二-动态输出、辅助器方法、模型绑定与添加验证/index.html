@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ASP,.NET,MVC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="@[toc] 创建示例项目新建ASP.NET MVC项目，名称设为PartyInvities 使用ViewBag将数据从控制器传给视图  ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间： using PartyInvities.Models; using System; using Syst">
+<meta name="keywords" content="ASP,.NET,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="@[toc] 创建示例项目新建ASP.NET MVC项目，名称设为PartyInvities 使用ViewBag将数据从控制器传给视图  ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间： using PartyInvities.Models; using System; using Syst">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/2-2.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/2-3.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/2-4.jpeg">
+<meta property="og:updated_time" content="2019-03-19T09:45:36.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证">
+<meta name="twitter:description" content="@[toc] 创建示例项目新建ASP.NET MVC项目，名称设为PartyInvities 使用ViewBag将数据从控制器传给视图  ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间： using PartyInvities.Models; using System; using Syst">
+<meta name="twitter:image" content="https://waylandblog.xyz/uploads/2-2.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/">
+
+
+
+
+
+  <title>ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证 | Wayland's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wayland's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+       <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T15:30:16+00:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index">
+                    <span itemprop="name">ASP.NET</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/" class="leancloud_visitors" data-flag-title="ASP.NET MVC 5 (二)动态输出、辅助器方法、模型绑定与添加验证">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>@[toc]</p>
+<h1 id="创建示例项目"><a href="#创建示例项目" class="headerlink" title="创建示例项目"></a>创建示例项目</h1><p>新建ASP.NET MVC项目，名称设为PartyInvities</p>
+<h1 id="使用ViewBag将数据从控制器传给视图"><a href="#使用ViewBag将数据从控制器传给视图" class="headerlink" title="使用ViewBag将数据从控制器传给视图"></a>使用ViewBag将数据从控制器传给视图</h1><p>  ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间：</p>
+<pre><code>using PartyInvities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace PartyInvities.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public ViewResult Index()
+        {       
+           DateTime time = DateTime.Now;
+           ViewBag.Greeting = time.ToString();
+            return View();
+        }
+        }
+    }
+}
+</code></pre><p>Index.cshtml更改为：</p>
+<pre><code>@{
+    Layout = null;
+}
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+       The time is @ViewBag.Greeting &lt;br/&gt;
+        Hello World！（from the view）
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>![这里写图片描述]/uploads/2-1.jpeg)</p>
+<h1 id="Html辅助器方法"><a href="#Html辅助器方法" class="headerlink" title="Html辅助器方法"></a>Html辅助器方法</h1><p>辅助器方法可以方便的渲染HTML的链接、文本输入框、复选框、选择框和其他内容。例如链接辅助器方法Html.ActionLink有两个参数，第一个是显示的文本，第二个是单击时执行的操作。因此在首页中添加一个链接可以更改为：<br>Index.cshtml更改为：</p>
+<pre><code>@{
+    Layout = null;
+}
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+       The time is @ViewBag.Greeting &lt;br/&gt;
+      We are going to gave an exciting party.&lt;br&gt;
+      @Html.ActionLink(&quot;RSVP Now&quot;,&quot;RsvpForm&quot;)
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>由于链接指向RsvpFrom动作，因此需要在Home控制器中添加该动作方法RsvpForm：<br>HomeController.cs更改为：</p>
+<pre><code>using PartyInvities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace PartyInvities.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public ViewResult Index()
+        {       
+           DateTime time = DateTime.Now;
+           ViewBag.Greeting = time.ToString();
+            return View();
+        }
+       public ViewResult RsvpForm()
+        {
+            return View();
+        }
+
+        }
+    }
+}
+</code></pre><h1 id="强类型视图"><a href="#强类型视图" class="headerlink" title="强类型视图"></a>强类型视图</h1><p>在此需要再添加RsvpForm方法的默认视图，在这里添加一个回复表单，内填写的内容为上一章添加的数据模型GusetResponses的内容。在这里采用强类型视图：<br>在Home控制器RsvpForm方法右键添加视图，选择模板为Empty，模型类选择之前建好的模型类GuestRespones.cs<br><img src="/uploads/2-2.jpeg" alt="这里写图片描述"><br>    添加强类型视图后会在Views/Home中找到RsvpFrom.cshtml，打开并修改为如下：</p>
+<pre><code>@model PartyInvities.Models.GuestRespones
+
+@{
+    Layout = null;
+}
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;RsvpForm&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    @using (Html.BeginForm())
+    {
+        &lt;p&gt;Your name:@Html.TextBoxFor(x=&gt;x.Name)&lt;/p&gt;
+        &lt;p&gt;Your email:@Html.TextBoxFor(x =&gt; x.Email)&lt;/p&gt;
+        &lt;p&gt;Your phone:@Html.TextBoxFor(x =&gt; x.Phone)&lt;/p&gt;
+        &lt;p&gt;
+            Will you attend?
+            @Html.DropDownListFor(x=&gt;x.WillAttend,new[]{
+            new SelectListItem(){Text=&quot;Yes,I will be there&quot;,Value=bool.TrueString},
+            new SelectListItem(){Text=&quot;No,I will not be there&quot;,Value=bool.FalseString}
+            },&quot;Choose an option&quot;)
+        &lt;/p&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit RSVP&quot;/&gt;
+
+    }
+    &lt;div&gt; 
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>第一行指明了视图为 PartyInvities.Models.GuestRespones模型的<br>强类型视图，Html.BegingFrom辅助器方法生成form表单，using的<br>作用则是提供from表单的结束标记，在这个页面中每一个GuestRespones的<br>属性都采用辅助器方法生成适当的input标记，使用Lambda表达式选择与input元素相关的属性。如</p>
+<pre><code>…
+@Html.TexBoxFor(x=&gt;x.Phone)
+…
+</code></pre><p>它表示生成一个input元素的HTML，将元素的type参数设置为”text”，id和name标签属性为“Phone”，Phone是所选域类的属性名。<br><img src="/uploads/2-3.jpeg" alt="这里写图片描述"></p>
+<h1 id="设置启动url"><a href="#设置启动url" class="headerlink" title="设置启动url"></a>设置启动url</h1><p>在Visual Studio的PROJECT（项目）-&gt;PartyInvites Properties(PartyInvites Properties 属性)中，web选项卡选中Start Action（启动操作）分类中“Special Page”（特定页面）选项，不必给他输入一个值因为他会自动选择默认页面Home。此时启动程序即可。</p>
+<h1 id="处理表单"><a href="#处理表单" class="headerlink" title="处理表单"></a>处理表单</h1><p>运行并跳转到表单填写页面之后，点击按钮后填写的内容会消失，这是因为submit并未告知mvc要做什么，因此默认回递给RsvpForm方法使得页面重新渲染。因此添加一个方法接收post请求并处理，但有一种简单聪明的方法是添加另一个RsvpForm处理post请求，在C# 中使用GET或POST标记可以指定某一方法的触发时机，页面初次加载时由GET方式获取，而提交Html.FormBegin生成的form时由POST方式获取，因此对控制器做如下更改：<br>    using PartyInvities.Models;<br>    using System;<br>    using System.Collections.Generic;<br>    using System.Linq;<br>    using System.Web;<br>    using System.Web.Mvc;</p>
+<pre><code>namespace PartyInvities.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public ViewResult Index()
+        {
+           DateTime time = DateTime.Now;
+           ViewBag.Greeting = time.ToString();
+            return View();
+        }
+
+ [HttpGet]
+        public ViewResult RsvpForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult RsvpForm(GuestRespones guestrespone)
+        {
+             View(&quot;Thanks&quot;, guestrespone);
+        }
+    }
+}
+</code></pre><h1 id="模型绑定"><a href="#模型绑定" class="headerlink" title="模型绑定"></a>模型绑定</h1><p>[HttpPost]标记的RsvpForm方法的参数是页面表单提交的模型数据，它可以解析出输入输入数据并将HTTP请求中的“键/值”用来填充域模型类型。模型绑定的作用与html辅助器方法的相反，<br>Html辅助器方法是将模型数据类型转化为html信息，而模型绑定则将html信息转化为模型数据<br>渲染其他视图<br>…<br>return View(“Thanks”, guestrespone);<br>…<br>这个View方法告诉mvc查找并渲染一个”Thanks”的域模型类型为guestrespone的强类型视图，右键单击HomeController任意一个方法选择添加视图，名称为Thanks的强类型视图，模型类型为GuestRespones，创建过程与之前RscpForm视图一致。生成Thanks视图后对其进行编辑：</p>
+<pre><code>@model PartyInvities.Models.GuestRespones
+
+@{
+    Layout = null;
+}
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Thanks&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+        &lt;h1&gt;Thank you,@Model.Name!&lt;/h1&gt;
+        @if (Model.WillAttend == true)
+        {
+            @:It&apos;s great you are coming! ！The drinks are already in the fridge!
+
+        }
+        else
+        {
+            @:Sorry to hear you can not make it,but thanks for lettingus know.
+        }
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>Razor的@Model表达式指示了这个强类型视图的域模型类型。</p>
+<h1 id="添加验证"><a href="#添加验证" class="headerlink" title="添加验证"></a>添加验证</h1><p>对模型类的每一个属性进行验证，保证其不为空或满足特定样式，修改其定义如下：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace PartyInvities.Models
+{
+    public class GuestRespones
+    {
+        [Required(ErrorMessage=&quot;Please enter your name&quot;)]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage=&quot;Please enter your email address&quot;)]
+        [RegularExpression(&quot;.+\\@.+\\..+&quot;,ErrorMessage=&quot;Please enter a valid email address&quot;)]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = &quot;Please enter your phone number&quot;)]
+        public string Phone { get; set; }
+
+        [Required(ErrorMessage = &quot;Please specify whether you will attend&quot;)]
+        public bool? WillAttend { get; set; }
+    }
+}
+</code></pre><p>MVC在进行模型绑定时会自动侦测这些验证并引用，可以在控制器处理post请求时可以使用ModelState.IsValid属性来检查是否有验证问题,如果没有验证问题显示Thanks页面，否则重画表单并重新填写。注意模型绑定会保留表单的内容，尽管重新进行了渲染。</p>
+<pre><code>…
+        [HttpPost]
+        public ViewResult RsvpForm(GuestRespones guestrespone)
+        {
+            if (ModelState.IsValid)
+                return View(&quot;Thanks&quot;, guestrespone);
+            else return View();
+        }
+ …
+</code></pre><h1 id="Html-ValidationSummary方法为视图提供验证提示"><a href="#Html-ValidationSummary方法为视图提供验证提示" class="headerlink" title="Html.ValidationSummary方法为视图提供验证提示"></a>Html.ValidationSummary方法为视图提供验证提示</h1><p>@Html.ValidationSummary()辅助器方法会在表单中以占位符的方式创建隐藏的列表项，当出现验证问题时会显示绑定的模型中特定的错误提示。</p>
+<pre><code>…
+&lt;body&gt;
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+        &lt;p&gt;Your name:@Html.TextBoxFor(x=&gt;x.Name)&lt;/p&gt;
+        &lt;p&gt;Your email:@Html.TextBoxFor(x =&gt; x.Email)&lt;/p&gt;
+        &lt;p&gt;Your phone:@Html.TextBoxFor(x =&gt; x.Phone)&lt;/p&gt;
+        &lt;p&gt;
+            Will you attend?
+            @Html.DropDownListFor(x=&gt;x.WillAttend,new[]{
+            new SelectListItem(){Text=&quot;Yes,I will be there&quot;,Value=bool.TrueString},
+            new SelectListItem(){Text=&quot;No,I will not be there&quot;,Value=bool.FalseString}
+            },&quot;Choose an option&quot;)
+        &lt;/p&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Submit RSVP&quot;/&gt;
+
+    }
+    &lt;div&gt; 
+
+    &lt;/div&gt;
+&lt;/body&gt;
+…
+</code></pre><h1 id="高亮显示无效字段"><a href="#高亮显示无效字段" class="headerlink" title="高亮显示无效字段"></a>高亮显示无效字段</h1><p>看一下有无验证错误时html辅助器生成的input元素有何不同：<br>没有验证问题时（初次加载）：</p>
+<pre><code>&lt; input data-val=&quot;true&quot; data-val-required=&quot;Please enter your name&quot; id=&quot;Name&quot; name=&quot;Name&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;
+</code></pre><p>有验证问题时：</p>
+<pre><code>&lt; input class=&quot;input-validation-error&quot; data-val=&quot;true&quot; data-val-required=&quot;Please enter your name&quot; id=&quot;Name&quot; name=&quot;Name&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;
+</code></pre><p>可以看出有验证错误时为input标签添加了一个class标签属性，因此创建一个css样式表并引用到本页面即可使出现验证错误时显示特定样式。<br>MVC项目约定静态内容如CSS样式表等放在Content文件夹中，在资源管理器中右键项目并选择新建文件夹命名为Content，右键Content文件夹添加NewItem（新项），选择Style sheet，命名为Style.cs，并对其进行编辑：</p>
+<pre><code>.field-validation-erro{color:# f00;}
+.field-validation-valid{display:none}
+.input-validation-erro{border:1px solid # f00;background-color:# fee;}
+.input-validation-valid{display:none}
+</code></pre><p>在RsvpForm中引用本css样式表：可以手动输入，也可以从解决方案资源管理器中直接将css样式表拖动进视图中</p>
+<pre><code>…
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;link href=&quot;~/Content/Style.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;title&gt;RsvpForm&lt;/title&gt;
+&lt;/head&gt;
+</code></pre><p><img src="/uploads/2-4.jpeg" alt="这里写图片描述"></p>
+<h1 id="发送电子邮件"><a href="#发送电子邮件" class="headerlink" title="发送电子邮件"></a>发送电子邮件</h1><p>可以添加一个动作方法使用.NET框架的E-mail类创建和发送一份邮件，但书中采用了WebMail辅助器方法，它不属于MVC框架部分，但是可以避免另外再建立一个发邮件的表单。在渲染Thanks页面时发送邮件信息，对Thanks.cshtml修改：</p>
+<pre><code>&lt;body&gt;
+    @try
+    {
+        WebMail.SmtpServer = &quot;服务器名&quot;;
+        WebMail.SmtpPort = 587;
+        WebMail.EnableSsl = true;
+        WebMail.UserName = &quot;&quot;;
+        WebMail.Password = &quot;&quot;;
+        WebMail.From = &quot;zhanghao&quot;;
+        WebMail.Send(&quot;youxiang&quot;,&quot;RSVP Notification&quot;,Model.Name+&quot;is&quot;+((Model.WillAttend ??false)?&quot;&quot;:&quot;not&quot;)+&quot;attending&quot;);
+
+    }
+    catch (Exception)
+    {
+        @:&lt;b&gt;Sorry-we don not send the email to cnfirm youe RSVP.&lt;/b&gt;
+    }
+    &lt;div&gt; 
+        &lt;h1&gt;Thank you,@Model.Name!&lt;/h1&gt;
+        @if (Model.WillAttend == true)
+        {
+            @:It&apos;s great you are coming! ！The drinks are already in the fridge!
+
+        }
+        else
+        {
+            @:Sorry to hear you can not make it,but thanks for lettingus know.
+        }
+
+    &lt;/div&gt;
+</code></pre><p>本篇到此结束，第一个MVC程序功能基本实现，但样式真的惨不忍睹。下一篇将介绍如何使用NuGet安装bootstrap以添加诸多美化样式。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ASP/" rel="tag"># ASP</a>
+          
+            <a href="/tags/NET/" rel="tag"># .NET</a>
+          
+            <a href="/tags/MVC/" rel="tag"># MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/" rel="next" title="ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序">
+                <i class="fa fa-chevron-left"></i> ASP.NET MVC 5(一) 第一个ASP.NET MVC应用程序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-三-VS使用NuGet安装Bootstrap与使用Bootstrap/" rel="prev" title="ASP.NET MVC 5 (三) VS使用NuGet安装Bootstrap与使用Bootstrap">
+                ASP.NET MVC 5 (三) VS使用NuGet安装Bootstrap与使用Bootstrap <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+   	  <!-- Google AdSense start -->
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3315352944634359",
+    enable_page_level_ads: true
+  });
+</script>
+
+          <!-- Google AdSense end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Wayland Wong">
+            
+              <p class="site-author-name" itemprop="name">Wayland Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/WaylandWong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建示例项目"><span class="nav-number">1.</span> <span class="nav-text">创建示例项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用ViewBag将数据从控制器传给视图"><span class="nav-number">2.</span> <span class="nav-text">使用ViewBag将数据从控制器传给视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Html辅助器方法"><span class="nav-number">3.</span> <span class="nav-text">Html辅助器方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#强类型视图"><span class="nav-number">4.</span> <span class="nav-text">强类型视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置启动url"><span class="nav-number">5.</span> <span class="nav-text">设置启动url</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#处理表单"><span class="nav-number">6.</span> <span class="nav-text">处理表单</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型绑定"><span class="nav-number">7.</span> <span class="nav-text">模型绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加验证"><span class="nav-number">8.</span> <span class="nav-text">添加验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Html-ValidationSummary方法为视图提供验证提示"><span class="nav-number">9.</span> <span class="nav-text">Html.ValidationSummary方法为视图提供验证提示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高亮显示无效字段"><span class="nav-number">10.</span> <span class="nav-text">高亮显示无效字段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发送电子邮件"><span class="nav-number">11.</span> <span class="nav-text">发送电子邮件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz',
+        appKey: 'ggimp4jJ6VNfcdchnb64M0hH',
+        placeholder: 'Just say it!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz", "ggimp4jJ6VNfcdchnb64M0hH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

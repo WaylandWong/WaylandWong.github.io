@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ASP,.NET,MVC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="@[toc]介绍C# 语言的基本特性。 创建示例代码使用ASP,.NET MVC Web 应用程序，如第一章说的，创建一个空的程序，命名为LanguageFeatures，创建完成后在控制器文件夹Controllers中添加一个控制器HomeController.cs，打开编辑修改为如下内容： using System; using System.Collections.Generic; usin">
+<meta name="keywords" content="ASP,.NET,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SP.NET MVC 5 (四) C# 基本语言特性">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-四-C-基本语言特性/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="@[toc]介绍C# 语言的基本特性。 创建示例代码使用ASP,.NET MVC Web 应用程序，如第一章说的，创建一个空的程序，命名为LanguageFeatures，创建完成后在控制器文件夹Controllers中添加一个控制器HomeController.cs，打开编辑修改为如下内容： using System; using System.Collections.Generic; usin">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-19T09:45:36.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SP.NET MVC 5 (四) C# 基本语言特性">
+<meta name="twitter:description" content="@[toc]介绍C# 语言的基本特性。 创建示例代码使用ASP,.NET MVC Web 应用程序，如第一章说的，创建一个空的程序，命名为LanguageFeatures，创建完成后在控制器文件夹Controllers中添加一个控制器HomeController.cs，打开编辑修改为如下内容： using System; using System.Collections.Generic; usin">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-四-C-基本语言特性/">
+
+
+
+
+
+  <title>SP.NET MVC 5 (四) C# 基本语言特性 | Wayland's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wayland's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+       <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-四-C-基本语言特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">SP.NET MVC 5 (四) C# 基本语言特性</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T15:30:42+00:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index">
+                    <span itemprop="name">ASP.NET</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/ASP-NET-MVC-5-四-C-基本语言特性/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/ASP-NET-MVC-5-四-C-基本语言特性/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/ASP-NET-MVC-5-四-C-基本语言特性/" class="leancloud_visitors" data-flag-title="SP.NET MVC 5 (四) C# 基本语言特性">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>@[toc]<br>介绍C# 语言的基本特性。</p>
+<h1 id="创建示例代码"><a href="#创建示例代码" class="headerlink" title="创建示例代码"></a>创建示例代码</h1><p>使用ASP,.NET MVC Web 应用程序，如第一章说的，创建一个空的程序，命名为LanguageFeatures，创建完成后在控制器文件夹Controllers中添加一个控制器HomeController.cs，打开编辑修改为如下内容：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using LanguageFeatures.Models; //此时该命名空间不会被解析，只要在Models文件夹中添加一个类文件之后就会解析了
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public string Index()
+        {
+            return &quot;Navigate to a URL to show an example&quot;;
+        }
+    }
+}
+</code></pre><p>在Index方法中右键单击添加视图，添加一个命名为Result.cshtml的视图文件，修改为一下内容：</p>
+<pre><code>@model string
+@{
+    Layout = null;
+}
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;
+    &lt;title&gt;Result&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt; 
+        @Model
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>这是一个强类型视图，模型类型为String。</p>
+<h1 id="添加System-Net-Http程序集"><a href="#添加System-Net-Http程序集" class="headerlink" title="添加System.Net.Http程序集"></a>添加System.Net.Http程序集</h1><p>后面的一些内容依赖于该程序集，所以需要添加。添加方法是在解决方案资源管理器中右键单击References选择Add References添加程序集，找到System.Net.Http程序集点击确定即可。</p>
+<h1 id="添加模型类Product-cs"><a href="#添加模型类Product-cs" class="headerlink" title="添加模型类Product.cs"></a>添加模型类Product.cs</h1><p>在Models文件及右键单击Add-&gt;class，添加名称为Product.cs的模型类，打开并且修改为如下内容：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+namespace LanguageFeatures.Models
+{
+    public class Product
+    {
+        public string Name{get;set;}       
+    }
+}
+</code></pre><p>在HomeController中添加对Product的使用：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using LanguageFeatures.Models; /*此时该命名空间不会被解析，只要在Models文件夹中添加一个类文件之后就会解析了*/
+namespace LanguageFeatures.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public string Index()
+        {
+            return &quot;Navigate to a URL to show an example&quot;;
+        }
+
+   public ViewResult AutoProperty()
+        {
+    //创建对象
+            Product myProduct = new Product();
+    //设置属性值
+            myProduct.Name = &quot;kayak&quot;;
+    //读取属性值
+            string productName = myProduct.Name;
+    //生成视图，使用View（stirng，object）方法的重载
+            return View(&quot;Result&quot;,(object)String.Format(&quot;Product name:{0}&quot;,productName));
+        }
+
+    }
+}
+</code></pre><p>运行结果：运行程序后访问/Home/AutoProperty 会得到结果：<br>Product name ：kayak</p>
+<h1 id="使用扩展方法"><a href="#使用扩展方法" class="headerlink" title="使用扩展方法"></a>使用扩展方法</h1><p>扩展方法是指对那些不是我拥有的、不能直接修改的类添加方法的一种方式，如在Models文件夹中添加一个ShoppingCart.cs模型类，并修改为如下内容，它表示一个Products对象集合：</p>
+<pre><code>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+namespace LanguageFeatures.Models
+{
+    public class ShoppingCart:IEnumerable&lt;Product&gt;
+    {
+        public List&lt;Product&gt; Products { get; set; }
+    }
+}
+</code></pre><p>在Models文件夹中添加一个MyExtentionMethods.cs模型类文件并修改为如下内容：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace LanguageFeatures.Models
+{
+    public static class MyExtentionMethods
+    {
+        //对类ShoppingCart添加拓展方法
+       public static decimal TotalPrices(this ShoppingCart cardParam)
+        {
+     decimal total = 0;
+      foreach(Product prod in cardParam.Products)
+      {
+              total += prod.Price;
+       }
+        return total;
+    }
+   }
+}
+</code></pre><p>第一个this关键字把TotalPrices方法标记为ShoppingCart类的一个扩展方法，只要这个类在你的命名空间或using命名空间中即可。可以通过参数cardParam来引用ShoppingCart类的实例。这个扩展方法实现了把ShoppingCart类中Product集合的所有元素价格累计算出并返回。这样对类ShoppingCart就可以像引用它本身定义的方法一样来使用TotalPrices方法，比如在HomeController中添加如下方法：</p>
+<pre><code> public ViewResult UseExtension()
+    {
+        ShoppingCart cart = new ShoppingCart
+        {
+            Products = new List&lt;Product&gt;{
+                new Product{Name=&quot;kayak&quot;,Price=275M},
+                new Product{Name=&quot;LifeJack&quot;,Price=48.95M},
+                new Product{Name=&quot;Soccer&quot;,Price=19.58M},
+                new Product{Name=&quot;Corner&quot;,Price=34.95M}
+            }
+        };
+//如这行代码，TotalPrices方法像ShoppingCart类中定义的方法一样被调用
+        decimal cartTotal = cart.TotalPrices();
+
+        return View(&quot;Result&quot;, (object)String.Format(&quot;Total:{0:c}&quot;, cartTotal));
+    }
+</code></pre><p>运行程序并导航到/Home/UseExtension 会得到如下结果：<br>Total：￥378.48  或者Total：$378.48</p>
+<p>自定义类或系统预定义的类都可以定义扩展方法，对接口同样可以运用扩展方法，即对实现的接口类像普通的类一样添加扩展方法即可。<br>创建过滤扩展方法。<br>对对象集合进行过滤的扩展方法，即定义一个扩展方法，在方法体中按照给定的参数和规则进行筛选，使用yield关键字返回符合筛选条件的对象集合，不符合条件的被丢弃。这是对IEnumerable<t>进行操作并返回IEnumerable<t>子集的扩展方法，添加之后任何实现该IEnumerable<t>接口的类都可以调用该扩展方法，如Array数组等。<br>如下，在MyExtentionMethods类中添加扩展方法：</t></t></t></p>
+<pre><code>public static IEnumerable&lt;Product&gt; FileterByCategory(this IEnumerable&lt;Product&gt; productEnum,string categoryParam)
+      {
+          foreach (Product prod in productEnum)
+              if (prod.Category == categoryParam)
+              {
+                  yield return prod;
+              }
+      }
+</code></pre><p>在Home控制器中添加动作方法：</p>
+<pre><code>public ViewResult UseFilterExtensionMethod()
+      {
+          IEnumerable&lt;Product&gt; products = new ShoppingCart
+          {
+              Products = new List&lt;Product&gt;{
+                  new Product{Name=&quot;kayak&quot;,Price=275M},
+                  new Product{Name=&quot;LifeJack&quot;,Price=48.95M},
+                  new Product{Name=&quot;Soccer&quot;,Category=&quot;Soccer&quot;,Price=19.58M},
+                  new Product{Name=&quot;Corner&quot;,Category=&quot;Soccer&quot;,Price=34.95M}
+              }
+          };
+          Product[] productsArray ={
+                  new Product{Name=&quot;kayak&quot;,Price=275M},
+                  new Product{Name=&quot;LifeJack&quot;,Price=48.95M},
+                  new Product{Name=&quot;Soccer&quot;,Category=&quot;Soccer&quot;,Price=19.58M},
+                  new Product{Name=&quot;Corner&quot;,Category=&quot;Soccer&quot;,Price=34.95M}
+          };
+          decimal total = 0, total1 = 0;
+  // IEnumerable&lt;Product&gt;对象调用IEnumerable&lt;Product&gt;接口的筛选扩展方法
+          foreach (Product prod in products.FileterByCategory(&quot;Soccer&quot;))
+          {
+              total += prod.Price;
+          }
+  //Array对象调用IEnumerable&lt;Product&gt;接口的筛选扩展方法
+          foreach (Product prod in productsArray.FileterByCategory(&quot;Soccer&quot;))
+              total1 += prod.Price;
+          return View(&quot;Result&quot;, (object)String.Format(&quot;Total:{0},Array Total :{1}&quot;, total, total1));
+      }
+</code></pre><p>运行程序并导航到/Home/UseFilterExtensionMethod 会得到结果：<br>Total:54.53,Array Total :54.53<br>这说明对  IEnumerable<product>或Array数组都可以调用筛选扩展方法FileterByCategory。</product></p>
+<h1 id="C-Sharp的字段与属性和对象与集合的初始化器"><a href="#C-Sharp的字段与属性和对象与集合的初始化器" class="headerlink" title="C-Sharp的字段与属性和对象与集合的初始化器"></a>C-Sharp的字段与属性和对象与集合的初始化器</h1><p>在C# 的一个类中：</p>
+<pre><code>public class Text
+{
+    private string name；
+    public string Name{
+                    get{return name;}
+                    set{name=value;}
+                }
+}
+</code></pre><p>其get代码块（称为“getter（读取块）”）在读取该属性值时执行，set代码块（称为”setter（设置块）“）在对该属性值赋值时执行，特殊变量value表示要赋的值，属性是由其他类来使用的，比如向这个类传递一些值，就好像他是一个公有字段一样。但字段一般是私有的不可以被直接访问的。<br>属性名一般大写字母开头，而参数名和字段名消息字母开头。<br>属性是带有geeter块和setter块的成员。属性值的读取和设置就像对一个常规字段进行设置一样，使用属性要比字段更好，因为可以修改get和set语句而不需要修改依赖这个属性的类。<br>但当一个类有多个属性时，所有属性都要对字段协调访问，导致类文件冗长，此时可以使用自动实现的属性，可以采用字段支持模式属性而不需要定义这个字段或在getter和setter中指定代码，如下：</p>
+<pre><code>public class Product
+    {
+        public string Name{get;set;}
+        public int ProductID{get;set;}
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public string Category { get; set; }
+    }
+</code></pre><p>当如果需要改变一个属性的实现方式，还可以返回属性规则的格式，但要保证同时实现getter和setter。<br>当需要使用一个类的实例时，除了要定义时更烦人的是需要多这个实例对象的各个属性进行赋值，如：</p>
+<pre><code>Product myProduct = new Product();
+            myProduct.Name = &quot;kayak&quot;;
+            myProduct.Category = &quot;Soccer&quot;;
+            myProduct.Description = &quot;description&quot;;
+    …
+</code></pre><p>幸运的是可以使用对象初始化器特性，在一步中创建并填写Product实例：</p>
+<pre><code>Product myProduct = new Product{
+            myProduct.Name = &quot;kayak&quot;,
+            myProduct.Category = &quot;Soccer&quot;,
+            myProduct.Description = &quot;description&quot;};
+</code></pre><p>调用的“{}”形成了初始化器，目的是为参数提供值，以此作为该对象的构造过程，同样可以对集合和数组采用初始化器进行内容的初始化：</p>
+<pre><code>string [] arrays={&quot;apple&quot;,&quot;orrange&quot;,&quot;plum&quot;};
+List&lt;int&gt; intlist =new List&lt;int&gt;{10,20,30,40};
+Dictionary&lt;string,int&gt; myDict=new Dictionary&lt;string,int&gt;{
+    {&quot;apple&quot;,10},{&quot;orange&quot;,20},{&quot;plum&quot;,30}
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ASP/" rel="tag"># ASP</a>
+          
+            <a href="/tags/NET/" rel="tag"># .NET</a>
+          
+            <a href="/tags/MVC/" rel="tag"># MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-三-VS使用NuGet安装Bootstrap与使用Bootstrap/" rel="next" title="ASP.NET MVC 5 (三) VS使用NuGet安装Bootstrap与使用Bootstrap">
+                <i class="fa fa-chevron-left"></i> ASP.NET MVC 5 (三) VS使用NuGet安装Bootstrap与使用Bootstrap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ASP-NET-MVC-5-五-c-的lambda表达式、LinQ和Async异步处理/" rel="prev" title="ASP.NET MVC 5 (五)c# 的lambda表达式、LinQ和Async异步处理">
+                ASP.NET MVC 5 (五)c# 的lambda表达式、LinQ和Async异步处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+   	  <!-- Google AdSense start -->
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3315352944634359",
+    enable_page_level_ads: true
+  });
+</script>
+
+          <!-- Google AdSense end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Wayland Wong">
+            
+              <p class="site-author-name" itemprop="name">Wayland Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/WaylandWong" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建示例代码"><span class="nav-number">1.</span> <span class="nav-text">创建示例代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加System-Net-Http程序集"><span class="nav-number">2.</span> <span class="nav-text">添加System.Net.Http程序集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加模型类Product-cs"><span class="nav-number">3.</span> <span class="nav-text">添加模型类Product.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用扩展方法"><span class="nav-number">4.</span> <span class="nav-text">使用扩展方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-Sharp的字段与属性和对象与集合的初始化器"><span class="nav-number">5.</span> <span class="nav-text">C-Sharp的字段与属性和对象与集合的初始化器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz',
+        appKey: 'ggimp4jJ6VNfcdchnb64M0hH',
+        placeholder: 'Just say it!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("hBHI1j77AhBbVne1mnF3Sgf4-gzGzoHsz", "ggimp4jJ6VNfcdchnb64M0hH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

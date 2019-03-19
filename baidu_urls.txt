@@ -1,0 +1,11 @@
+https://waylandblog.xyz/Drone-CI：自己搭建CI-CD（一）/
+https://waylandblog.xyz/ASP-NET-MVC-5-八-Visual-Studio单元测试/
+https://waylandblog.xyz/ASP-NET-MVC-5-七-2-Ninject进阶/
+https://waylandblog.xyz/ASP-NET-MVC-5-七-1-依赖项注入（DI）容器-Ninject/
+https://waylandblog.xyz/ASP-NET-MVC-5-六-1-Razor视图引擎/
+https://waylandblog.xyz/ASP-NET-MVC-5-六-2-使用Razor表达式/
+https://waylandblog.xyz/ASP-NET-MVC-5-五-c-的lambda表达式、LinQ和Async异步处理/
+https://waylandblog.xyz/ASP-NET-MVC-5-四-C-基本语言特性/
+https://waylandblog.xyz/ASP-NET-MVC-5-三-VS使用NuGet安装Bootstrap与使用Bootstrap/
+https://waylandblog.xyz/ASP-NET-MVC-5-二-动态输出、辅助器方法、模型绑定与添加验证/
+https://waylandblog.xyz/ASP-NET-MVC-5-一-第一个ASP-NET-MVC应用程序/
