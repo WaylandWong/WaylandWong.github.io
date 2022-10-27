@@ -1,37 +1,753 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"waylandblog.xyz","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="上一章介绍Razor视图与布局，现在可以在此基础上使用Razor表达式来创建视图内容。 @[toc] # 开始使用Razor表达式     因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C# 语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如： ...  public">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC 5 (六-2) 使用Razor表达式">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-%E5%85%AD-2-%E4%BD%BF%E7%94%A8Razor%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="上一章介绍Razor视图与布局，现在可以在此基础上使用Razor表达式来创建视图内容。 @[toc] # 开始使用Razor表达式     因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C# 语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如： ...  public">
+<meta property="og:locale">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/6-1-1.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/6-2-1.jpeg">
+<meta property="og:image" content="https://waylandblog.xyz/uploads/6-3-1.jpeg">
+<meta property="article:published_time" content="2018-10-16T07:31:35.000Z">
+<meta property="article:modified_time" content="2022-10-27T09:39:16.919Z">
+<meta property="article:author" content="Wayland Wong">
+<meta property="article:tag" content="ASP">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="MVC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://waylandblog.xyz/uploads/6-1-1.jpeg">
+
+<link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-%E5%85%AD-2-%E4%BD%BF%E7%94%A8Razor%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>ASP.NET MVC 5 (六-2) 使用Razor表达式 | Wayland's Blog</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wayland's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-%E5%85%AD-2-%E4%BD%BF%E7%94%A8Razor%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ASP.NET MVC 5 (六-2) 使用Razor表达式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-16 15:31:35" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:35+08:00">2018-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-27 17:39:16" itemprop="dateModified" datetime="2022-10-27T17:39:16+08:00">2022-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index"><span itemprop="name">ASP.NET</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>    上一章介绍<strong>Razor视图与布局</strong>，现在可以在此基础上使用<strong>Razor表达式</strong>来创建视图内容。</p>
+<p>@[toc] # 开始使用Razor表达式
+    因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C#
+语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如：</p>
+<pre><code>...
+ public ActionResult NameAndPrice()
+        &#123;
+            return View(myproduct);
+        &#125;
+...</code></pre>
+<p>这样在视图中使用Razor表达式可以得到要插入属性的值：</p>
+<pre><code>...
+The product name is @Model.Name and it costs $@Model.Price 
+...</code></pre>
+<h1 id="插入数据值">插入数据值</h1>
+<p>    当希望控制器向视图插入数据时可以采用<code>@ModelRazor表达式</code>，也可以使用<code>@ViewBag</code>表达式以引用试图包特性动态定义的属性。以下的例子则采用这两种方式向视图传递数据。
+在HomeConroller.cs文件添加一个DemoExpression动作方法：</p>
+<pre><code>using System.Web;
+using System.Web.Mvc;
+using Razor.Models;
+
+namespace Razor.Controllers
+&#123;
+    public class HomeController : Controller
+    &#123;
+        Product myproduct = new Product
+        &#123;
+            Name = &quot;Kayak&quot;,
+            Price = 275M,
+            IntProductID = 1,
+            Category = &quot;Watersports&quot;,
+            Description = &quot;A boat for one person&quot;
+        &#125;;
+        // GET: Home
+        public ActionResult Index()
+        &#123;
+            return View(myproduct);
+        &#125;
+        public ActionResult NameAndPrice()
+        &#123;
+            return View(myproduct);
+        &#125;
+        public ActionResult DemoExpression()
+        &#123;
+            ViewBag.ProductCount = 1;
+            /*使用ViewBag动态属性传递数据*/
+            ViewBag.ExpressShip = true;
+            ViewBag.ApplyDiscount = false;
+            ViewBag.Supplier = null;
+            /*向视图传递Product对象*/
+            return View(myproduct);
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>    在Views/Home文件夹中创建一个名称为DemoExpression.cshtml的强类型视图来演示这些基本表达式传递的数据。</p>
+<pre><code>@model Razor.Models.Product
+@&#123;
+    ViewBag.Title = &quot;DemoExpression&quot;;
+&#125; 
+&lt;table&gt;
+&lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;@Model.Name&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Pric&lt;/td&gt;
+        &lt;td&gt;@Model.Price&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Stock Level&lt;/td&gt;
+        &lt;td&gt;
+           &lt;b&gt;@ViewBag.ProductCount&lt;/b&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<p>    这里创建了一个html表格，使用模型对象和视图包的一些属性填充了单元格的值。启动项目并导航到/Home/DemoExpression，可以看到结果如下：
+<img src="/uploads/6-1-1.jpeg" alt="使用viewbag和模型对象传递数据" /> #
+设置标签属性值
+    Razor表达式不仅可以设置元素内容，还可以设置标签属性的值，在DemoExpression.cshtml最后添加一个div和一组checkbox，修改为如下内容：</p>
+<pre><code>@model Razor.Models.Product
+    @&#123;
+        ViewBag.Title = &quot;DemoExpression&quot;;
+    &#125; 
+    &lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;@Model.Name&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Pric&lt;/td&gt;
+            &lt;td&gt;@Model.Price&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Stock Level&lt;/td&gt;
+            &lt;td&gt;
+               &lt;b&gt;@ViewBag.ProductCount&lt;/b&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;div data-discount=&quot;@ViewBag.ApplyDiscount&quot; dataexpress=&quot;@ViewBag.ExpressShip&quot; data-supplier=&quot;@ViewBag.Supplier&quot;&gt;
+    The containing element has data attributes
+&lt;/div&gt;
+
+Discount:&lt;input type=&quot;checkbox&quot; checked=&quot;@ViewBag.ApplyDiscount&quot; /&gt;
+Express:&lt;input type=&quot;checkbox&quot;checked=&quot;@ViewBag.ExpressShip&quot; /&gt;
+Supplier:&lt;input type=&quot;checkbox&quot; checked=&quot;@ViewBag.Supplier&quot; /&gt;
+    </code></pre>
+<p>    这里使用Razor表达式在div元素上设置了一些data标签属性的值。
+    Razor会将值为null的视图包属性或模型属性渲染成空字符串，并且Razor处理checked这种属性标签时，当值false或null时会完全删除该标签属性。因为当checked属性为false、null或空字符串时，浏览器会显示复选框已勾选，而Razor直接删除该属性则使得复选框处于未选中状态了。
+    运行结果如下： <img src="/uploads/6-2-1.jpeg"
+alt="Razor设置标签属性" /></p>
+<h1 id="使用条件语句">使用条件语句</h1>
+<p>    Razor能够处理条件语句，就可以根据视图数据的值，对视图输出进行剪辑而创造复杂而流畅的视图，并使其易于阅读和维护。
+如在DemoExpression.cshtml视图中添加了一个条件语句;</p>
+<pre><code>@model Razor.Models.Product
+    @&#123;
+        ViewBag.Title = &quot;DemoExpression&quot;;
+    &#125; 
+    &lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;@Model.Name&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Pric&lt;/td&gt;
+            &lt;td&gt;@Model.Price&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Stock Level&lt;/td&gt;
+            &lt;td&gt;
+                 @switch((int)ViewBag.ProductCount)
+            &#123;
+                case 0:
+                    @:Out of stock
+                    break;
+                case 1:
+                    &lt;b&gt;Low Stock (@ViewBag.ProductCount)&lt;/b&gt;
+                    break;
+                default:
+                    @ViewBag.ProductCount
+                    break;   
+            &#125;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;/table&gt;</code></pre>
+<p>    要开始一个条件语句，要在C#
+条件关键字前面放一个<code>@</code>字符，以<code>&#123;</code>结束。需要注意的是在switch中，Razor表达式不能求取动态属性的值，因此必须进行强制类型转换为int类型。
+在Razor代码块内部，只要定义html以及Razor表达式就可以将html元素和数据插入到视图输出，如</p>
+<pre><code>...
+ &lt;b&gt;Low Stock (@ViewBag.ProductCount)&lt;/b&gt;
+...</code></pre>
+<p>或者 像这样：</p>
+<pre><code>@ViewBag.ProductCount</code></pre>
+<p>不必使用其他任何特殊方式来表示html元素和Razor表达式。还有就是，可以使用如下一个Razor辅助工具直接显示文本文字：</p>
+<pre><code> @:Out of stock</code></pre>
+<p><code>@：</code>字符阻止Razor将此行解释为一条C# 语句。
+    以下是Razor视图使用if语句：</p>
+<pre><code>@model Razor.Models.Product
+    @&#123;
+        ViewBag.Title = &quot;DemoExpression&quot;;
+    &#125; 
+    &lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Name&lt;/td&gt;&lt;td&gt;@Model.Name&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Pric&lt;/td&gt;
+            &lt;td&gt;@Model.Price&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Stock Level&lt;/td&gt;
+            &lt;td&gt;
+@if (ViewBag.ProductCount == 0) &#123; 
+                @:Out of Stock
+            &#125;
+            else if (ViewBag.ProductCount == 1)
+            &#123;
+                &lt;b&gt;Low Stock (@ViewBag.ProductCount)&lt;/b&gt;
+            &#125;
+            else
+            &#123;
+             &#125;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;/table&gt;</code></pre>
+<h1 id="枚举数组和集合">枚举数组和集合</h1>
+<p>    在Home控制器中定义<code>DemoArray</code>动作方法演示如何在MVC中传递和使用枚举和数组集合。</p>
+<pre><code>using System.Web;
+using System.Web.Mvc;
+using Razor.Models;
+
+namespace Razor.Controllers
+&#123;
+    public class HomeController : Controller
+    &#123;
+        Product myproduct = new Product
+        &#123;
+            Name = &quot;Kayak&quot;,
+            Price = 275M,
+            IntProductID = 1,
+            Category = &quot;Watersports&quot;,
+            Description = &quot;A boat for one person&quot;
+        &#125;;
+        ...省略了其他动作方法
+        public ActionResult DemoArray()
+        &#123;
+            Product[] arry =&#123;
+                               new Product&#123;Name=&quot;Kayak&quot;,Price=275M&#125;,
+                               new Product&#123;Name=&quot;LifeTackt&quot;,Price=48.95M&#125;,
+                               new Product&#123;Name=&quot;Soccer&quot;,Price=19.50M&#125;,
+                               new Product&#123;Name=&quot;Corner flag&quot;,Price=34.95M&#125;
+                           &#125;;
+            return View(arry);
+        &#125;
+      &#125;
+&#125;</code></pre>
+<p>    该动作方法创建了Product[]对象并传递给View方法，以使用默认视图来渲染这些数据。Visual
+Studio无法指定一个数组为模型类型，但可以在视图文件中手动修改强制模型视图的模型类型，以下是添加的DemoArray.cshtml视图文件代码：</p>
+<pre><code>@using Razor.Models
+@model Razor.Models.Product[]
+@&#123;
+    ViewBag.Title = &quot;DemoArray&quot;;
+&#125;
+
+@if (Model.Length &gt; 0)
+&#123;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Product&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            @foreach (Product p in Model)
+            &#123;
+                &lt;tr&gt;
+                    &lt;td&gt;@p.Name&lt;/td&gt;
+                    &lt;td&gt;$@p.Price&lt;/td&gt;
+                &lt;/tr&gt;
+            &#125;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&#125;
+else
+&#123;
+    &lt;h2&gt;No product data&lt;/h2&gt;
+&#125;</code></pre>
+<p>    <code>@model Razor.Models.Product[]</code>指定本视图的强制模型类型为Product[]，这里使用了一个<code>@if-else</code>语句，以便根据数据内容修改视图。另外，使用一个<code>@foreach</code>表达式来枚举数组的内容，并为每一条数据生成一个html表格行。可以看出来，在<code>foreach</code>循环中创建了一个<code>p</code>局部变量，然后永Razor表达式<code>@p.Name</code>和<code>@p.Prcie</code>引用了它的属性。
+导航到/Home/DemoArray，运行结果如下： <img src="/uploads/6-3-1.jpeg"
+alt="Razor使用条件语句" /> # 处理命名空间     上例中</p>
+<pre><code>@using Razor.Models</code></pre>
+<p>代码像.cs类中一样引用了一个命名空间，只不过需要在<code>using</code>前面加一个<code>@</code>符号而已。
+# 番外篇     倒霉的是，这两天遇到了一个尴尬的问题：Visual
+Studio编译运行ASP.NET
+web应用程序时打开浏览器总是会显示“无法显示此页”，查找了各种处理方法都没法解决，之前重新启动Visual
+Studio或者重启电脑就可以解决了，但这次这种粗暴的方法好像被免疫了。我之前用的VS2013，就算我再安装了VS2015同样不好用。
+    有人说是浏览器的问题，但我电脑上的5个浏览器（Edge、IE、Google
+Chrome、360安全浏览器、世界之窗浏览器）都不行；有人说防火墙或者安全软件的问题，但我关闭了防火墙和安全软件（没有安装NOD32安全防护，使用的是腾讯电脑管家
+）也没有卵用；有人说网卡驱动的问题，我使用驱动精灵更新了所有驱动，可悲是的电脑直接崩溃了，祸不单行啊！
+    这下好了，电脑黑屏一下午就是无法开机，用win10自带的修复工具重装了系统才能重新开机，这下终于又能愉快的调试了！！
+    不过也因祸得福，电脑磁盘一下干净多了，而且其他盘里的资料都保留下来了，重新装VS和Office和LOL又费了我一整天时间，哈哈哈哈！！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ASP/" rel="tag"># ASP</a>
+              <a href="/tags/NET/" rel="tag"># .NET</a>
+              <a href="/tags/MVC/" rel="tag"># MVC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ASP-NET-MVC-5-%E4%BA%94-c-%E7%9A%84lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81LinQ%E5%92%8CAsync%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/" rel="prev" title="ASP.NET MVC 5 (五)c# 的lambda表达式、LinQ和Async异步处理">
+      <i class="fa fa-chevron-left"></i> ASP.NET MVC 5 (五)c# 的lambda表达式、LinQ和Async异步处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ASP-NET-MVC-5-%E5%85%AD-1-Razor%E8%A7%86%E5%9B%BE%E5%BC%95%E6%93%8E/" rel="next" title="ASP.NET MVC 5 (六-1) Razor视图引擎">
+      ASP.NET MVC 5 (六-1) Razor视图引擎 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E5%80%BC"><span class="nav-number">1.</span> <span class="nav-text">插入数据值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.</span> <span class="nav-text">使用条件语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E6%95%B0%E7%BB%84%E5%92%8C%E9%9B%86%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text">枚举数组和集合</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wayland Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

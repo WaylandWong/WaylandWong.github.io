@@ -1,37 +1,628 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"waylandblog.xyz","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="上一篇说了Ninject的初步使用，这里在说一下稍微复杂的使用。 @[toc] # 创建依赖项链 依赖项是什么呢？简单来说，上一篇当中Home控制器的构造器（构造函数）有IValueCalculator类型参数，那么IValueCalculator就是HomeConreoller的依赖项了。 当我们的依赖项又依赖于其他类型时，即依赖项又有依赖项时，这时Ninject又会继续解析并创建所需要的所有类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC 5 (七-2) Ninject进阶">
+<meta property="og:url" content="https://waylandblog.xyz/ASP-NET-MVC-5-%E4%B8%83-2-Ninject%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:description" content="上一篇说了Ninject的初步使用，这里在说一下稍微复杂的使用。 @[toc] # 创建依赖项链 依赖项是什么呢？简单来说，上一篇当中Home控制器的构造器（构造函数）有IValueCalculator类型参数，那么IValueCalculator就是HomeConreoller的依赖项了。 当我们的依赖项又依赖于其他类型时，即依赖项又有依赖项时，这时Ninject又会继续解析并创建所需要的所有类">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-10-16T07:31:57.000Z">
+<meta property="article:modified_time" content="2022-10-27T09:39:16.918Z">
+<meta property="article:author" content="Wayland Wong">
+<meta property="article:tag" content="ASP">
+<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="MVC">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://waylandblog.xyz/ASP-NET-MVC-5-%E4%B8%83-2-Ninject%E8%BF%9B%E9%98%B6/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>ASP.NET MVC 5 (七-2) Ninject进阶 | Wayland's Blog</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wayland's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://waylandblog.xyz/ASP-NET-MVC-5-%E4%B8%83-2-Ninject%E8%BF%9B%E9%98%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ASP.NET MVC 5 (七-2) Ninject进阶
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-16 15:31:57" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:57+08:00">2018-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-27 17:39:16" itemprop="dateModified" datetime="2022-10-27T17:39:16+08:00">2022-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET/" itemprop="url" rel="index"><span itemprop="name">ASP.NET</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇说了Ninject的初步使用，这里在说一下稍微复杂的使用。</p>
+<p>@[toc] # 创建依赖项链
+依赖项是什么呢？简单来说，上一篇当中Home控制器的构造器（构造函数）有IValueCalculator类型参数，那么IValueCalculator就是HomeConreoller的依赖项了。
+当我们的依赖项又依赖于其他类型时，即依赖项又有依赖项时，这时Ninject又会继续解析并创建所需要的所有类的实例，一个又一个的依赖项的依赖性链接成一条依赖项链。比如，IValueCalculator的实现类LinqValueCalculator如果又一个依赖项IDiscountHelper，而IDiscountHelper的实现类是DefaultDiscountHelper类，这时就构成了一个依赖项。
+为了演示这一过程，我们在Models文件夹内添加一个Discount.cs文件，修改其内容如下：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace EssentialTools.Models
+&#123;
+    public interface IDiscountHelper
+    &#123;
+        decimal ApplyDiscount(decimal totalParam);
+    &#125;
+    public class DefaultDiscountHelper : IDiscountHelper
+    &#123;
+        public decimal ApplyDiscount(decimal totalParam)
+        &#123;
+            return (totalParam - (discountSize / 100m * totalParam));
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>Discount文件内定义了IDiscountHelper接口，它的ApplyDiscount方法将一个十进制接口运用于一个十进制的数。DefaultDiscountHelper
+类实现了该接口，并使用固定的10%的折扣。
+然后我们为LinqValueCalculator类添加一个IDiscountHelper依赖项：</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace EssensialTools.Models
+&#123;
+    public class LinqValueCalculator:IValueCalculator
+    &#123;
+        private IDiscountHelper discount;
+        public LinqValueCalculator(IDiscountHelper discountParam)
+        &#123;
+            discount = discountParam;
+        &#125;
+        public decimal ValueProducts(IEnumerable&lt;Product&gt; products)
+        &#123;
+            return discount.ApplyDiscount(products.Sum(p=&gt;p.Price));
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>此时向之前做的那样，将DefaultDiscountHelper
+和IDiscountHelper的绑定关系放到之前的依赖项解析器的AddBindings方法当中就大功告成了。</p>
+<pre><code> private void AddBindings()
+        &#123;
+            kernel.Bind&lt;IValueCalculator&gt;().To&lt;LinqValueCalculator&gt;();
+            kernel.Bind&lt;IDiscountHelper&gt;().To&lt;DefaultDiscountHelper&gt;;
+        &#125;</code></pre>
+<p>这时我们将这个折扣便应用到了计算总价当中了，这构成了一个依赖项链。 #
+指定属性和构造器参数
+在将接口和实现进行绑定时，可以为实现类的属性提供一些值。比如，在Discount.cs文件对DefaultDiscountHelper
+类添加一个属性：</p>
+<pre><code>public class DefaultDiscountHelper : IDiscountHelper
+    &#123;
+        public decimal DiscountSize &#123; get; set; &#125;
+        public decimal ApplyDiscount(decimal totalParam)
+        &#123;
+            return (totalParam - (DiscountSize / 100m * totalParam));
+        &#125;
+    &#125;</code></pre>
+<p>discountSize属性提供不同的折扣值，在对DefaultDiscountHelper和IDiscountHelper接口进行绑定的时候可以给这个属性赋值，修改AddBindings方法如下：</p>
+<pre><code>private void AddBindings()
+&#123;
+    kernel.Bind&lt;IValueCalculator&gt;().To&lt;LinqValueCalculator&gt;();
+    kernel.Bind&lt;IDiscountHelper&gt;().To&lt;DefaultDiscountHelper&gt;().WithPropertyValue(&quot;DiscountSize&quot;,50M);
+&#125;</code></pre>
+<p>这样就可以在计算总价时使用50%的折扣了。
+当有多个属性时可以链接带哦用WithConstructorArgument方法涵盖所有属性。
+当然也可以使用构造器参数来实现参数传递，对DefaultDiscountHelper
+类做如下修改：</p>
+<pre><code> public class DefaultDiscountHelper : IDiscountHelper
+    &#123;
+        public decimal discountSize;
+        public decimal ApplyDiscount(decimal totalParam)
+        &#123;
+            return (totalParam - (discountSize / 100m * totalParam));
+        &#125;
+        public DefaultDiscountHelper(decimal discountParma)
+        &#123;
+            discountSize = discountParma;
+        &#125;
+    &#125;</code></pre>
+<p>这样可以在依赖项解析器当中使用WithConstructorArgument方法为构造器参数赋值</p>
+<pre><code> private void AddBindings()
+ &#123;
+    kernel.Bind&lt;IValueCalculator&gt;().To&lt;LinqValueCalculator&gt;();
+    kernel.Bind&lt;IDiscountHelper&gt;().To&lt;DefaultDiscountHelper&gt;().WithConstructorArgument(&quot;discountParam&quot;, 50M);
+  &#125;</code></pre>
+<h1 id="使用条件绑定">使用条件绑定</h1>
+<p>在Models文件夹下添加一个FiexibleDiscountHelper类，它实现IDiscount接口，并按照总价给出不同的折扣值。内容如下:</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace EssensialTools.Models
+&#123;
+    public class FlexibleDiscountHelper : IDiscountHelper
+    &#123;
+        public decimal ApplyDiscount(decimal totalParam)
+        &#123;
+            decimal discount = totalParam &gt; 100 ? 70 : 50;
+            return (totalParam - (discount / 100m * totalParam));
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>此时IDiscount接口有两个实现方法，在依赖项解析器中我们可以按照不同条件绑定不同的实现类，在AddBindings方法中作出如下修改：</p>
+<pre><code> private void AddBindings()
+ &#123;
+   kernel.Bind&lt;IValueCalculator&gt;().To&lt;LinqValueCalculator&gt;();
+   kernel.Bind&lt;IDiscountHelper&gt;().To&lt;DefaultDiscountHelper&gt;().WithConstructorArgument(&quot;discountParam&quot;, 50M);
+   kernel.Bind&lt;IDiscountHelper&gt;().To&lt;FlexibleDiscountHelper&gt;().WhenInjectedInto&lt;LinqValueCalculator&gt;();
+ &#125;</code></pre>
+<p>这样可使当要创建一个LinqValueCalculator对象时使用FlexibleDiscountHelper类作为IDiscountHelper接口的实现类，而不是默认的DefaultDiscountHelper实现类。
+Ninject有一些绑定条件的方法：</p>
+<table>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>When(谓词)</td>
+<td>当‘谓词’（一个lambda表达式）的结果为true时，实施绑定</td>
+</tr>
+<tr class="even">
+<td>WhenClassHas<T>()</td>
+<td>当被注入的类以T类型注解属性进行注释时，实施绑定</td>
+</tr>
+<tr class="odd">
+<td>WhenInjectInto<T>()</td>
+<td>当要被注入的类时烈性T时，实施绑定</td>
+</tr>
+</tbody>
+</table>
+<h1 id="设置对象作用域">设置对象作用域</h1>
+<p>首先在NinjectDependencyResolver类中引入<code>using Ninject.Web.Common;</code>命名空间。
+此时对AddBindings方法做如下修改：</p>
+<pre><code>private void AddBindings()
+&#123;
+    kernel.Bind&lt;IValueCalculator&gt;().To&lt;LinqValueCalculator&gt;().InRequestScope();
+    ...//其他方法未给出
+ &#125;</code></pre>
+<p>绑定的最后使用<code>InRequestScope</code>方法指定LinqValueCalculator对象的作用域为一个请求，即一个http请求只会创建一个对象而不管有几个依赖项对象。
+比如修改Home控制器的初始化器：</p>
+<pre><code>public HomeController(IValueCalculator calcParam, IValueCalculator calc2)
+&#123;
+            calc = calcParam;
+&#125;</code></pre>
+<p>它虽然请求两个IValueCalculator
+对象，但MVC只会创建<strong>一个</strong>IValueCalculator
+的实现类LinqValueCalculator的对象。</p>
+<p>以下是指定其他作用域的方法： -摘自《精通ASP.NET MVC5》(Adam FreeMan)
+名称|效果 -|-
+InTransientScope()|与未指定作用域相同，为每一个被解析的依赖项创建一个新的对象（每依赖项一实例）
+InSingeltonScope()<br/>ToConstant(object)|创建一个单一实例，使其应用于整个应用程序（每应用一实例）
+InThreadScope()|创建一个单一实例，将其用于解析一个线程中各个对象的实例（每线程一实例）
+InRequestScope()|创建一个单一实例，用于解析一个HTTP请求的各个对象的依赖项（每请求以实例）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ASP/" rel="tag"># ASP</a>
+              <a href="/tags/NET/" rel="tag"># .NET</a>
+              <a href="/tags/MVC/" rel="tag"># MVC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ASP-NET-MVC-5-%E4%B8%83-1-%E4%BE%9D%E8%B5%96%E9%A1%B9%E6%B3%A8%E5%85%A5%EF%BC%88DI%EF%BC%89%E5%AE%B9%E5%99%A8-Ninject/" rel="prev" title="ASP.NET MVC 5 (七-1)依赖项注入（DI）容器-Ninject">
+      <i class="fa fa-chevron-left"></i> ASP.NET MVC 5 (七-1)依赖项注入（DI）容器-Ninject
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ASP-NET-MVC-5-%E5%85%AB-Visual-Studio%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="next" title="ASP.NET MVC 5 (八) Visual Studio单元测试">
+      ASP.NET MVC 5 (八) Visual Studio单元测试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">使用条件绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%AF%B9%E8%B1%A1%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.</span> <span class="nav-text">设置对象作用域</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wayland Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
