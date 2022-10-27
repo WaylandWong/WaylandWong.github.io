@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="MVC模式最重要的特性之一是它支持关注分离，应用程序中的组件尽可能独立，而只有很少的几个可控依赖项，在理想的情况下，每个组件都不了解其他组件，而只是通过抽象接口来处理应用程序的其他区域 ，这称为“松耦合”，它使得应用程序更易测试和修改。 依赖项注入可以实现获取实现某接口的对象而不必直接创建该对象，这也称为控制反转。简单理解就是说，为了使得在一个类中不必使用new关键字创建一个对象而可以直接实现一个">
@@ -29,8 +29,8 @@
 <meta property="og:locale">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/7-1.jpeg">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/7-1.jpeg">
-<meta property="article:published_time" content="2018-10-16T07:31:46.000Z">
-<meta property="article:modified_time" content="2022-10-27T09:39:16.918Z">
+<meta property="article:published_time" content="2018-10-16T15:31:46.000Z">
+<meta property="article:modified_time" content="2022-10-27T11:58:16.291Z">
 <meta property="article:author" content="Wayland Wong">
 <meta property="article:tag" content="ASP">
 <meta property="article:tag" content=".NET">
@@ -179,14 +179,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-16 15:31:46" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:46+08:00">2018-10-16</time>
+              <time title="Created: 2018-10-16 15:31:46" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:46+00:00">2018-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-27 17:39:16" itemprop="dateModified" datetime="2022-10-27T17:39:16+08:00">2022-10-27</time>
+                <time title="Modified: 2022-10-27 11:58:16" itemprop="dateModified" datetime="2022-10-27T11:58:16+00:00">2022-10-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,15 +209,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>MVC模式最重要的特性之一是它支持关注分离，应用程序中的组件尽可能独立，而只有很少的几个可控依赖项，在理想的情况下，每个组件都不了解其他组件，而只是通过抽象接口来处理应用程序的其他区域
-，这称为“松耦合”，它使得应用程序更易测试和修改。
-<strong>依赖项注入</strong>可以实现获取实现某接口的对象而不必直接创建该对象，这也称为<strong>控制反转</strong>。简单理解就是说，为了使得在一个类中不必使用<code>new</code>关键字创建一个对象而可以直接实现一个接口对象，添加一个依赖项注入容器管理应用程序中所有的依赖项。这里采用的方式为<strong>Ninject</strong>DI容器
-（Dependncy Injection
-Container，依赖项注入容器）。也有其他的类似DI工具，比如微软的Unity。</p>
-<p>@[toc] # 准备示例项目 创建ASP.NET MVC WEB 应用程序，
-解决方案命名为EssentialTools，像以前一样，选择Empty(空)模板并选中MVC复选框。然后向解决方案中添加模型、控制器和视图。
-## 添加模型类 - 在Models文件夹内添加C#
-类Product，这是之前见过很多次的一个模型类了，它是产品类。编辑为以下内容：</p>
+        <p>MVC模式最重要的特性之一是它支持关注分离，应用程序中的组件尽可能独立，而只有很少的几个可控依赖项，在理想的情况下，每个组件都不了解其他组件，而只是通过抽象接口来处理应用程序的其他区域 ，这称为“松耦合”，它使得应用程序更易测试和修改。 <strong>依赖项注入</strong>可以实现获取实现某接口的对象而不必直接创建该对象，这也称为<strong>控制反转</strong>。简单理解就是说，为了使得在一个类中不必使用<code>new</code>关键字创建一个对象而可以直接实现一个接口对象，添加一个依赖项注入容器管理应用程序中所有的依赖项。这里采用的方式为<strong>Ninject</strong>DI容器 （Dependncy Injection Container，依赖项注入容器）。也有其他的类似DI工具，比如微软的Unity。</p>
+<p>@[toc] # 准备示例项目 创建ASP.NET MVC WEB 应用程序， 解决方案命名为EssentialTools，像以前一样，选择Empty(空)模板并选中MVC复选框。然后向解决方案中添加模型、控制器和视图。 ## 添加模型类 - 在Models文件夹内添加C# 类Product，这是之前见过很多次的一个模型类了，它是产品类。编辑为以下内容：</p>
 <pre><code>    using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -235,8 +228,7 @@ Container，依赖项注入容器）。也有其他的类似DI工具，比如微
         &#125;
     &#125;</code></pre>
 <ul>
-<li><p>如果想有对一组产品进行一些逻辑上的计算处理的方法，比如求总价、求平均价格等等，我们可以专门建立一个类来处理这些问题。因此又在Models文件夹内添加一个C#
-类LinqValueCalculator，暂时只让它可以计算一组产品的总价，则修改其内容为：</p>
+<li><p>如果想有对一组产品进行一些逻辑上的计算处理的方法，比如求总价、求平均价格等等，我们可以专门建立一个类来处理这些问题。因此又在Models文件夹内添加一个C# 类LinqValueCalculator，暂时只让它可以计算一组产品的总价，则修改其内容为：</p>
 <pre><code> using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -253,8 +245,7 @@ Container，依赖项注入容器）。也有其他的类似DI工具，比如微
      &#125;
  &#125;</code></pre>
 <p>这个类中的ValueProducts方法使用LINQ的Sum方法将传入的一组Product对象的Price属性值相加并返回该值。</p></li>
-<li><p>最后想建立一个简单的购物车类ShoppingCart，它存储一组产品信息，并可以使用上述ValueProducts计算组的总价。
-编辑其内容为：</p>
+<li><p>最后想建立一个简单的购物车类ShoppingCart，它存储一组产品信息，并可以使用上述ValueProducts计算组的总价。 编辑其内容为：</p>
 <pre><code> using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -315,8 +306,7 @@ namespace EssensialTools.Controllers
         &#125;
     &#125;
 &#125;</code></pre>
-<p>注意增加引用EssensialTools.Models命名空间。 # 添加视图
-在Home控制器的Index方法内右键选择添加视图，并确定视图名称为Index，其他的选项是否选中以不再重要，因为当你把视图文件代码修改为以下内容时，你的选择会随之发生改变。Index.cshtml修改内容为如下：</p>
+<p>注意增加引用EssensialTools.Models命名空间。 # 添加视图 在Home控制器的Index方法内右键选择添加视图，并确定视图名称为Index，其他的选项是否选中以不再重要，因为当你把视图文件代码修改为以下内容时，你的选择会随之发生改变。Index.cshtml修改内容为如下：</p>
 <pre><code>@model decimal
 @&#123;
     Layout = null;
@@ -334,16 +324,9 @@ namespace EssensialTools.Controllers
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>该视图的是decimal的强类型视图，Razor表达式<code>@Model</code>这时会代表一个decimal数。
-此时就可以运行项目，会得到界面内容如下： <img src="/uploads/7-1.jpeg"
-alt="初始界面" /></p>
+<p>该视图的是decimal的强类型视图，Razor表达式<code>@Model</code>这时会代表一个decimal数。 此时就可以运行项目，会得到界面内容如下： <img src="/uploads/7-1.jpeg" alt="初始界面" /></p>
 <h1 id="使用ninject">使用Ninject</h1>
-<p>Ninject是依赖项注册容器，那我们为什么需要依赖项注入呢，什么是依赖项呢？依赖项要解决的基本问题是紧耦合类。
-简单的来说，上面的几个C#
-类中，ShoppingCart类中定义了一个LinqValueCalculator类的对象，因此两者之间是紧耦合的，HomeController类中使用<code>new</code>
-关键字定义了一个ShoppingCart类的对象和LinqValueCalculator类对象，因此三者是紧耦合的。这意味着如果想替换LinqValueCalculator类，就必须修改与它有紧耦合关系的所有类中找出对它的引用并替换掉，这在大型项目中是非常讨厌的。
-## 使用接口 通过使用C# 接口可以解决部分问题。
-在Models文件夹内添加一个接口类，添加方式是，右键Models文件夹-&gt;添加-&gt;新项，选择Interface并命名为IValueCalculator，编辑其内容为如下：</p>
+<p>Ninject是依赖项注册容器，那我们为什么需要依赖项注入呢，什么是依赖项呢？依赖项要解决的基本问题是紧耦合类。 简单的来说，上面的几个C# 类中，ShoppingCart类中定义了一个LinqValueCalculator类的对象，因此两者之间是紧耦合的，HomeController类中使用<code>new</code> 关键字定义了一个ShoppingCart类的对象和LinqValueCalculator类对象，因此三者是紧耦合的。这意味着如果想替换LinqValueCalculator类，就必须修改与它有紧耦合关系的所有类中找出对它的引用并替换掉，这在大型项目中是非常讨厌的。 ## 使用接口 通过使用C# 接口可以解决部分问题。 在Models文件夹内添加一个接口类，添加方式是，右键Models文件夹-&gt;添加-&gt;新项，选择Interface并命名为IValueCalculator，编辑其内容为如下：</p>
 <pre><code>using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -394,11 +377,7 @@ namespace EssentialTools.Models
         &#125;
     &#125;
 &#125;</code></pre>
-<p>此时ShoppingCart与LinqValueCalculator之间的紧耦合关系已经解除，因为在使用ShoppingCart类时只需要为其构造器（构造函数）传递一个IValueCalculator
-接口对象就行了。 但C#
-要求在接口实例化时要指定其实现类，因为要知道想用哪一个实现类（如果有多个类实现了该接口，则在实例化接口时就要指明用的哪一个类实现的），这意味着当在Home控制器中实例化IValueCalculator
-对象时需要指明其实现类LinqValueCalculator，此时HomeController与LinqValueCalculator依旧是紧耦合的关系。如HomeController使用IValueCalculator
-对象的代码如下：</p>
+<p>此时ShoppingCart与LinqValueCalculator之间的紧耦合关系已经解除，因为在使用ShoppingCart类时只需要为其构造器（构造函数）传递一个IValueCalculator 接口对象就行了。 但C# 要求在接口实例化时要指定其实现类，因为要知道想用哪一个实现类（如果有多个类实现了该接口，则在实例化接口时就要指明用的哪一个类实现的），这意味着当在Home控制器中实例化IValueCalculator 对象时需要指明其实现类LinqValueCalculator，此时HomeController与LinqValueCalculator依旧是紧耦合的关系。如HomeController使用IValueCalculator 对象的代码如下：</p>
 <pre><code>...
 public ActionResult Index()
         &#123;
@@ -408,20 +387,13 @@ public ActionResult Index()
             return View(totalValue);
         &#125;
 ...</code></pre>
-<p>要处理这种问题就需要采用Ninject了，来实现对IValueCalculator
-接口的实现进行实例化，但它不是在HomeController代码中实现的，否则就没有实际意义了。即HomeController中<code>IValueCalculator calc = new LinqValueCalculator();</code>代码不需要出现在控制其中，就可以知道是使用哪一个实现类实现的本接口。
-## 将Ninject引入Visual Studio项目
-使用VS的NuGet集成可以快速简单的实现该目的。打开VS菜单栏的”Tools（工具）“-&gt;”Libarary
-Package Manager“-&gt;"Package Manager
-Console"打开NuGet命令行，或者”Tools（工具）“-&gt;”Libarary Package
-Manager“-&gt;"NuGet Manager Console"。 输入如下命令：</p>
+<p>要处理这种问题就需要采用Ninject了，来实现对IValueCalculator 接口的实现进行实例化，但它不是在HomeController代码中实现的，否则就没有实际意义了。即HomeController中<code>IValueCalculator calc = new LinqValueCalculator();</code>代码不需要出现在控制其中，就可以知道是使用哪一个实现类实现的本接口。 ## 将Ninject引入Visual Studio项目 使用VS的NuGet集成可以快速简单的实现该目的。打开VS菜单栏的”Tools（工具）“-&gt;”Libarary Package Manager“-&gt;"Package Manager Console"打开NuGet命令行，或者”Tools（工具）“-&gt;”Libarary Package Manager“-&gt;"NuGet Manager Console"。 输入如下命令：</p>
 <pre><code>Install-Package Ninject -version 3.0.1.10
 
 Install-Package Ninject.Web.Common -version 3.0.0.7
 
 Install-Package Ninject.MVC3 -version 3.0.0.6</code></pre>
-<p>等待安装Ninject完成后就可以使用了。 ## Ninject初步
-要得到Ninject的基本功能，要做得工作分为3个阶段，如HomeController的Index方法已修改如下（当然需要添加命名空间<code>using Ninject;</code>）：</p>
+<p>等待安装Ninject完成后就可以使用了。 ## Ninject初步 要得到Ninject的基本功能，要做得工作分为3个阶段，如HomeController的Index方法已修改如下（当然需要添加命名空间<code>using Ninject;</code>）：</p>
 <pre><code> public ActionResult Index()
         &#123;
             IKernel ninjectKernel = new StandardKernel();
@@ -431,25 +403,16 @@ Install-Package Ninject.MVC3 -version 3.0.0.6</code></pre>
             decimal totalValue = cart.CalculateProductTotal();
             return View(totalValue);
         &#125;</code></pre>
-<p>第一个阶段是准备使用Ninject，创建一个Ninject的Kernel（内核）实例，它是一个内核对象，负责解析依赖项并创建新的对象（比如用内核创建一个IValueCalculator
-对象，而不再使用<code>new</code>关键字）。</p>
+<p>第一个阶段是准备使用Ninject，创建一个Ninject的Kernel（内核）实例，它是一个内核对象，负责解析依赖项并创建新的对象（比如用内核创建一个IValueCalculator 对象，而不再使用<code>new</code>关键字）。</p>
 <ul>
 <li><p>第一阶段的代码为：</p>
-<p>IKernel ninjectKernel = new StandardKernel();
-StandardKernel类是Ninject.IKernel
-接口的标准实现类（标准内核），它足以完成我们想要的任何功能要求。</p></li>
+IKernel ninjectKernel = new StandardKernel(); StandardKernel类是Ninject.IKernel 接口的标准实现类（标准内核），它足以完成我们想要的任何功能要求。</li>
 <li><p>第二阶段则是配置内核，即指定某一个接口是由那个类实现的，代码如下：</p>
-<p>ninjectKernel.Bind<IValueCalculator>().To<LinqValueCalculator>();
-它说明IValueCalculator接口的依赖项解析应该通过创建LinqValueCalculator类的实例来进行。</p></li>
+ninjectKernel.Bind<IValueCalculator>().To<LinqValueCalculator>(); 它说明IValueCalculator接口的依赖项解析应该通过创建LinqValueCalculator类的实例来进行。</li>
 <li><p>第三阶段就是使用Ninject（或者说使用内核）创建（IValueCalculator）对象了。其代码如下：</p>
-<p>IValueCalculator calc =
-ninjectKernel.Get<IValueCalculator>();</p></li>
+<p>IValueCalculator calc = ninjectKernel.Get<IValueCalculator>();</p></li>
 </ul>
-<p>这里已经取得可一些进展，但它依旧没有解决Home控制器和LinqValueCalculator的紧耦合问题，那需要做的就是下一步，<strong>依赖项注入</strong>了。
-## 建立MVC的依赖项注入 依赖项注入实现的功能就是，将上问Home控制器中的
-<strong><em>内核创建、配置和创建对象</em></strong>拿出来放到一个专门的类中，并保证在应用程序运行时依赖项得到解析。
-## # 创建依赖项解析器
-创建一个单独的类做依赖项的解析器，因此创建一个新的文件夹Infrastructure来存放不适合放在其他文件夹内的类，并创建一个NinjectDependencyResolver类做依赖项解析器。这个类修改为一下内容：</p>
+<p>这里已经取得可一些进展，但它依旧没有解决Home控制器和LinqValueCalculator的紧耦合问题，那需要做的就是下一步，<strong>依赖项注入</strong>了。 ## 建立MVC的依赖项注入 依赖项注入实现的功能就是，将上问Home控制器中的 <strong><em>内核创建、配置和创建对象</em></strong>拿出来放到一个专门的类中，并保证在应用程序运行时依赖项得到解析。 ## # 创建依赖项解析器 创建一个单独的类做依赖项的解析器，因此创建一个新的文件夹Infrastructure来存放不适合放在其他文件夹内的类，并创建一个NinjectDependencyResolver类做依赖项解析器。这个类修改为一下内容：</p>
 <pre><code>using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -482,22 +445,13 @@ namespace EssensialTools.Infrastructure
         &#125;
     &#125;
 &#125;</code></pre>
-<p>NinjectDependencyResolver
-类实现了System.Web.Mvc命名空间中的IDependencyResolver接口，MVC框架用它来获取所需的对象。
-MVC框架在需要类实例以便对一个传入请求进行服务时，会调用<code>GetService</code>和<code>GetServices</code>方法。依赖性解析器器要做的工作就是创建这一实例。
-上述依赖性解析器也是建立Ninject绑定（自定义接口和实现类的绑定）的地方，在<code>AddBindings</code>方法中便实现了IValueCalculator接口和LinqValueCalculator实现类之间关系的配置。
-## # 注册依赖项解析器
-当然创建完依赖项解析器后还是无法实现功能，因为我们还没有告诉MVC去使用它，那此时该做的事情就是注册该解析器让MVC去使用它。
-当我们引入Ninject时它会在App_Start文件夹中创建一个NinjectWebCommon.cs文件，它定义了应用程序启动时会自动调用的一些方法。在NinjectWebCommon类中的RegisterServices方法中我们填写一条语句来创建一个依赖项解析器NinjectDependencyResolver
-的实例，并用
-System.Web.Mvc.DependencyResolver类定义的SetResolver静态方法将其注册为MVC框架的解析器，如下：</p>
+<p>NinjectDependencyResolver 类实现了System.Web.Mvc命名空间中的IDependencyResolver接口，MVC框架用它来获取所需的对象。 MVC框架在需要类实例以便对一个传入请求进行服务时，会调用<code>GetService</code>和<code>GetServices</code>方法。依赖性解析器器要做的工作就是创建这一实例。 上述依赖性解析器也是建立Ninject绑定（自定义接口和实现类的绑定）的地方，在<code>AddBindings</code>方法中便实现了IValueCalculator接口和LinqValueCalculator实现类之间关系的配置。 ## # 注册依赖项解析器 当然创建完依赖项解析器后还是无法实现功能，因为我们还没有告诉MVC去使用它，那此时该做的事情就是注册该解析器让MVC去使用它。 当我们引入Ninject时它会在App_Start文件夹中创建一个NinjectWebCommon.cs文件，它定义了应用程序启动时会自动调用的一些方法。在NinjectWebCommon类中的RegisterServices方法中我们填写一条语句来创建一个依赖项解析器NinjectDependencyResolver 的实例，并用 System.Web.Mvc.DependencyResolver类定义的SetResolver静态方法将其注册为MVC框架的解析器，如下：</p>
 <pre><code>  private static void RegisterServices(IKernel kernel)
         &#123;
             System.Web.Mvc.DependencyResolver.SetResolver(
                 new EssentialTools.Infrastructure.NinjectDependencyResolver(kernel));
         &#125;   </code></pre>
-<p>直到此时我们已经做得工作有：创建依赖项解析器，并在其中将LinqValueCalculator绑定为IValueCalculator接口的实现类，并且告诉MVC使用我们的依赖项解析器。准备工作已经准备就绪了，看看我们怎样使用费了这么大劲终于完成的依赖项注入吧。
-## # 重构Home控制器</p>
+<p>直到此时我们已经做得工作有：创建依赖项解析器，并在其中将LinqValueCalculator绑定为IValueCalculator接口的实现类，并且告诉MVC使用我们的依赖项解析器。准备工作已经准备就绪了，看看我们怎样使用费了这么大劲终于完成的依赖项注入吧。 ## # 重构Home控制器</p>
 <pre><code>using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -533,17 +487,10 @@ namespace EssentialTools.Controllers
 &#125;</code></pre>
 <p>所做的更改主要有</p>
 <ol type="1">
-<li>创建HomeController类的带参构造函数，参数类型为接口IValueCalculator
-，并在类中创建一个该接口的实例来存储构造函数带来的参数。当MVC创建HomeController实例时发现它带有IValueCalculator
-参数便要求解析器解析它，此时我们自定义并注册的解析器就会解析到IValueCalculator
-与LinqValueCalculator之间的依赖项关系，此时Ninject就会创建一个LinqValueCalculator对象返回给MVC框架，MVC利用该返回实例创建控制器实例。</li>
-<li>删除Index方法中任何关于Ninject或LinqValueCalculator有关的代码，因为此时已经不需要它们了。
-现在再看Home控制器，会发现它与LinqValueCalculator之间的紧耦合关系已经被打破了。
-这样当需要修改IValueCalculator
-的实现类时只需要修改依赖性解析器就可以了。</li>
+<li>创建HomeController类的带参构造函数，参数类型为接口IValueCalculator ，并在类中创建一个该接口的实例来存储构造函数带来的参数。当MVC创建HomeController实例时发现它带有IValueCalculator 参数便要求解析器解析它，此时我们自定义并注册的解析器就会解析到IValueCalculator 与LinqValueCalculator之间的依赖项关系，此时Ninject就会创建一个LinqValueCalculator对象返回给MVC框架，MVC利用该返回实例创建控制器实例。</li>
+<li>删除Index方法中任何关于Ninject或LinqValueCalculator有关的代码，因为此时已经不需要它们了。 现在再看Home控制器，会发现它与LinqValueCalculator之间的紧耦合关系已经被打破了。 这样当需要修改IValueCalculator 的实现类时只需要修改依赖性解析器就可以了。</li>
 </ol>
-<p>运行结果向未曾改变一样。 <img src="/uploads/7-1.jpeg"
-alt="依赖项注入之后的运行结果" /></p>
+<p>运行结果向未曾改变一样。 <img src="/uploads/7-1.jpeg" alt="依赖项注入之后的运行结果" /></p>
 
     </div>
 
@@ -687,7 +634,7 @@ alt="依赖项注入之后的运行结果" /></p>
   </span>
   <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
         

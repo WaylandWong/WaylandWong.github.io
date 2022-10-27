@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="@[toc] # 创建示例项目 新建ASP.NET MVC项目，名称设为PartyInvities # 使用ViewBag将数据从控制器传给视图 ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间： using PartyInvities.Models; using System; using">
@@ -30,8 +30,8 @@
 <meta property="og:image" content="https://waylandwong.github.io/uploads/2-2.jpeg">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/2-3.jpeg">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/2-4.jpeg">
-<meta property="article:published_time" content="2018-10-16T07:30:16.000Z">
-<meta property="article:modified_time" content="2022-10-27T09:39:16.919Z">
+<meta property="article:published_time" content="2018-10-16T15:30:16.000Z">
+<meta property="article:modified_time" content="2022-10-27T11:58:16.291Z">
 <meta property="article:author" content="Wayland Wong">
 <meta property="article:tag" content="ASP">
 <meta property="article:tag" content=".NET">
@@ -180,14 +180,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-16 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-16T15:30:16+08:00">2018-10-16</time>
+              <time title="Created: 2018-10-16 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-16T15:30:16+00:00">2018-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-27 17:39:16" itemprop="dateModified" datetime="2022-10-27T17:39:16+08:00">2022-10-27</time>
+                <time title="Modified: 2022-10-27 11:58:16" itemprop="dateModified" datetime="2022-10-27T11:58:16+00:00">2022-10-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,9 +210,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>@[toc] # 创建示例项目 新建ASP.NET MVC项目，名称设为PartyInvities #
-使用ViewBag将数据从控制器传给视图
-ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间：</p>
+        <p>@[toc] # 创建示例项目 新建ASP.NET MVC项目，名称设为PartyInvities # 使用ViewBag将数据从控制器传给视图 ViewBag视图包是Controller基类的成员，他是一种动态对象，可以赋任意属性使这些属性的值再渲染的视图中可用。比如在首页显示控制器获取的当前时间：</p>
 <pre><code>using PartyInvities.Models;
 using System;
 using System.Collections.Generic;
@@ -255,8 +253,7 @@ namespace PartyInvities.Controllers
 &lt;/html&gt;</code></pre>
 <p>[这里写图片描述]/uploads/2-1.jpeg)</p>
 <h1 id="html辅助器方法">Html辅助器方法</h1>
-<p>辅助器方法可以方便的渲染HTML的链接、文本输入框、复选框、选择框和其他内容。例如链接辅助器方法Html.ActionLink有两个参数，第一个是显示的文本，第二个是单击时执行的操作。因此在首页中添加一个链接可以更改为：
-Index.cshtml更改为：</p>
+<p>辅助器方法可以方便的渲染HTML的链接、文本输入框、复选框、选择框和其他内容。例如链接辅助器方法Html.ActionLink有两个参数，第一个是显示的文本，第二个是单击时执行的操作。因此在首页中添加一个链接可以更改为： Index.cshtml更改为：</p>
 <pre><code>@&#123;
     Layout = null;
 &#125;
@@ -276,8 +273,7 @@ Index.cshtml更改为：</p>
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>由于链接指向RsvpFrom动作，因此需要在Home控制器中添加该动作方法RsvpForm：
-HomeController.cs更改为：</p>
+<p>由于链接指向RsvpFrom动作，因此需要在Home控制器中添加该动作方法RsvpForm： HomeController.cs更改为：</p>
 <pre><code>using PartyInvities.Models;
 using System;
 using System.Collections.Generic;
@@ -305,10 +301,7 @@ namespace PartyInvities.Controllers
     &#125;
 &#125;</code></pre>
 <h1 id="强类型视图">强类型视图</h1>
-<p>在此需要再添加RsvpForm方法的默认视图，在这里添加一个回复表单，内填写的内容为上一章添加的数据模型GusetResponses的内容。在这里采用强类型视图：
-在Home控制器RsvpForm方法右键添加视图，选择模板为Empty，模型类选择之前建好的模型类GuestRespones.cs
-<img src="/uploads/2-2.jpeg" alt="这里写图片描述" />
-添加强类型视图后会在Views/Home中找到RsvpFrom.cshtml，打开并修改为如下：</p>
+<p>在此需要再添加RsvpForm方法的默认视图，在这里添加一个回复表单，内填写的内容为上一章添加的数据模型GusetResponses的内容。在这里采用强类型视图： 在Home控制器RsvpForm方法右键添加视图，选择模板为Empty，模型类选择之前建好的模型类GuestRespones.cs <img src="/uploads/2-2.jpeg" alt="这里写图片描述" /> 添加强类型视图后会在Views/Home中找到RsvpFrom.cshtml，打开并修改为如下：</p>
 <pre><code>@model PartyInvities.Models.GuestRespones
 
 @&#123;
@@ -343,28 +336,15 @@ namespace PartyInvities.Controllers
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-第一行指明了视图为 PartyInvities.Models.GuestRespones模型的
-强类型视图，Html.BegingFrom辅助器方法生成form表单，using的
-作用则是提供from表单的结束标记
+第一行指明了视图为 PartyInvities.Models.GuestRespones模型的 强类型视图，Html.BegingFrom辅助器方法生成form表单，using的 作用则是提供from表单的结束标记
 </form>
-<p>，在这个页面中每一个GuestRespones的
-属性都采用辅助器方法生成适当的input标记，使用Lambda表达式选择与input元素相关的属性。如</p>
+<p>，在这个页面中每一个GuestRespones的 属性都采用辅助器方法生成适当的input标记，使用Lambda表达式选择与input元素相关的属性。如</p>
 <pre><code>…
 @Html.TexBoxFor(x=&gt;x.Phone)
 …</code></pre>
-<p>它表示生成一个input元素的HTML，将元素的type参数设置为"text"，id和name标签属性为“Phone”，Phone是所选域类的属性名。
-<img src="/uploads/2-3.jpeg" alt="这里写图片描述" /></p>
+<p>它表示生成一个input元素的HTML，将元素的type参数设置为"text"，id和name标签属性为“Phone”，Phone是所选域类的属性名。 <img src="/uploads/2-3.jpeg" alt="这里写图片描述" /></p>
 <h1 id="设置启动url">设置启动url</h1>
-<p>在Visual Studio的PROJECT（项目）-&gt;PartyInvites
-Properties(PartyInvites Properties 属性)中，web选项卡选中Start
-Action（启动操作）分类中“Special
-Page”（特定页面）选项，不必给他输入一个值因为他会自动选择默认页面Home。此时启动程序即可。
-# 处理表单
-运行并跳转到表单填写页面之后，点击按钮后填写的内容会消失，这是因为submit并未告知mvc要做什么，因此默认回递给RsvpForm方法使得页面重新渲染。因此添加一个方法接收post请求并处理，但有一种简单聪明的方法是添加另一个RsvpForm处理post请求，在C#
-中使用GET或POST标记可以指定某一方法的触发时机，页面初次加载时由GET方式获取，而提交Html.FormBegin生成的form时由POST方式获取，因此对控制器做如下更改：
-using PartyInvities.Models; using System; using
-System.Collections.Generic; using System.Linq; using System.Web; using
-System.Web.Mvc;</p>
+<p>在Visual Studio的PROJECT（项目）-&gt;PartyInvites Properties(PartyInvites Properties 属性)中，web选项卡选中Start Action（启动操作）分类中“Special Page”（特定页面）选项，不必给他输入一个值因为他会自动选择默认页面Home。此时启动程序即可。 # 处理表单 运行并跳转到表单填写页面之后，点击按钮后填写的内容会消失，这是因为submit并未告知mvc要做什么，因此默认回递给RsvpForm方法使得页面重新渲染。因此添加一个方法接收post请求并处理，但有一种简单聪明的方法是添加另一个RsvpForm处理post请求，在C# 中使用GET或POST标记可以指定某一方法的触发时机，页面初次加载时由GET方式获取，而提交Html.FormBegin生成的form时由POST方式获取，因此对控制器做如下更改： using PartyInvities.Models; using System; using System.Collections.Generic; using System.Linq; using System.Web; using System.Web.Mvc;</p>
 <pre><code>namespace PartyInvities.Controllers
 &#123;
     public class HomeController : Controller
@@ -391,10 +371,7 @@ System.Web.Mvc;</p>
     &#125;
 &#125;</code></pre>
 <h1 id="模型绑定">模型绑定</h1>
-<p>[HttpPost]标记的RsvpForm方法的参数是页面表单提交的模型数据，它可以解析出输入输入数据并将HTTP请求中的“键/值”用来填充域模型类型。模型绑定的作用与html辅助器方法的相反，
-Html辅助器方法是将模型数据类型转化为html信息，而模型绑定则将html信息转化为模型数据
-渲染其他视图 … return View("Thanks", guestrespone); …
-这个View方法告诉mvc查找并渲染一个"Thanks"的域模型类型为guestrespone的强类型视图，右键单击HomeController任意一个方法选择添加视图，名称为Thanks的强类型视图，模型类型为GuestRespones，创建过程与之前RscpForm视图一致。生成Thanks视图后对其进行编辑：</p>
+<p>[HttpPost]标记的RsvpForm方法的参数是页面表单提交的模型数据，它可以解析出输入输入数据并将HTTP请求中的“键/值”用来填充域模型类型。模型绑定的作用与html辅助器方法的相反， Html辅助器方法是将模型数据类型转化为html信息，而模型绑定则将html信息转化为模型数据 渲染其他视图 … return View("Thanks", guestrespone); … 这个View方法告诉mvc查找并渲染一个"Thanks"的域模型类型为guestrespone的强类型视图，右键单击HomeController任意一个方法选择添加视图，名称为Thanks的强类型视图，模型类型为GuestRespones，创建过程与之前RscpForm视图一致。生成Thanks视图后对其进行编辑：</p>
 <pre><code>@model PartyInvities.Models.GuestRespones
 
 @&#123;
@@ -424,8 +401,7 @@ Html辅助器方法是将模型数据类型转化为html信息，而模型绑定
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>Razor的@Model表达式指示了这个强类型视图的域模型类型。 # 添加验证
-对模型类的每一个属性进行验证，保证其不为空或满足特定样式，修改其定义如下：</p>
+<p>Razor的@Model表达式指示了这个强类型视图的域模型类型。 # 添加验证 对模型类的每一个属性进行验证，保证其不为空或满足特定样式，修改其定义如下：</p>
 <pre><code>    using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -460,10 +436,8 @@ Html辅助器方法是将模型数据类型转化为html信息，而模型绑定
             else return View();
         &#125;
  …</code></pre>
-<h1
-id="html.validationsummary方法为视图提供验证提示">Html.ValidationSummary方法为视图提供验证提示</h1>
-<p><span class="citation"
-data-cites="Html.ValidationSummary">@Html.ValidationSummary</span>()辅助器方法会在表单中以占位符的方式创建隐藏的列表项，当出现验证问题时会显示绑定的模型中特定的错误提示。</p>
+<h1 id="html.validationsummary方法为视图提供验证提示">Html.ValidationSummary方法为视图提供验证提示</h1>
+<p><span class="citation" data-cites="Html.ValidationSummary">@Html.ValidationSummary</span>()辅助器方法会在表单中以占位符的方式创建隐藏的列表项，当出现验证问题时会显示绑定的模型中特定的错误提示。</p>
 <pre><code>…
 &lt;body&gt;
     @using (Html.BeginForm())
@@ -488,14 +462,11 @@ data-cites="Html.ValidationSummary">@Html.ValidationSummary</span>()辅助器方
 &lt;/body&gt;
 …</code></pre>
 <h1 id="高亮显示无效字段">高亮显示无效字段</h1>
-<p>看一下有无验证错误时html辅助器生成的input元素有何不同：
-没有验证问题时（初次加载）：</p>
+<p>看一下有无验证错误时html辅助器生成的input元素有何不同： 没有验证问题时（初次加载）：</p>
 <pre><code>&lt; input data-val=&quot;true&quot; data-val-required=&quot;Please enter your name&quot; id=&quot;Name&quot; name=&quot;Name&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;</code></pre>
 <p>有验证问题时：</p>
 <pre><code>&lt; input class=&quot;input-validation-error&quot; data-val=&quot;true&quot; data-val-required=&quot;Please enter your name&quot; id=&quot;Name&quot; name=&quot;Name&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;</code></pre>
-<p>可以看出有验证错误时为input标签添加了一个class标签属性，因此创建一个css样式表并引用到本页面即可使出现验证错误时显示特定样式。
-MVC项目约定静态内容如CSS样式表等放在Content文件夹中，在资源管理器中右键项目并选择新建文件夹命名为Content，右键Content文件夹添加NewItem（新项），选择Style
-sheet，命名为Style.cs，并对其进行编辑：</p>
+<p>可以看出有验证错误时为input标签添加了一个class标签属性，因此创建一个css样式表并引用到本页面即可使出现验证错误时显示特定样式。 MVC项目约定静态内容如CSS样式表等放在Content文件夹中，在资源管理器中右键项目并选择新建文件夹命名为Content，右键Content文件夹添加NewItem（新项），选择Style sheet，命名为Style.cs，并对其进行编辑：</p>
 <pre><code>.field-validation-erro&#123;color:# f00;&#125;
 .field-validation-valid&#123;display:none&#125;
 .input-validation-erro&#123;border:1px solid # f00;background-color:# fee;&#125;
@@ -507,8 +478,7 @@ sheet，命名为Style.cs，并对其进行编辑：</p>
     &lt;link href=&quot;~/Content/Style.css&quot; rel=&quot;stylesheet&quot; /&gt;
     &lt;title&gt;RsvpForm&lt;/title&gt;
 &lt;/head&gt;</code></pre>
-<p><img src="/uploads/2-4.jpeg" alt="这里写图片描述" /> # 发送电子邮件
-可以添加一个动作方法使用.NET框架的E-mail类创建和发送一份邮件，但书中采用了WebMail辅助器方法，它不属于MVC框架部分，但是可以避免另外再建立一个发邮件的表单。在渲染Thanks页面时发送邮件信息，对Thanks.cshtml修改：</p>
+<p><img src="/uploads/2-4.jpeg" alt="这里写图片描述" /> # 发送电子邮件 可以添加一个动作方法使用.NET框架的E-mail类创建和发送一份邮件，但书中采用了WebMail辅助器方法，它不属于MVC框架部分，但是可以避免另外再建立一个发邮件的表单。在渲染Thanks页面时发送邮件信息，对Thanks.cshtml修改：</p>
 <pre><code>&lt;body&gt;
     @try
     &#123;
@@ -682,7 +652,7 @@ sheet，命名为Style.cs，并对其进行编辑：</p>
   </span>
   <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
         

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="上一章介绍Razor视图与布局，现在可以在此基础上使用Razor表达式来创建视图内容。 @[toc] # 开始使用Razor表达式     因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C# 语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如： ...  public">
@@ -30,8 +30,8 @@
 <meta property="og:image" content="https://waylandwong.github.io/uploads/6-1-1.jpeg">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/6-2-1.jpeg">
 <meta property="og:image" content="https://waylandwong.github.io/uploads/6-3-1.jpeg">
-<meta property="article:published_time" content="2018-10-16T07:31:35.000Z">
-<meta property="article:modified_time" content="2022-10-27T09:39:16.919Z">
+<meta property="article:published_time" content="2018-10-16T15:31:35.000Z">
+<meta property="article:modified_time" content="2022-10-27T11:58:16.291Z">
 <meta property="article:author" content="Wayland Wong">
 <meta property="article:tag" content="ASP">
 <meta property="article:tag" content=".NET">
@@ -180,14 +180,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-16 15:31:35" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:35+08:00">2018-10-16</time>
+              <time title="Created: 2018-10-16 15:31:35" itemprop="dateCreated datePublished" datetime="2018-10-16T15:31:35+00:00">2018-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-27 17:39:16" itemprop="dateModified" datetime="2022-10-27T17:39:16+08:00">2022-10-27</time>
+                <time title="Modified: 2022-10-27 11:58:16" itemprop="dateModified" datetime="2022-10-27T11:58:16+00:00">2022-10-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -211,9 +211,7 @@
 
       
         <p>    上一章介绍<strong>Razor视图与布局</strong>，现在可以在此基础上使用<strong>Razor表达式</strong>来创建视图内容。</p>
-<p>@[toc] # 开始使用Razor表达式
-    因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C#
-语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如：</p>
+<p>@[toc] # 开始使用Razor表达式     因为MVC是注重并强迫应用程序各部分之间的分离，因此虽然Razor表达式可以使用C# 语句，但最好不要使用Razor执行业务逻辑或对域模型进行操作。同样不应该对动作方法传递给视图的数据进行格式化而应该传递一个完整的模型对象。如：</p>
 <pre><code>...
  public ActionResult NameAndPrice()
         &#123;
@@ -225,8 +223,7 @@
 The product name is @Model.Name and it costs $@Model.Price 
 ...</code></pre>
 <h1 id="插入数据值">插入数据值</h1>
-<p>    当希望控制器向视图插入数据时可以采用<code>@ModelRazor表达式</code>，也可以使用<code>@ViewBag</code>表达式以引用试图包特性动态定义的属性。以下的例子则采用这两种方式向视图传递数据。
-在HomeConroller.cs文件添加一个DemoExpression动作方法：</p>
+<p>    当希望控制器向视图插入数据时可以采用<code>@ModelRazor表达式</code>，也可以使用<code>@ViewBag</code>表达式以引用试图包特性动态定义的属性。以下的例子则采用这两种方式向视图传递数据。 在HomeConroller.cs文件添加一个DemoExpression动作方法：</p>
 <pre><code>using System.Web;
 using System.Web.Mvc;
 using Razor.Models;
@@ -291,10 +288,7 @@ namespace Razor.Controllers
     &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</code></pre>
-<p>    这里创建了一个html表格，使用模型对象和视图包的一些属性填充了单元格的值。启动项目并导航到/Home/DemoExpression，可以看到结果如下：
-<img src="/uploads/6-1-1.jpeg" alt="使用viewbag和模型对象传递数据" /> #
-设置标签属性值
-    Razor表达式不仅可以设置元素内容，还可以设置标签属性的值，在DemoExpression.cshtml最后添加一个div和一组checkbox，修改为如下内容：</p>
+<p>    这里创建了一个html表格，使用模型对象和视图包的一些属性填充了单元格的值。启动项目并导航到/Home/DemoExpression，可以看到结果如下： <img src="/uploads/6-1-1.jpeg" alt="使用viewbag和模型对象传递数据" /> # 设置标签属性值     Razor表达式不仅可以设置元素内容，还可以设置标签属性的值，在DemoExpression.cshtml最后添加一个div和一组checkbox，修改为如下内容：</p>
 <pre><code>@model Razor.Models.Product
     @&#123;
         ViewBag.Title = &quot;DemoExpression&quot;;
@@ -329,13 +323,9 @@ Discount:&lt;input type=&quot;checkbox&quot; checked=&quot;@ViewBag.ApplyDiscoun
 Express:&lt;input type=&quot;checkbox&quot;checked=&quot;@ViewBag.ExpressShip&quot; /&gt;
 Supplier:&lt;input type=&quot;checkbox&quot; checked=&quot;@ViewBag.Supplier&quot; /&gt;
     </code></pre>
-<p>    这里使用Razor表达式在div元素上设置了一些data标签属性的值。
-    Razor会将值为null的视图包属性或模型属性渲染成空字符串，并且Razor处理checked这种属性标签时，当值false或null时会完全删除该标签属性。因为当checked属性为false、null或空字符串时，浏览器会显示复选框已勾选，而Razor直接删除该属性则使得复选框处于未选中状态了。
-    运行结果如下： <img src="/uploads/6-2-1.jpeg"
-alt="Razor设置标签属性" /></p>
+<p>    这里使用Razor表达式在div元素上设置了一些data标签属性的值。     Razor会将值为null的视图包属性或模型属性渲染成空字符串，并且Razor处理checked这种属性标签时，当值false或null时会完全删除该标签属性。因为当checked属性为false、null或空字符串时，浏览器会显示复选框已勾选，而Razor直接删除该属性则使得复选框处于未选中状态了。     运行结果如下： <img src="/uploads/6-2-1.jpeg" alt="Razor设置标签属性" /></p>
 <h1 id="使用条件语句">使用条件语句</h1>
-<p>    Razor能够处理条件语句，就可以根据视图数据的值，对视图输出进行剪辑而创造复杂而流畅的视图，并使其易于阅读和维护。
-如在DemoExpression.cshtml视图中添加了一个条件语句;</p>
+<p>    Razor能够处理条件语句，就可以根据视图数据的值，对视图输出进行剪辑而创造复杂而流畅的视图，并使其易于阅读和维护。 如在DemoExpression.cshtml视图中添加了一个条件语句;</p>
 <pre><code>@model Razor.Models.Product
     @&#123;
         ViewBag.Title = &quot;DemoExpression&quot;;
@@ -373,9 +363,7 @@ alt="Razor设置标签属性" /></p>
         &lt;/tr&gt;
     &lt;/tbody&gt;
     &lt;/table&gt;</code></pre>
-<p>    要开始一个条件语句，要在C#
-条件关键字前面放一个<code>@</code>字符，以<code>&#123;</code>结束。需要注意的是在switch中，Razor表达式不能求取动态属性的值，因此必须进行强制类型转换为int类型。
-在Razor代码块内部，只要定义html以及Razor表达式就可以将html元素和数据插入到视图输出，如</p>
+<p>    要开始一个条件语句，要在C# 条件关键字前面放一个<code>@</code>字符，以<code>&#123;</code>结束。需要注意的是在switch中，Razor表达式不能求取动态属性的值，因此必须进行强制类型转换为int类型。 在Razor代码块内部，只要定义html以及Razor表达式就可以将html元素和数据插入到视图输出，如</p>
 <pre><code>...
  &lt;b&gt;Low Stock (@ViewBag.ProductCount)&lt;/b&gt;
 ...</code></pre>
@@ -383,8 +371,7 @@ alt="Razor设置标签属性" /></p>
 <pre><code>@ViewBag.ProductCount</code></pre>
 <p>不必使用其他任何特殊方式来表示html元素和Razor表达式。还有就是，可以使用如下一个Razor辅助工具直接显示文本文字：</p>
 <pre><code> @:Out of stock</code></pre>
-<p><code>@：</code>字符阻止Razor将此行解释为一条C# 语句。
-    以下是Razor视图使用if语句：</p>
+<p><code>@：</code>字符阻止Razor将此行解释为一条C# 语句。     以下是Razor视图使用if语句：</p>
 <pre><code>@model Razor.Models.Product
     @&#123;
         ViewBag.Title = &quot;DemoExpression&quot;;
@@ -451,8 +438,7 @@ namespace Razor.Controllers
         &#125;
       &#125;
 &#125;</code></pre>
-<p>    该动作方法创建了Product[]对象并传递给View方法，以使用默认视图来渲染这些数据。Visual
-Studio无法指定一个数组为模型类型，但可以在视图文件中手动修改强制模型视图的模型类型，以下是添加的DemoArray.cshtml视图文件代码：</p>
+<p>    该动作方法创建了Product[]对象并传递给View方法，以使用默认视图来渲染这些数据。Visual Studio无法指定一个数组为模型类型，但可以在视图文件中手动修改强制模型视图的模型类型，以下是添加的DemoArray.cshtml视图文件代码：</p>
 <pre><code>@using Razor.Models
 @model Razor.Models.Product[]
 @&#123;
@@ -483,20 +469,9 @@ else
 &#123;
     &lt;h2&gt;No product data&lt;/h2&gt;
 &#125;</code></pre>
-<p>    <code>@model Razor.Models.Product[]</code>指定本视图的强制模型类型为Product[]，这里使用了一个<code>@if-else</code>语句，以便根据数据内容修改视图。另外，使用一个<code>@foreach</code>表达式来枚举数组的内容，并为每一条数据生成一个html表格行。可以看出来，在<code>foreach</code>循环中创建了一个<code>p</code>局部变量，然后永Razor表达式<code>@p.Name</code>和<code>@p.Prcie</code>引用了它的属性。
-导航到/Home/DemoArray，运行结果如下： <img src="/uploads/6-3-1.jpeg"
-alt="Razor使用条件语句" /> # 处理命名空间     上例中</p>
+<p>    <code>@model Razor.Models.Product[]</code>指定本视图的强制模型类型为Product[]，这里使用了一个<code>@if-else</code>语句，以便根据数据内容修改视图。另外，使用一个<code>@foreach</code>表达式来枚举数组的内容，并为每一条数据生成一个html表格行。可以看出来，在<code>foreach</code>循环中创建了一个<code>p</code>局部变量，然后永Razor表达式<code>@p.Name</code>和<code>@p.Prcie</code>引用了它的属性。 导航到/Home/DemoArray，运行结果如下： <img src="/uploads/6-3-1.jpeg" alt="Razor使用条件语句" /> # 处理命名空间     上例中</p>
 <pre><code>@using Razor.Models</code></pre>
-<p>代码像.cs类中一样引用了一个命名空间，只不过需要在<code>using</code>前面加一个<code>@</code>符号而已。
-# 番外篇     倒霉的是，这两天遇到了一个尴尬的问题：Visual
-Studio编译运行ASP.NET
-web应用程序时打开浏览器总是会显示“无法显示此页”，查找了各种处理方法都没法解决，之前重新启动Visual
-Studio或者重启电脑就可以解决了，但这次这种粗暴的方法好像被免疫了。我之前用的VS2013，就算我再安装了VS2015同样不好用。
-    有人说是浏览器的问题，但我电脑上的5个浏览器（Edge、IE、Google
-Chrome、360安全浏览器、世界之窗浏览器）都不行；有人说防火墙或者安全软件的问题，但我关闭了防火墙和安全软件（没有安装NOD32安全防护，使用的是腾讯电脑管家
-）也没有卵用；有人说网卡驱动的问题，我使用驱动精灵更新了所有驱动，可悲是的电脑直接崩溃了，祸不单行啊！
-    这下好了，电脑黑屏一下午就是无法开机，用win10自带的修复工具重装了系统才能重新开机，这下终于又能愉快的调试了！！
-    不过也因祸得福，电脑磁盘一下干净多了，而且其他盘里的资料都保留下来了，重新装VS和Office和LOL又费了我一整天时间，哈哈哈哈！！</p>
+<p>代码像.cs类中一样引用了一个命名空间，只不过需要在<code>using</code>前面加一个<code>@</code>符号而已。 # 番外篇     倒霉的是，这两天遇到了一个尴尬的问题：Visual Studio编译运行ASP.NET web应用程序时打开浏览器总是会显示“无法显示此页”，查找了各种处理方法都没法解决，之前重新启动Visual Studio或者重启电脑就可以解决了，但这次这种粗暴的方法好像被免疫了。我之前用的VS2013，就算我再安装了VS2015同样不好用。     有人说是浏览器的问题，但我电脑上的5个浏览器（Edge、IE、Google Chrome、360安全浏览器、世界之窗浏览器）都不行；有人说防火墙或者安全软件的问题，但我关闭了防火墙和安全软件（没有安装NOD32安全防护，使用的是腾讯电脑管家 ）也没有卵用；有人说网卡驱动的问题，我使用驱动精灵更新了所有驱动，可悲是的电脑直接崩溃了，祸不单行啊！     这下好了，电脑黑屏一下午就是无法开机，用win10自带的修复工具重装了系统才能重新开机，这下终于又能愉快的调试了！！     不过也因祸得福，电脑磁盘一下干净多了，而且其他盘里的资料都保留下来了，重新装VS和Office和LOL又费了我一整天时间，哈哈哈哈！！</p>
 
     </div>
 
@@ -640,7 +615,7 @@ Chrome、360安全浏览器、世界之窗浏览器）都不行；有人说防�
   </span>
   <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
         
