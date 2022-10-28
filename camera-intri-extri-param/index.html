@@ -27,7 +27,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="https://waylandwong.github.io/images/cv/1.png">
 <meta property="article:published_time" content="2022-10-26T18:56:12.000Z">
-<meta property="article:modified_time" content="2022-10-27T12:02:23.467Z">
+<meta property="article:modified_time" content="2022-10-28T12:11:33.255Z">
 <meta property="article:author" content="Wayland Wong">
 <meta property="article:tag" content="camera calibration">
 <meta property="article:tag" content="algorithm">
@@ -182,7 +182,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-27 12:02:23" itemprop="dateModified" datetime="2022-10-27T12:02:23+00:00">2022-10-27</time>
+                <time title="Modified: 2022-10-28 12:11:33" itemprop="dateModified" datetime="2022-10-28T12:11:33+00:00">2022-10-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,7 +296,7 @@ z \\
 \end{bmatrix}
 \]</span></p>
 <h2 id="相机内参">相机内参</h2>
-<p><img src="/images/cv/1.png" /></p>
+<p><img src="./../images/cv/1.png" /></p>
 <ul>
 <li>以相机光心为坐标系原点，z轴指向相机前方，x向右，y向左，建立3维相机空间坐标系，设空间中某一点坐标：<span class="math inline">\(P(X,Y,Z)\)</span></li>
 <li>该点投影在像平面的坐标记作<span class="math inline">\(p(x,y)\)</span></li>
@@ -321,9 +321,7 @@ P&#39; = Z\begin{bmatrix}
 u \\ 
 v \\ 
 1 
-\end{bmatrix}
-=
-\begin{bmatrix} 
+\end{bmatrix} = \begin{bmatrix} 
 f_x &amp; 0 &amp; c_x \\ 
 0 &amp; f_y &amp; c_y \\
 0 &amp; 0 &amp; 1
@@ -346,16 +344,36 @@ z_w \\
 1
 \end{bmatrix}
 \]</span></p>
-<p>相机位资由旋转矩阵<span class="math inline">\(R\)</span>和平移向量<span class="math inline">\(T\)</span>描述（<span class="math inline">\(R\)</span>和<span class="math inline">\(T\)</span>即为相机的外参），即 <span class="math display">\[
-P = RP_w + T
-\]</span> <span class="math display">\[
-P&#39; = KP = K
-\begin{bmatrix} 
+相机位资由旋转矩阵<span class="math inline">\(R\)</span>和平移向量<span class="math inline">\(T\)</span>描述（<span class="math inline">\(R\)</span>和<span class="math inline">\(T\)</span>即为相机的外参），即 $$ P =
+<span class="math display">\[\begin{bmatrix}
+RS &amp; T \\
+0 &amp; 1
+\end{bmatrix}\]</span>
+_{4 4}
+<span class="math display">\[\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}\]</span>
+<span class="math display">\[
+\]</span> P' =
+<span class="math display">\[\begin{bmatrix} 
+K &amp; 0 \\ 
+\end{bmatrix}\]</span>
+_{3 4}
+<span class="math display">\[\begin{bmatrix} 
 R &amp; T \\ 
 0 &amp; 1 \\
-\end{bmatrix}
-P_w
-\]</span></p>
+\end{bmatrix}\]</span>
+<em>{4 4} P_w = \begin{bmatrix} f_x &amp; 0 &amp; c_x &amp; 0 \ 0 &amp; f_y &amp; c_y &amp; 0 \ 0 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix} \begin{bmatrix} r</em>{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \ r_{21} &amp; r_{22} &amp; r_{23} &amp; t_1 \ r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}
+<span class="math display">\[\begin{bmatrix}
+x \\
+y \\
+z \\
+1
+\end{bmatrix}\]</span>
+<p>$$</p>
 <h2 id="opencv-相机标定原理">OPENCV 相机标定原理</h2>
 <p>TODO: DLT超定解求解逻辑</p>
 
