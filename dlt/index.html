@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"waylandwong.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="DLT 直接线性转换算法">
+<meta property="og:url" content="https://waylandwong.github.io/dlt/index.html">
+<meta property="og:site_name" content="Wayland&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-26T19:02:11.000Z">
+<meta property="article:modified_time" content="2022-10-29T05:57:35.149Z">
+<meta property="article:author" content="Wayland Wong">
+<meta property="article:tag" content="algorithm">
+<meta property="article:tag" content="dlt">
+<meta property="article:tag" content="computor vision">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://waylandwong.github.io/dlt/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DLT 直接线性转换算法 | Wayland's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Wayland's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://waylandwong.github.io/dlt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wayland Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wayland's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DLT 直接线性转换算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-26 19:02:11" itemprop="dateCreated datePublished" datetime="2022-10-26T19:02:11+00:00">2022-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-29 05:57:35" itemprop="dateModified" datetime="2022-10-29T05:57:35+00:00">2022-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ComputorVersion/" itemprop="url" rel="index"><span itemprop="name">ComputorVersion</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/dlt/" class="post-meta-item leancloud_visitors" data-flag-title="DLT 直接线性转换算法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/dlt/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/dlt/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">DLT 直接线性转换算法</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>Direct Linear Transformation</p>
+</blockquote>
+<h2 id="d-dlt算法">2D DLT算法</h2>
+<p>记某一点<span class="math inline">\(X_i=(x_i,y_i,w_i)\)</span>，其映射后坐标<span class="math inline">\(X&#39;_i=(x&#39;_i,y&#39;_i, w&#39;_i)\)</span>。 设2D点映射关系如下： <span class="math display">\[
+X&#39;_i=HX_i, \quad H= \begin{bmatrix}
+h1 &amp; h2 &amp; h3 \\
+h4 &amp; h5 &amp; h6 \\
+h7 &amp; h8 &amp; h9
+\end{bmatrix}
+\]</span> <span class="math inline">\(X&#39;_i\)</span>和<span class="math inline">\(HX_i\)</span>可能并不相等，它们有相同的方向但大小可能相差一个非零比例。由共线向量外积得零向量可转化为： <span class="math display">\[
+\quad X&#39;_i \times HX_i = 0
+\]</span> 记<span class="math inline">\(h^T_j\)</span>为<span class="math inline">\(H\)</span>矩阵的第<span class="math inline">\(j\)</span>行，则有： <span class="math display">\[
+H X_i = \left(
+\begin{array} \\
+h^T_1 X_i \\
+h^T_2 X_i \\
+h^T_3 X_i
+\end{array}
+\right)
+\]</span> 由向量<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%89%E7%A7%AF">叉积</a>d得： <span class="math display">\[
+x&#39;_i \times Hx_i = 
+\left(
+\begin{array} \\
+x&#39;_i \\
+y&#39;_i \\
+w&#39;_i
+\end{array} 
+\right) \times \left(
+\begin{array} \\
+h^T_1 X_i \\
+h^T_2 X_i \\
+h^T_3 X_i
+\end{array} \right) = \left(
+\begin{array} \\
+y&#39;_i h^T_3X_i - w&#39;_i h^T_2X_i \\
+w&#39;_i h^T_1X_i - x&#39;_i h^T_3X_i \\
+x&#39;_i h^T_2X_i - y&#39;_i h^T_1X_i
+\end{array} 
+\right)   \tag{1}
+\]</span></p>
+<p>向量转为矩阵运算，以及矩阵转置得：</p>
+<p><span class="math display">\[
+(1) = \begin{bmatrix}
+0 &amp; -w&#39;_i X_i &amp; y&#39;_i X_i \\
+w&#39;_i X_i &amp; 0 &amp; -x&#39;_i X_i \\
+-y&#39;_i X_i &amp; x&#39;_i X_i &amp; 0 \\
+\end{bmatrix} 
+\left(
+\begin{array} \\
+h^T_1 \\
+h^T_2 \\
+h^T_3
+\end{array}
+\right) = \begin{bmatrix}
+0^T &amp; -w&#39;_i X^T_i &amp; y&#39;_i X^T_i \\
+w&#39;_i X^T_i &amp; 0^T &amp; -x&#39;^T_i X^T_i \\
+-y&#39;_i X^T_i  &amp; x&#39;_i X^T_i &amp; 0^T
+\end{bmatrix}
+\left(
+\begin{array} \\
+h_1 \\
+h_2 \\
+h_3
+\end{array}
+\right) = 0  \tag{2}
+\]</span> 可表示为： <span class="math display">\[
+A_i H = 0
+\]</span></p>
+<p><span class="math display">\[
+h= \left(
+\begin{array} \\
+h_1 \\
+h_2 \\
+h_3
+\end{array}
+\right)
+\]</span> 因为<span class="math inline">\(X_i\)</span>是3维列向量，<span class="math inline">\(H_1\)</span>是3维列向量，所以<span class="math inline">\(A_i\)</span>是<span class="math inline">\(3 \times 9\)</span>矩阵，<span class="math inline">\(H\)</span>是9维列向量， 可以看到每一行的展开都会产生由3个方程组成的方程组，但每个方程中只有两个独立变量，所以可以忽略第三个方程，公式<span class="math inline">\((1)\)</span>可简化为： <span class="math display">\[
+\begin{bmatrix}
+0^T &amp; -w&#39;_i X^T_i &amp; y&#39;_i X^T_i \\
+w&#39;_i X^T_i &amp; 0^T &amp; -x&#39;^T_i X^T_i
+\end{bmatrix}
+\left(
+\begin{array} \\
+h_1 \\
+h_2 \\
+h_3
+\end{array}
+\right) =0 \tag{3}
+\]</span> 此时<span class="math inline">\(A_i\)</span>简化为<span class="math inline">\(2 \times 9\)</span>矩阵。对于每一对点的映射关系可对<span class="math inline">\(H\)</span>产生两个等式，给定4个等式可以得到一组方程： <span class="math display">\[
+Ah=0, \quad AH=0
+\]</span> 其中<span class="math inline">\(A\)</span>是由矩阵行<span class="math inline">\(A_i\)</span>建立的方程系数，它的元素个数是已知点坐标的二次方。在图片处理中，一般选择<span class="math inline">\(w_i=1\)</span>，也可以取其它数值。求<span class="math inline">\(H\)</span>的非零解即可得到最终的结果。</p>
+<p>在图像处理中，因为噪音或者误差的问题，我们会采集超过4个点来做处理，在这种情况下不是直接计算一个确定的值，而是寻找一个使得<strong>损失函数</strong>最小的近似的解。</p>
+<p>在这种计算逻辑中，为了排除零解，可以约束<span class="math inline">\(||h||=1\)</span>，它的值并不重要，因为<span class="math inline">\(H\)</span>只是定义到了解的度。鉴于<span class="math inline">\(Ah=0\)</span>没有确切的解，所以尝试取寻找<span class="math inline">\(||Ah||\)</span>的最小值，也等同于寻找<span class="math inline">\(||Ah||/||h||\)</span>的最小值。解就是<span class="math inline">\(A^TA\)</span>的单位特征向量，它的特征值最小，参考<a target="_blank" rel="noopener" href="https://www.changjiangcai.com/files/text-books/Richard_Hartley_Andrew_Zisserman-Multiple_View_Geometry_in_Computer_Vision-EN.pdf">Multiple View Geometry in Computer Vision, Second Edition #P592 A5.3 Least-squares solution of homogeneous equations</a>，也即寻找矩阵<span class="math inline">\(A\)</span>的最小奇异值的单位奇异向量，即可确定<span class="math inline">\(X\)</span>和<span class="math inline">\(X&#39;\)</span>的映射关系。由此产生的算法被称为DLT算法。</p>
+<p>初了直接将<span class="math inline">\(H\)</span>作为齐次向量之外，还可以通过设置向量<span class="math inline">\(h\)</span>某个分量<span class="math inline">\(h_j=1\)</span>从而把方程组<span class="math inline">\((3)\)</span> 变成非齐次矩阵。这里不再展开讨论，有兴趣可以参考<a target="_blank" rel="noopener" href="https://www.changjiangcai.com/files/text-books/Richard_Hartley_Andrew_Zisserman-Multiple_View_Geometry_in_Computer_Vision-EN.pdf">Multiple View Geometry in Computer Vision, Second Edition #P90 4.1.2 Inhomogeneous solution</a>。</p>
+<p>问题： - 对于4组映射点关系，矩阵A即可确定，直接求该矩阵的最小奇异值对应的单位奇异向量就是要求的线性映射关系H？奇异向量 -&gt; 3x3矩阵？ - 如何对多个值（远超4组）求最小值，依次迭代吗？ - 相机内外参又如何映射到这个矩阵A里？ - 相机径向畸变会导致DLT误差增大</p>
+<h2 id="d-dlt-算法">3D DLT 算法</h2>
+<p>从2D的<span class="math inline">\((3)\)</span>式转为3D场景下的公式： <span class="math display">\[
+\begin{bmatrix}
+0^T &amp; -w&#39;_i X^T_i &amp; y&#39;_i X^T_i \\
+w&#39;_i X^T_i &amp; 0^T &amp; -x&#39;^T_i X^T_i
+\end{bmatrix}
+\left(
+\begin{array} \\
+p_1 \\
+p_2 \\
+p_3
+\end{array}
+\right) =0 \tag{3}
+\]</span> <span class="math inline">\(p\)</span>是<span class="math inline">\(3 \times 4\)</span>的投影矩阵。</p>
+<h2 id="dlt-3d-重建">DLT 3D 重建</h2>
+<p>当有了多个2维相机的线性映射之后，可以使用DLT来将2维坐标投影到3维空间中。下面应用简单的线性三角测量的方法。</p>
+<p>对输入的每一张图片，有以下映射关系： <span class="math display">\[
+x=PX, x&#39; = P&#39;X
+\]</span> 其中<span class="math inline">\(X\)</span>是3D世界坐标系下的一个点，<span class="math inline">\(x\)</span>是这个3D点在一个相机空间的坐标，<span class="math inline">\(x&#39;\)</span>是这个3D点另一个相机空间的坐标。这两个等式可以合并为<span class="math inline">\(AX=0\)</span>，这个一个对变量<span class="math inline">\(X\)</span>的线性方程。齐次比例因此可以通过叉乘计算消除，可以给出多台相机中的每个图像点给出三个方程。例如第一个图片中的一个点可以给出： <span class="math display">\[
+x \times (PX) = 0
+\]</span> 展开后如下： <span class="math display">\[
+x(p^T_3X) - (p^T_1X) = 0, \quad \\
+x(p^T_3X) - (p^T_1X) = 0, \quad \\
+x(p^T_3X) - (p^T_1X) = 0 
+\]</span></p>
+<p>对多个相机的方程合并后得到：<span class="math inline">\(AX=0\)</span> <span class="math display">\[
+A= \begin{bmatrix}
+xp^T_3-p^T_1\\
+yp^T_3-p^T_2 \\
+x&#39;p&#39;^T_3-p&#39;^T_1 \\
+y&#39;p&#39;^T_3-p&#39;^T_2
+\end{bmatrix}
+\]</span></p>
+<p>使用SVD求解矩阵<span class="math inline">\(A\)</span>，可以估计出<span class="math inline">\(X\)</span>的值，从而可以估计任何点的三维坐标。其中的<span class="math inline">\(p\)</span>即为相机的内外参矩阵组合而成。</p>
+<h2 id="相机内外参转为dlt矩阵">相机内外参转为DLT矩阵</h2>
+<p><span class="math display">\[
+P = \begin{bmatrix} 
+f_x &amp; 0 &amp; c_x &amp; 0 \\ 
+0 &amp; f_y &amp; c_y &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix} \begin{bmatrix}
+r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \\
+r_{21} &amp; r_{22} &amp; r_{23} &amp; t_1 \\
+r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \\
+0 &amp; 0 &amp; 0 &amp; 1 
+\end{bmatrix}, \quad
+m=\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+DLT = KmP, \quad
+nDLT = DLT/DLT[3,4]
+\]</span></p>
+<h2 id="code-implement">Code Implement</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-  </span></span><br><span class="line"><span class="comment"># file DLTx.py version .1  </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;  </span></span><br><span class="line"><span class="string">I found this code at https://www.mail-archive.com/floatcanvas@mithis.com/msg00513.html  </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Camera calibration and point reconstruction based on direct linear transformation (DLT).  </span></span><br><span class="line"><span class="string">The fundamental problem here is to find a mathematical relationship between the  </span></span><br><span class="line"><span class="string"> coordinates  of a 3D point and its projection onto the image plane. The DLT (a linear approximation to this problem) is derived from modelling the object and its projection on the image plane as a pinhole camera situation.In simplistic terms, using the pinhole camera model, it can be found by similar  </span></span><br><span class="line"><span class="string"> triangles the following relation between the image coordinates (u,v) and the 3D point (X,Y,Z):   [ u ]   [ L1  L2  L3  L4 ] [ X ]   [ v ] = [ L5  L6  L7  L8 ] [ Y ]   [ 1 ]   [ L9 L10 L11 L12 ] [ Z ]                              [ 1 ]The matrix L is known as the camera matrix or camera projection matrix. For a  </span></span><br><span class="line"><span class="string"> 2D point (X,Y), the last column of the matrix doesn&#x27;t exist. In fact, the L12 term (or L9 for 2D DLT) is not independent of the other parameters and then there are only 11 (or 8 for 2D DLT) independent parameters in the DLT to be determined.DLT is typically used in two steps: 1. camera calibration and 2. object (point)  </span></span><br><span class="line"><span class="string"> reconstruction.The camera calibration step consists in digitizing points with known coordinates  </span></span><br><span class="line"><span class="string"> in the real space.At least 4 points are necessary for the calibration of a plane (2D DLT) and at  </span></span><br><span class="line"><span class="string"> least 6 points for the calibration of a volume (3D DLT). For the 2D DLT, at least one view of the object (points) must be entered. For the 3D DLT, at least 2 different views of the object (points) must be entered.These coordinates (from the object and image(s)) are inputted to the DLTcalib  </span></span><br><span class="line"><span class="string"> algorithm which estimates the camera parameters (8 for 2D DLT and 11 for 3D DLT).With these camera parameters and with the camera(s) at the same position of the  </span></span><br><span class="line"><span class="string"> calibration step,  we now can reconstruct the real position of any point inside the calibrated space (area for 2D DLT and volume for the 3D DLT) from the point position(s) viewed by the same fixed camera(s).This code can perform 2D or 3D DLT with any number of views (cameras).  </span></span><br><span class="line"><span class="string">For 3D DLT, at least two views (cameras) are necessary.  </span></span><br><span class="line"><span class="string">There are more accurate (but more complex) algorithms for camera calibration that  </span></span><br><span class="line"><span class="string"> also consider lens distortion. For example, OpenCV and Tsai softwares have been ported to Python. However, DLT is classic, simple, and effective (fast) for most applications.About DLT, see: http://kwon3d.com/theory/dlt/dlt.html  </span></span><br><span class="line"><span class="string">This code is based on different implementations and teaching material on DLT  </span></span><br><span class="line"><span class="string"> found in the internet.&quot;&quot;&quot;</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Marcos Duarte - [EMAIL PROTECTED] - 04dec08  </span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> N  </span><br><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">import</span> sys  </span><br><span class="line"><span class="keyword">import</span> os  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">import</span> json  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getCameraNames</span>(<span class="params">filename, node</span>):  </span><br><span class="line">    s = cv2.FileStorage(filename, cv2.FileStorage_READ)  </span><br><span class="line">    data = s.getNode(node)  </span><br><span class="line">    result = []  </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> data.isSeq():  </span><br><span class="line">        <span class="keyword">return</span> result  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(data.size()):  </span><br><span class="line">        ele = data.at(i)  </span><br><span class="line">        <span class="built_in">type</span> = ele.<span class="built_in">type</span>()  </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">type</span> == <span class="number">3</span>:  </span><br><span class="line">            <span class="comment"># string  </span></span><br><span class="line">            result.append(ele.string())  </span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">type</span> == <span class="number">1</span>:  </span><br><span class="line">            <span class="comment"># int  </span></span><br><span class="line">            result.append(<span class="built_in">str</span>(<span class="built_in">int</span>(ele.real())))  </span><br><span class="line">    <span class="keyword">return</span> result  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getMat</span>(<span class="params">filename, node</span>):  </span><br><span class="line">    s = cv2.FileStorage(filename, cv2.FileStorage_READ)  </span><br><span class="line">    data = s.getNode(node).mat()  </span><br><span class="line">    <span class="keyword">return</span> data  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getJoint</span>(<span class="params">filename, jointType, index</span>):  </span><br><span class="line">    file = json.load(<span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>))  </span><br><span class="line">    joints = file[<span class="string">&#x27;Joints&#x27;</span>][jointType]  </span><br><span class="line">    joint = joints[index*<span class="number">3</span>: (index+<span class="number">1</span>)*<span class="number">3</span> - <span class="number">1</span>]  </span><br><span class="line">    <span class="keyword">return</span> joint  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">IntriAndExtriToDLT</span>(<span class="params">K, R, T</span>):  </span><br><span class="line">    <span class="comment"># 相机内外参转dlt矩阵  </span></span><br><span class="line">    <span class="comment"># https://biomech.web.unc.edu/dlt-to-from-intrinsic-extrinsic/  </span></span><br><span class="line">    <span class="comment"># K = [ K 0    #       0 0]    # P = [R     T&#x27;    #     0 0 0 1]    P = np.append(R, T, axis=1)  </span></span><br><span class="line">    P = np.append(P, [[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]], axis=<span class="number">0</span>)  </span><br><span class="line">    zero = [[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]  </span><br><span class="line">    zero = N.transpose(zero)  </span><br><span class="line">    K = np.append(K, zero, axis=<span class="number">1</span>)  </span><br><span class="line">    dlt = np.dot(K, P)  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># normalize the result by dividing by the final value  </span></span><br><span class="line">    ndlt = dlt / dlt[<span class="number">2</span>, <span class="number">3</span>]  </span><br><span class="line">    <span class="keyword">return</span> ndlt.flatten()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 相机标定  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DLTcalib</span>(<span class="params">nd, xyz, uv</span>):  </span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;  </span></span><br><span class="line"><span class="string">    Camera calibration by DLT using known object points and their image points.    This code performs 2D or 3D DLT camera calibration with any number of views (cameras).    For 3D DLT, at least two views (cameras) are necessary.    Inputs:     nd is the number of dimensions of the object space: 3 for 3D DLT and 2 for 2D DLT.     xyz are the coordinates in the object 3D or 2D space of the calibration points.     uv are the coordinates in the image 2D space of these calibration points.     The coordinates (x,y,z and u,v) are given as columns and the different points as rows.     For the 2D DLT (object planar space), only the first 2 columns (x and y) are used.     There must be at least 6 calibration points for the 3D DLT and 4 for the 2D DLT.    Outputs:     L: array of the 8 or 11 parameters of the calibration matrix     err: error of the DLT (mean residual of the DLT transformation in units of camera coordinates).    &#x27;&#x27;&#x27;</span>  </span><br><span class="line">    <span class="comment"># Convert all variables to numpy array:  </span></span><br><span class="line">    xyz = N.asarray(xyz)  </span><br><span class="line">    uv = N.asarray(uv)  </span><br><span class="line">    <span class="comment"># number of points:  </span></span><br><span class="line">    np = xyz.shape[<span class="number">0</span>]  </span><br><span class="line">    <span class="comment"># Check the parameters:  </span></span><br><span class="line">    <span class="keyword">if</span> uv.shape[<span class="number">0</span>] != np:  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&#x27;xyz (%d points) and uv (%d points) have different number of points.&#x27;</span> % (np, uv.shape[<span class="number">0</span>]))  </span><br><span class="line">    <span class="keyword">if</span> (nd == <span class="number">2</span> <span class="keyword">and</span> xyz.shape[<span class="number">1</span>] != <span class="number">2</span>) <span class="keyword">or</span> (nd == <span class="number">3</span> <span class="keyword">and</span> xyz.shape[<span class="number">1</span>] != <span class="number">3</span>):  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Incorrect number of coordinates (%d) for %dD DLT (it should be %d).&#x27;</span> % (xyz.shape[<span class="number">1</span>], nd, nd))  </span><br><span class="line">    <span class="keyword">if</span> nd == <span class="number">3</span> <span class="keyword">and</span> np &lt; <span class="number">6</span> <span class="keyword">or</span> nd == <span class="number">2</span> <span class="keyword">and</span> np &lt; <span class="number">4</span>:  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(  </span><br><span class="line">            <span class="string">&#x27;%dD DLT requires at least %d calibration points. Only %d points were entered.&#x27;</span> % (nd, <span class="number">2</span> * nd, np))  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># Normalize the data to improve the DLT quality (DLT is dependent of the system of coordinates).  </span></span><br><span class="line">    <span class="comment"># This is relevant when there is a considerable perspective distortion.    # Normalization: mean position at origin and mean distance equals to 1 at each direction.    Txyz, xyzn = Normalization(nd, xyz)  </span></span><br><span class="line">    Tuv, uvn = Normalization(<span class="number">2</span>, uv)  </span><br><span class="line">  </span><br><span class="line">    A = []  </span><br><span class="line">    <span class="keyword">if</span> nd == <span class="number">2</span>:  <span class="comment"># 2D DLT  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(np):  </span><br><span class="line">            x, y = xyzn[i, <span class="number">0</span>], xyzn[i, <span class="number">1</span>]  </span><br><span class="line">            u, v = uvn[i, <span class="number">0</span>], uvn[i, <span class="number">1</span>]  </span><br><span class="line">            A.append([x, y, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, -u * x, -u * y, -u])  </span><br><span class="line">            A.append([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, x, y, <span class="number">1</span>, -v * x, -v * y, -v])  </span><br><span class="line">    <span class="keyword">elif</span> nd == <span class="number">3</span>:  <span class="comment"># 3D DLT  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(np):  </span><br><span class="line">            x, y, z = xyzn[i, <span class="number">0</span>], xyzn[i, <span class="number">1</span>], xyzn[i, <span class="number">2</span>]  </span><br><span class="line">            u, v = uvn[i, <span class="number">0</span>], uvn[i, <span class="number">1</span>]  </span><br><span class="line">            A.append([x, y, z, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, -u * x, -u * y, -u * z, -u])  </span><br><span class="line">            A.append([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, x, y, z, <span class="number">1</span>, -v * x, -v * y, -v * z, -v])  </span><br><span class="line">  </span><br><span class="line">    <span class="comment"># convert A to array  </span></span><br><span class="line">    A = N.asarray(A)  </span><br><span class="line">    <span class="comment"># Find the 11 (or 8 for 2D DLT) parameters:  </span></span><br><span class="line">    U, S, Vh = N.linalg.svd(A)  </span><br><span class="line">    <span class="comment"># The parameters are in the last line of Vh and normalize them:  </span></span><br><span class="line">    L = Vh[-<span class="number">1</span>, :] / Vh[-<span class="number">1</span>, -<span class="number">1</span>]  </span><br><span class="line">    <span class="comment"># Camera projection matrix:  </span></span><br><span class="line">    H = L.reshape(<span class="number">3</span>, nd + <span class="number">1</span>)  </span><br><span class="line">    <span class="comment"># Denormalization:  </span></span><br><span class="line">    H = N.dot(N.dot(N.linalg.pinv(Tuv), H), Txyz);  </span><br><span class="line">    H = H / H[-<span class="number">1</span>, -<span class="number">1</span>]  </span><br><span class="line">    L = H.flatten(<span class="string">&#x27;C&#x27;</span>)  </span><br><span class="line">    <span class="comment"># Mean error of the DLT (mean residual of the DLT transformation in units of camera coordinates):  </span></span><br><span class="line">    uv2 = N.dot(H, N.concatenate((xyz.T, N.ones((<span class="number">1</span>, xyz.shape[<span class="number">0</span>])))))  </span><br><span class="line">    uv2 = uv2 / uv2[<span class="number">2</span>, :]  </span><br><span class="line">    <span class="comment"># mean distance:  </span></span><br><span class="line">    err = N.sqrt(N.mean(N.<span class="built_in">sum</span>((uv2[<span class="number">0</span>:<span class="number">2</span>, :].T - uv) ** <span class="number">2</span>, <span class="number">1</span>)))  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> L, err  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 3D点投影回2D点  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DLTProjection</span>(<span class="params">Ls, xyz, uvs</span>):  </span><br><span class="line">    <span class="comment"># m&#x27; = LM  </span></span><br><span class="line">    size = N.shape(Ls)  </span><br><span class="line">    p3d = N.transpose(xyz)  </span><br><span class="line">    p3d = N.append(p3d, <span class="number">1</span>)  </span><br><span class="line">  </span><br><span class="line">    images = []  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(size[<span class="number">0</span>]):  </span><br><span class="line">        K = Ls[i]  </span><br><span class="line">        K = K.reshape(<span class="number">3</span>, <span class="number">4</span>)  </span><br><span class="line">        p = N.dot(K, p3d)  </span><br><span class="line">        p = (p/p[<span class="number">2</span>])  </span><br><span class="line">        p = p[:<span class="number">2</span>]  </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;========↓↓↓↓↓↓↓projection↓↓↓↓↓↓↓=======&quot;</span>)  </span><br><span class="line">        <span class="built_in">print</span>(i)  </span><br><span class="line">        <span class="built_in">print</span>(p)  </span><br><span class="line">        <span class="comment"># point to img and show  </span></span><br><span class="line">        img = cv2.imread(<span class="string">&quot;quickpose/data/&quot;</span>+<span class="built_in">str</span>(i)+<span class="string">&quot;/0.jpg&quot;</span>)  </span><br><span class="line">        cv2.circle(img, (<span class="built_in">int</span>(p[<span class="number">0</span>]), <span class="built_in">int</span>(p[<span class="number">1</span>])), <span class="number">5</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">4</span>)  </span><br><span class="line">        images.append(img)  </span><br><span class="line">  </span><br><span class="line">        <span class="built_in">print</span>(uvs[i])  </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;========↑↑↑↑↑↑↑original↑↑↑↑↑↑↑=========&quot;</span>)  </span><br><span class="line">  </span><br><span class="line">    img = cv2.hconcat(images)  </span><br><span class="line">    cv2.imshow(<span class="string">&quot;img-projection&quot;</span>, img)  </span><br><span class="line">    cv2.waitKey()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DLTrecon</span>(<span class="params">nd, nc, Ls, uvs</span>):  </span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;  </span></span><br><span class="line"><span class="string">    Reconstruction of object point from image point(s) based on the DLT parameters.    This code performs 2D or 3D DLT point reconstruction with any number of views (cameras).    For 3D DLT, at least two views (cameras) are necessary.    Inputs:     nd is the number of dimensions of the object space: 3 for 3D DLT and 2 for 2D DLT.     nc is the number of cameras (views) used.     Ls (array type) are the camera calibration parameters of each camera      (is the output of DLTcalib function). The Ls parameters are given as columns  </span></span><br><span class="line"><span class="string">      and the Ls for different cameras as rows.     uvs are the coordinates of the point in the image 2D space of each camera.      The coordinates of the point are given as columns and the different views as rows.    Outputs:     xyz: point coordinates in space    &#x27;&#x27;&#x27;</span>  </span><br><span class="line">    <span class="comment"># Convert Ls to array:  </span></span><br><span class="line">    Ls = N.asarray(Ls)  </span><br><span class="line">    <span class="comment"># Check the parameters:  </span></span><br><span class="line">    <span class="keyword">if</span> Ls.ndim == <span class="number">1</span> <span class="keyword">and</span> nc != <span class="number">1</span>:  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(  </span><br><span class="line">            <span class="string">&#x27;Number of views (%d) and number of sets of camera calibration parameters (1) are different.&#x27;</span> % (nc))  </span><br><span class="line">    <span class="keyword">if</span> Ls.ndim &gt; <span class="number">1</span> <span class="keyword">and</span> nc != Ls.shape[<span class="number">0</span>]:  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(  </span><br><span class="line">            <span class="string">&#x27;Number of views (%d) and number of sets of camera calibration parameters (%d) are different.&#x27;</span> % (  </span><br><span class="line">                nc, Ls.shape[<span class="number">0</span>]))  </span><br><span class="line">    <span class="keyword">if</span> nd == <span class="number">3</span> <span class="keyword">and</span> Ls.ndim == <span class="number">1</span>:  </span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&#x27;At least two sets of camera calibration parameters are needed for 3D point reconstruction.&#x27;</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> nc == <span class="number">1</span>:  <span class="comment"># 2D and 1 camera (view), the simplest (and fastest) case  </span></span><br><span class="line">        <span class="comment"># One could calculate inv(H) and input that to the code to speed up things if needed.        # (If there is only 1 camera, this transformation is all Floatcanvas2 might need)        Hinv = N.linalg.inv(Ls.reshape(3, 3))  </span></span><br><span class="line">        <span class="comment"># Point coordinates in space:  </span></span><br><span class="line">        xyz = N.dot(Hinv, [uvs[<span class="number">0</span>], uvs[<span class="number">1</span>], <span class="number">1</span>])  </span><br><span class="line">        xyz = xyz[<span class="number">0</span>:<span class="number">2</span>] / xyz[<span class="number">2</span>]  </span><br><span class="line">    <span class="keyword">else</span>:  </span><br><span class="line">        M = []  </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nc):  </span><br><span class="line">            L = Ls[i, :]  </span><br><span class="line">            u, v = uvs[i][<span class="number">0</span>], uvs[i][<span class="number">1</span>]  <span class="comment"># this indexing works for both list and numpy array  </span></span><br><span class="line">            <span class="keyword">if</span> nd == <span class="number">2</span>:  </span><br><span class="line">                M.append([L[<span class="number">0</span>] - u * L[<span class="number">6</span>], L[<span class="number">1</span>] - u * L[<span class="number">7</span>], L[<span class="number">2</span>] - u * L[<span class="number">8</span>]])  </span><br><span class="line">                M.append([L[<span class="number">3</span>] - v * L[<span class="number">6</span>], L[<span class="number">4</span>] - v * L[<span class="number">7</span>], L[<span class="number">5</span>] - v * L[<span class="number">8</span>]])  </span><br><span class="line">            <span class="keyword">elif</span> nd == <span class="number">3</span>:  </span><br><span class="line">                M.append([L[<span class="number">0</span>] - u * L[<span class="number">8</span>], L[<span class="number">1</span>] - u * L[<span class="number">9</span>], L[<span class="number">2</span>] - u * L[<span class="number">10</span>], L[<span class="number">3</span>] - u * L[<span class="number">11</span>]])  </span><br><span class="line">                M.append([L[<span class="number">4</span>] - v * L[<span class="number">8</span>], L[<span class="number">5</span>] - v * L[<span class="number">9</span>], L[<span class="number">6</span>] - v * L[<span class="number">10</span>], L[<span class="number">7</span>] - v * L[<span class="number">11</span>]])  </span><br><span class="line">  </span><br><span class="line">        <span class="comment"># Find the xyz coordinates:  </span></span><br><span class="line">        U, S, Vh = N.linalg.svd(N.asarray(M))  </span><br><span class="line">        <span class="comment"># Point coordinates in space:  </span></span><br><span class="line">        xyz = Vh[-<span class="number">1</span>, <span class="number">0</span>:-<span class="number">1</span>] / Vh[-<span class="number">1</span>, -<span class="number">1</span>]  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> xyz  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Normalization</span>(<span class="params">nd, x</span>):  </span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;  </span></span><br><span class="line"><span class="string">    Normalization of coordinates (centroid to the origin and mean distance of sqrt(2 or 3).    Inputs:     nd: number of dimensions (2 for 2D; 3 for 3D)     x: the data to be normalized (directions at different columns and points at rows)    Outputs:     Tr: the transformation matrix (translation plus scaling)     x: the transformed data    &#x27;&#x27;&#x27;</span>  </span><br><span class="line">    x = N.asarray(x)  </span><br><span class="line">    m, s = N.mean(x, <span class="number">0</span>), N.std(x)  </span><br><span class="line">    <span class="keyword">if</span> nd == <span class="number">2</span>:  </span><br><span class="line">        Tr = N.array([[s, <span class="number">0</span>, m[<span class="number">0</span>]], [<span class="number">0</span>, s, m[<span class="number">1</span>]], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]])  </span><br><span class="line">    <span class="keyword">else</span>:  </span><br><span class="line">        Tr = N.array([[s, <span class="number">0</span>, <span class="number">0</span>, m[<span class="number">0</span>]], [<span class="number">0</span>, s, <span class="number">0</span>, m[<span class="number">1</span>]], [<span class="number">0</span>, <span class="number">0</span>, s, m[<span class="number">2</span>]], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]])  </span><br><span class="line">  </span><br><span class="line">    Tr = N.linalg.inv(Tr)  </span><br><span class="line">    x = N.dot(Tr, N.concatenate((x.T, N.ones((<span class="number">1</span>, x.shape[<span class="number">0</span>])))))  </span><br><span class="line">    x = x[<span class="number">0</span>:nd, :].T  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> Tr, x  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将所有相机的内外参转为DLT矩阵  </span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">convert</span>():  </span><br><span class="line">    names = getCameraNames(<span class="string">&quot;quickpose/intri.yaml&quot;</span>, <span class="string">&quot;names&quot;</span>)  </span><br><span class="line">    names.sort()  </span><br><span class="line">    nd = <span class="number">3</span>  </span><br><span class="line">    Ls = []  </span><br><span class="line">    uvs = []  </span><br><span class="line">    names = [<span class="string">&quot;0&quot;</span>, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>]  </span><br><span class="line">    nc = <span class="built_in">len</span>(names)  </span><br><span class="line">  </span><br><span class="line">    images = []  </span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> names:  </span><br><span class="line">        K = getMat(<span class="string">&quot;quickpose/intri.yaml&quot;</span>, <span class="string">&quot;K_&quot;</span> + name)  </span><br><span class="line">        T = getMat(<span class="string">&quot;quickpose/extri.yaml&quot;</span>, <span class="string">&quot;T_&quot;</span> + name)  </span><br><span class="line">        vR = getMat(<span class="string">&quot;quickpose/extri.yaml&quot;</span>, <span class="string">&quot;R_&quot;</span> + name)  </span><br><span class="line">        idx = <span class="number">0</span>  </span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">&quot;2&quot;</span>:  </span><br><span class="line">            idx = <span class="number">3</span>  </span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">&quot;3&quot;</span>:  </span><br><span class="line">            idx = <span class="number">2</span>  </span><br><span class="line">        <span class="comment"># if name == &quot;4&quot;:  </span></span><br><span class="line">        <span class="comment"># 第四个人的数据不对  </span></span><br><span class="line">        <span class="comment">#     idx = 2  </span></span><br><span class="line">        <span class="comment"># 中间人的root节点  </span></span><br><span class="line">        rootJoint = getJoint(<span class="string">&quot;quickpose/data/&quot;</span>+name+<span class="string">&quot;/0.json&quot;</span>, <span class="number">1</span>, idx)  </span><br><span class="line">        <span class="comment"># Converts a rotation matrix to a rotation vector or vice versa.  </span></span><br><span class="line">        R = N.asarray(cv2.Rodrigues(vR)[<span class="number">0</span>])  </span><br><span class="line">        ndlt = IntriAndExtriToDLT(K=K, R=R, T=T)  </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(uvs) == <span class="number">0</span>:  </span><br><span class="line">            uvs = rootJoint  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            uvs = np.vstack((uvs, rootJoint))  </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(Ls) == <span class="number">0</span>:  </span><br><span class="line">            Ls = ndlt  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            Ls = np.vstack((Ls, ndlt))  </span><br><span class="line">  </span><br><span class="line">        img = cv2.imread(<span class="string">&quot;quickpose/data/&quot;</span>+name+<span class="string">&quot;/0.jpg&quot;</span>)  </span><br><span class="line">        cv2.circle(img, (<span class="built_in">int</span>(rootJoint[<span class="number">0</span>]), <span class="built_in">int</span>(rootJoint[<span class="number">1</span>])), <span class="number">5</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">5</span>)  </span><br><span class="line">        images.append(img)  </span><br><span class="line">  </span><br><span class="line">    img = cv2.hconcat(images)  </span><br><span class="line">    cv2.imshow(<span class="string">&quot;img-origin&quot;</span>, img)  </span><br><span class="line">  </span><br><span class="line">    xyz = DLTrecon(nd=nd, nc=nc, Ls=Ls, uvs=uvs)  </span><br><span class="line">    <span class="built_in">print</span>(xyz)  </span><br><span class="line">    DLTProjection(Ls, xyz, uvs)  </span><br><span class="line">    xyz1234 = N.zeros((<span class="built_in">len</span>(xyz), <span class="number">3</span>))  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Mean error of the point reconstruction using the DLT (error in cm):&#x27;</span>)  </span><br><span class="line">    <span class="built_in">print</span>(N.mean(N.sqrt(N.<span class="built_in">sum</span>((N.array(xyz1234) - N.array(xyz)) ** <span class="number">2</span>, <span class="number">1</span>))))  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:  </span><br><span class="line">    convert()  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span> 1. 测试 IntriAndExtriToDLT 方法结果对不对</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%89%E7%A7%AF">叉积 - 维基百科，自由的百科全书 (wikipedia.org)</a></li>
+<li><a target="_blank" rel="noopener" href="http://kwon3d.com/theory/dlt/dlt.html">DLT Method (kwon3d.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://biomech.web.unc.edu/dlt-to-from-intrinsic-extrinsic/">DLT to/from intrinsic + extrinsic | Hedrick Lab :: Comparative Biomechanics (unc.edu)</a></li>
+<li><a target="_blank" rel="noopener" href="http://bardsley.org.uk/wp-content/uploads/2007/02/3d-reconstruction-using-the-direct-linear-transform.pdf">3d-reconstruction-using-the-direct-linear-transform.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74597564">单应性Homograph估计：从传统算法到深度学习</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.changjiangcai.com/files/text-books/Richard_Hartley_Andrew_Zisserman-Multiple_View_Geometry_in_Computer_Vision-EN.pdf">Multiple View Geometry in Computer Vision, Second Edition</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.opticsjournal.net/X_Article/GetArticlePDF/OJfc33ccbbb56b4016">空间点的多视图DLT三维定位</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mail-archive.com/floatcanvas@mithis.com/msg00513.html">dlt python</a></li>
+<li><a target="_blank" rel="noopener" href="https://biomech.web.unc.edu/dlt-to-from-intrinsic-extrinsic/">DLT to/from intrinsic + extrinsic | Hedrick Lab :: Comparative Biomechanics (unc.edu)</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+              <a href="/tags/dlt/" rel="tag"># dlt</a>
+              <a href="/tags/computor-vision/" rel="tag"># computor vision</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/camera-intri-extri-param/" rel="prev" title="相机内外参计算公式">
+      <i class="fa fa-chevron-left"></i> 相机内外参计算公式
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#d-dlt%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">2D DLT算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d-dlt-%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">3D DLT 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dlt-3d-%E9%87%8D%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">DLT 3D 重建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E5%86%85%E5%A4%96%E5%8F%82%E8%BD%AC%E4%B8%BAdlt%E7%9F%A9%E9%98%B5"><span class="nav-number">4.</span> <span class="nav-text">相机内外参转为DLT矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-implement"><span class="nav-number">5.</span> <span class="nav-text">Code Implement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">6.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wayland Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/waylandwong" title="GitHub → https://github.com/waylandwong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wayland Wong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id    : ,
+      el    : 'wpac-rating',
+      color : 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bTteEXeSHWIUKMhwy6uZu3OF-gzGzoHsz',
+      appKey     : 'kiqnuGNWbJMNiNiSfoat6RL0',
+      placeholder: "Good Job",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
