@@ -31,4 +31,4 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: hexo
-        FOLDER: /docs
+        FOLDER: docs
